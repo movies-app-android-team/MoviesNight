@@ -4,15 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/teal_200"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <io.ak1.BubbleTabBar
+        android:id="@+id/bubbleTabBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="#FFF"
+        android:elevation="16dp"
+        android:padding="7dp"
+        app:bubbletab_menuResource="@menu/bottom_nav_menu"
+        app:bubbletab_horizontal_padding="20dp"
+        app:bubbletab_icon_size="20dp"
+        app:bubbletab_title_size="16sp"
+        app:bubbletab_icon_padding="5sp"
+        app:bubbletab_vertical_padding="10dp"
+        app:bubbletab_tab_corner_radius="25dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </io.ak1.BubbleTabBar>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
