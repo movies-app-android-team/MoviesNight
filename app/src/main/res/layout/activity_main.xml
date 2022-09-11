@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_200"
+    android:background="#1B1A1D"
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/in_app_logo"
+        android:layout_width="116dp"
+        android:layout_height="86dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_in_app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/imageSlider"
