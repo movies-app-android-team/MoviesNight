@@ -7,6 +7,12 @@
     android:background="@color/teal_200"
     tools:context=".MainActivity">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageSlider"
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp"/>
     <io.ak1.BubbleTabBar
         android:id="@+id/bubbleTabBar"
         android:layout_width="match_parent"
