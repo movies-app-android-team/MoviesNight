@@ -13,7 +13,7 @@ class SlideAdapter(private val items: List<SlideItem>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlideItemViewHolder {
         return SlideItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_view_slider, parent, false)
+                .inflate(R.layout.slider_item_layout, parent, false)
         )
     }
 
@@ -35,6 +35,7 @@ class SlideAdapter(private val items: List<SlideItem>) :
                 // code goes here
                 Log.d("myApp", "item ${items[layoutPosition]} clicked")
             }
+
         }
 
         fun bindItem(anItem: SlideItem) {

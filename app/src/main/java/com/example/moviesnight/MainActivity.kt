@@ -2,6 +2,7 @@ package com.example.moviesnight
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -19,15 +20,15 @@ class MainActivity : AppCompatActivity() {
 
         //image slider
         viewPager = findViewById(R.id.imageSlider)
-        /* setting list of movies to slide
+        // setting list of movies to slide
         val items = mutableListOf<SlideItem>()
         items.add(SlideItem(R.drawable.testimage))
         items.add(SlideItem(R.drawable.testimage))
         items.add(SlideItem(R.drawable.testimage))
         items.add(SlideItem(R.drawable.testimage))
-        */
 
-        //viewPager.adapter = SlideAdapter(items)
+
+        viewPager.adapter = SlideAdapter(items)
         viewPager.clipToPadding = false
         viewPager.clipChildren = false
         viewPager.offscreenPageLimit = 3

@@ -7,6 +7,11 @@
     android:background="@color/teal_200"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/in_app_logo"
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/imageSlider"
         android:layout_width="match_parent"
