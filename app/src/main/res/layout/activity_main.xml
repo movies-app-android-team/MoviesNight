@@ -8,72 +8,14 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:id="@+id/frameHomeContainer"
+        android:id="@+id/fragmentHolder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintBottom_toTopOf="@id/bubbleTabBar"
         />
-
-    <FrameLayout
-        android:id="@+id/frameSearchContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameHomeContainer"
-        app:layout_constraintHeight_percent="0.3"
-        />
-    <FrameLayout
-        android:id="@+id/frameDetailContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameSearchContainer"
-        app:layout_constraintHeight_percent="0.3"
-        />
-
-    <!--Your comment
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.moviesnight.fragment.HomeFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:layout_marginTop="16dp"
-        android:id="@+id/detailFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.3"
-        android:name="com.example.moviesnight.fragment.DetailFragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeFragment"
-        tools:layout="@layout/fragment_detail"/>
-
-    <fragment
-        android:layout_marginTop="16dp"
-        android:id="@+id/searchFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.3"
-        android:name="com.example.moviesnight.fragment.SearchFragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailFragment"
-        tools:layout="@layout/fragment_search"/>
-        -->
-
 
     <io.ak1.BubbleTabBar
         android:id="@+id/bubbleTabBar"
@@ -89,10 +31,6 @@
         app:bubbletab_icon_padding="5sp"
         app:bubbletab_vertical_padding="10dp"
         app:bubbletab_tab_corner_radius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-    </io.ak1.BubbleTabBar>
-
-
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
