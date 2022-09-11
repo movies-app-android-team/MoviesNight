@@ -8,26 +8,58 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="116dp"
-        android:layout_height="86dp"
+        android:id="@+id/logo_image_view"
+        android:layout_width="120dp"
+        android:layout_height="49dp"
         android:layout_margin="20dp"
         android:src="@drawable/ic_in_app_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/main_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/red_hat_display"
+        android:text="Now Trending"
+        android:textColor="@color/orange_grad"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/imageSlider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo_image_view" />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/imageSlider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
         android:paddingStart="80dp"
-        android:paddingEnd="80dp" />
+        android:paddingEnd="80dp"
+        app:layout_constraintBottom_toTopOf="@id/genreSlider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_text_view" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/genreSlider"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        android:foregroundGravity="center"
+        android:paddingStart="140dp"
+        android:paddingEnd="140dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageSlider" />
 
     <io.ak1.BubbleTabBar
         android:id="@+id/bubbleTabBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFF"
+        android:background="@color/secondary_dark"
         android:elevation="16dp"
         android:padding="7dp"
         app:bubbletab_horizontal_padding="20dp"

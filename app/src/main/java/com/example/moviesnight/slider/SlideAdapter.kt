@@ -35,7 +35,6 @@ class SlideAdapter(private val items: List<SlideItem>) :
                 // code goes here
                 Log.d("myApp", "item ${items[layoutPosition]} clicked")
             }
-
         }
 
         fun bindItem(anItem: SlideItem) {
