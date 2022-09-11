@@ -1,5 +1,6 @@
 package com.example.moviesnight.slider
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ class SlideAdapter(private val items: List<SlideItem>) :
     }
 
     override fun onBindViewHolder(holder: SlideItemViewHolder, position: Int) {
-        holder.bindFruit(items[position])
+        holder.bindItem(items[position])
     }
 
     override fun getItemCount(): Int {
@@ -31,11 +32,12 @@ class SlideAdapter(private val items: List<SlideItem>) :
         init {
             itemImage = itemView.findViewById(R.id.slidedImage)
             itemView.setOnClickListener {
-                // goo here
+                // code goes here
+                Log.d("myApp", "item ${items[layoutPosition]} clicked")
             }
         }
 
-        fun bindFruit(anItem: SlideItem) {
+        fun bindItem(anItem: SlideItem) {
             itemImage.setImageResource(anItem.imageModelNumber)
         }
     }
