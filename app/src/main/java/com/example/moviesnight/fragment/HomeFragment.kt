@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        viewPager = view.findViewById(R.id.imageSlider)
+        viewPager = view.findViewById(R.id.nowTrendingMoviesSlider)
         genreViewPager = view.findViewById(R.id.genreSlider)
 
         // setting list of movies to slide

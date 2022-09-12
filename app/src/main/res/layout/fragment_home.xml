@@ -25,13 +25,13 @@
         android:textColor="@color/orange_grad"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/imageSlider"
+        app:layout_constraintBottom_toTopOf="@id/nowTrendingMoviesSlider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo_image_view" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/imageSlider"
+        android:id="@+id/nowTrendingMoviesSlider"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="20dp"
@@ -48,10 +48,8 @@
         android:layout_height="70dp"
         android:layout_marginTop="20dp"
         android:foregroundGravity="center"
-        android:paddingStart="140dp"
-        android:paddingEnd="140dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageSlider" />
+        app:layout_constraintTop_toBottomOf="@id/nowTrendingMoviesSlider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
