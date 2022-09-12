@@ -10,30 +10,34 @@
     <EditText
 
         android:id="@+id/searchTab"
-        android:textSize="24dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/round_corner"
         android:drawableEnd="@drawable/ic_search"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:ems="25"
         android:drawableTint="@color/white"
+        android:ems="25"
         android:hint="Search"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:textColorHint="@color/white"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
+        android:id="@+id/searchResultsRecycler"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/searchTab"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="24dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
         />
 
 
