@@ -1,2 +1,2 @@
 package com.example.moviesnight.slider
-data class SlideItem(val imageModelNumber: Int)
+data class NowTrendingItem(val movieID: Int, val imageModelNumber: Int)

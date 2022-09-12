@@ -8,16 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.makeramen.roundedimageview.RoundedImageView
 
-class SlideAdapter(private val items: List<SlideItem>) :
-    RecyclerView.Adapter<SlideAdapter.SlideItemViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlideItemViewHolder {
-        return SlideItemViewHolder(
+class NowTrendingAdapter(private val items: List<NowTrendingItem>) :
+    RecyclerView.Adapter<NowTrendingAdapter.NowTrendingItemViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowTrendingItemViewHolder {
+        return NowTrendingItemViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.slider_item_layout, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: SlideItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NowTrendingItemViewHolder, position: Int) {
         holder.bindItem(items[position])
     }
 
@@ -25,7 +25,7 @@ class SlideAdapter(private val items: List<SlideItem>) :
         return items.size
     }
 
-    inner class SlideItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NowTrendingItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemImage: RoundedImageView
         //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
 
@@ -37,7 +37,7 @@ class SlideAdapter(private val items: List<SlideItem>) :
             }
         }
 
-        fun bindItem(anItem: SlideItem) {
+        fun bindItem(anItem: NowTrendingItem) {
             itemImage.setImageResource(anItem.imageModelNumber)
         }
     }
