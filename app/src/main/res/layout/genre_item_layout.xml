@@ -13,6 +13,6 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:textColor="@color/yellow"
+        android:textColor="@color/orange_grad"
         android:textSize="25sp" />
 </FrameLayout>
