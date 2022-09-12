@@ -13,7 +13,7 @@ import com.example.moviesnight.recycler.SimilarMovieItem
 
 class DetailFragment : Fragment() {
     private lateinit var appNavigator: AppNavigator
-    private lateinit var similarMoviesRecycler:RecyclerView
+    private lateinit var similarMoviesRecycler: RecyclerView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -27,12 +27,12 @@ class DetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         similarMoviesRecycler = view.findViewById(R.id.similarMoviesRecycler)
         val similarMovies = mutableListOf<SimilarMovieItem>()
-        similarMovies.add(SimilarMovieItem(R.drawable.test2,1))
-        similarMovies.add(SimilarMovieItem(R.drawable.test2,2))
-        similarMovies.add(SimilarMovieItem(R.drawable.test2,3))
-        similarMovies.add(SimilarMovieItem(R.drawable.test2,4))
-        similarMovies.add(SimilarMovieItem(R.drawable.test2,4))
-        similarMoviesRecycler.adapter= SimilarMovieAdapter(similarMovies)
+        similarMovies.add(SimilarMovieItem(R.drawable.test2, 1))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2, 2))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2, 3))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2, 4))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2, 4))
+        similarMoviesRecycler.adapter = SimilarMovieAdapter(similarMovies)
         return view
     }
 }

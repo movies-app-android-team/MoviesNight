@@ -23,9 +23,11 @@
                 android:layout_height="wrap_content"
                 app:contentScrim="@android:color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/logo_image_view"
                         android:layout_width="120dp"
@@ -77,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="none"
-                    app:popupTheme="@style/Theme.MoviesNight"/>
+                    app:popupTheme="@style/Theme.MoviesNight" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

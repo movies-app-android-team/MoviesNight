@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         viewPager = view.findViewById(R.id.nowTrendingMoviesSlider)
         genreViewPager = view.findViewById(R.id.genreSlider)
-        genreMovieRecycler=view.findViewById(R.id.genreMoviesRecycler)
+        genreMovieRecycler = view.findViewById(R.id.genreMoviesRecycler)
 
         // setting list of movies to slide
         val items = mutableListOf<NowTrendingItem>()
@@ -49,13 +49,13 @@ class HomeFragment : Fragment() {
         genres.add(GenreItem("Sci-Fi", 26))
 
         val genreMovies = mutableListOf<GenreMovieItem>()
-        genreMovies.add(GenreMovieItem("Good Father",1,2020,R.drawable.test2,4.2f))
-        genreMovies.add(GenreMovieItem("Hi",2,2020,R.drawable.test2,4.2f))
-        genreMovies.add(GenreMovieItem("Hello",3,2020,R.drawable.test2,4.2f))
-        genreMovies.add(GenreMovieItem("&&",20,2020,R.drawable.test2,10f))
-        genreMovies.add(GenreMovieItem(":-)",40,2020,R.drawable.test2,0f))
+        genreMovies.add(GenreMovieItem("Good Father", 1, 2020, R.drawable.test2, 4.2f))
+        genreMovies.add(GenreMovieItem("Hi", 2, 2020, R.drawable.test2, 4.2f))
+        genreMovies.add(GenreMovieItem("Hello", 3, 2020, R.drawable.test2, 4.2f))
+        genreMovies.add(GenreMovieItem("&&", 20, 2020, R.drawable.test2, 10f))
+        genreMovies.add(GenreMovieItem(":-)", 40, 2020, R.drawable.test2, 0f))
 
-        genreMovieRecycler.adapter=GenreMovieAdapter(genreMovies)
+        genreMovieRecycler.adapter = GenreMovieAdapter(genreMovies)
 
 
         viewPager.adapter = NowTrendingAdapter(items)

@@ -44,7 +44,8 @@ class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
 
         @SuppressLint("SetTextI18n")
         fun bindItem(anItem: GenreMovieItem) {
-            genreMovieText.text = "${anItem.genreMovieName}\n${anItem.genreMovieYear} | ${anItem.genreMovieRating}"
+            genreMovieText.text =
+                "${anItem.genreMovieName}\n${anItem.genreMovieYear} | ${anItem.genreMovieRating}"
             genreMovieImage.setImageResource(anItem.genreMovieImage)
         }
     }
