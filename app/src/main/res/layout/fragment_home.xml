@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/red_hat_display"
-                        android:text="Now Trending"
+                        android:text="@string/now_trending"
                         android:textColor="@color/orange_grad"
                         android:textSize="25sp"
                         android:textStyle="bold"
@@ -86,7 +86,6 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <!--- recycler goes here -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/genreMoviesRecycler"
                 android:layout_width="wrap_content"

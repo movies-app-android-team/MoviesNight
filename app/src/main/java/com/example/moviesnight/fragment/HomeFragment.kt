@@ -11,8 +11,8 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviesnight.R
-import com.example.moviesnight.Recycler.MovieListAdapter
-import com.example.moviesnight.recycler.MovieListItem
+import com.example.moviesnight.recycler.GenreMovieAdapter
+import com.example.moviesnight.recycler.GenreMovieItem
 import com.example.moviesnight.slider.GenreAdapter
 import com.example.moviesnight.slider.GenreItem
 import com.example.moviesnight.slider.NowTrendingAdapter
@@ -48,14 +48,14 @@ class HomeFragment : Fragment() {
         genres.add(GenreItem("Comedy", 25))
         genres.add(GenreItem("Sci-Fi", 26))
 
-        val genreMovies = mutableListOf<MovieListItem>()
-        genreMovies.add(MovieListItem("Good Father",1,2020,R.drawable.test2,4.2f))
-        genreMovies.add(MovieListItem("Hi",2,2020,R.drawable.test2,4.2f))
-        genreMovies.add(MovieListItem("Hello",3,2020,R.drawable.test2,4.2f))
-        genreMovies.add(MovieListItem("&&",20,2020,R.drawable.test2,10f))
-        genreMovies.add(MovieListItem(":-)",40,2020,R.drawable.test2,0f))
+        val genreMovies = mutableListOf<GenreMovieItem>()
+        genreMovies.add(GenreMovieItem("Good Father",1,2020,R.drawable.test2,4.2f))
+        genreMovies.add(GenreMovieItem("Hi",2,2020,R.drawable.test2,4.2f))
+        genreMovies.add(GenreMovieItem("Hello",3,2020,R.drawable.test2,4.2f))
+        genreMovies.add(GenreMovieItem("&&",20,2020,R.drawable.test2,10f))
+        genreMovies.add(GenreMovieItem(":-)",40,2020,R.drawable.test2,0f))
 
-        genreMovieRecycler.adapter=MovieListAdapter(genreMovies)
+        genreMovieRecycler.adapter=GenreMovieAdapter(genreMovies)
 
 
         viewPager.adapter = NowTrendingAdapter(items)
