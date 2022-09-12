@@ -20,10 +20,12 @@
             android:id="@+id/ratingFrame"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
+            app:layout_constraintBottom_toTopOf="@id/durationFrame"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/movieDetailRImageView"
             app:layout_constraintTop_toTopOf="@id/movieDetailRImageView"
             app:layout_constraintWidth_percent="0.7">
 
@@ -31,34 +33,40 @@
                 android:id="@+id/ratingIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="35dp"
+                android:layout_marginEnd="15dp"
                 android:src="@drawable/ic_rating"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/ratingValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:fontFamily="@font/red_hat_display"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/ratingIcon"
-                app:layout_constraintStart_toStartOf="@id/ratingIcon"
-                app:layout_constraintTop_toBottomOf="@id/ratingIcon"
+                app:layout_constraintBottom_toTopOf="@id/ratingTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ratingIcon"
                 tools:text="4.5" />
 
             <TextView
+                android:id="@+id/ratingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
                 android:fontFamily="@font/red_hat_display"
                 android:text="Rating"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="13dp"
+                android:textSize="15sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/ratingIcon"
                 app:layout_constraintEnd_toEndOf="@id/ratingValue"
                 app:layout_constraintStart_toStartOf="@id/ratingValue"
                 app:layout_constraintTop_toBottomOf="@id/ratingValue" />
@@ -68,13 +76,14 @@
             android:id="@+id/durationFrame"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
             app:layout_constraintBottom_toTopOf="@id/yearFrame"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/movieDetailRImageView"
             app:layout_constraintTop_toBottomOf="@id/ratingFrame"
             app:layout_constraintWidth_percent="0.7">
 
@@ -82,34 +91,40 @@
                 android:id="@+id/durationIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="35dp"
+                android:layout_marginEnd="15dp"
                 android:src="@drawable/ic_duration"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/durationValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/red_hat_display"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/durationIcon"
-                app:layout_constraintStart_toStartOf="@id/durationIcon"
-                app:layout_constraintTop_toBottomOf="@id/durationIcon"
+                app:layout_constraintBottom_toTopOf="@id/durationTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/durationIcon"
                 tools:text="2h 30m" />
 
             <TextView
+                android:id="@+id/durationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
                 android:fontFamily="@font/red_hat_display"
                 android:text="Duration"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="13dp"
+                android:textSize="15sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/durationIcon"
                 app:layout_constraintEnd_toEndOf="@id/durationValue"
                 app:layout_constraintStart_toStartOf="@id/durationValue"
                 app:layout_constraintTop_toBottomOf="@id/durationValue" />
@@ -119,45 +134,53 @@
             android:id="@+id/yearFrame"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailRImageView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/movieDetailRImageView"
+            app:layout_constraintTop_toBottomOf="@id/durationFrame"
             app:layout_constraintWidth_percent="0.7">
 
             <ImageView
                 android:id="@+id/yearIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="35dp"
+                android:layout_marginEnd="15dp"
                 android:src="@drawable/ic_year"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/yearValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:fontFamily="@font/red_hat_display"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/yearIcon"
-                app:layout_constraintStart_toStartOf="@id/yearIcon"
-                app:layout_constraintTop_toBottomOf="@id/yearIcon"
-                tools:text="2h 30m" />
+                app:layout_constraintBottom_toTopOf="@id/yearTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/yearIcon"
+                tools:text="2022" />
 
             <TextView
+                android:id="@+id/yearTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
                 android:fontFamily="@font/red_hat_display"
-                android:text="Duration"
+                android:text="Year"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="13dp"
+                android:textSize="15sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/yearIcon"
                 app:layout_constraintEnd_toEndOf="@id/yearValue"
                 app:layout_constraintStart_toStartOf="@id/yearValue"
                 app:layout_constraintTop_toBottomOf="@id/yearValue" />
@@ -192,13 +215,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/red_hat_display"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@id/movieDetails"
         app:layout_constraintTop_toBottomOf="@id/overviewTitle"
-        tools:text="mmm mmmmmm m  mmmmm dddd sss\n ssssssmmm mmmmmm m  mmmmm dddd sss\n ssssss"
-        android:textColor="@android:color/darker_gray"
-        android:fontFamily="@font/red_hat_display"
-        android:textSize="15sp"
-        />
+        tools:text="mmm mmmmmm m  mmmmm dddd sss\n ssssssmmm mmmmmm m  mmmmm dddd sss\n ssssss" />
 
     <TextView
         android:id="@+id/similarMoviesTitle"
@@ -210,19 +233,19 @@
         android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/movieDetails"
-        app:layout_constraintBottom_toTopOf="@id/similarMoviesRecycler"/>
+        app:layout_constraintBottom_toTopOf="@id/similarMoviesRecycler"
+        app:layout_constraintStart_toStartOf="@id/movieDetails" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarMoviesRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:background="@color/white"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"
-        />
+        tools:background="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

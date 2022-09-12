@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.Recycler.MovieListAdapter
@@ -26,7 +25,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-
+        moviesList = view.findViewById(R.id.similarMoviesRecycler)
         val genreMovies = mutableListOf<MovieListItem>()
         genreMovies.add(MovieListItem("Good Father",1,2020,R.drawable.test2,4.2f))
         genreMovies.add(MovieListItem("Hi",2,2020,R.drawable.test2,4.2f))
