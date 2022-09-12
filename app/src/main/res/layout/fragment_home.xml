@@ -87,6 +87,12 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <!--- recycler goes here -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/genreMoviesRecycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3" />
 
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

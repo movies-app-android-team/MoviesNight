@@ -11,6 +11,8 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviesnight.R
+import com.example.moviesnight.Recycler.GenreMovieAdapter
+import com.example.moviesnight.Recycler.GenreMovieItem
 import com.example.moviesnight.slider.GenreAdapter
 import com.example.moviesnight.slider.GenreItem
 import com.example.moviesnight.slider.NowTrendingAdapter
@@ -20,6 +22,8 @@ import kotlin.math.abs
 class HomeFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var genreViewPager: ViewPager2
+    private lateinit var genreMovieRecycler: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +31,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         viewPager = view.findViewById(R.id.nowTrendingMoviesSlider)
         genreViewPager = view.findViewById(R.id.genreSlider)
+        genreMovieRecycler=view.findViewById(R.id.genreMoviesRecycler)
 
         // setting list of movies to slide
         val items = mutableListOf<NowTrendingItem>()
@@ -42,6 +47,16 @@ class HomeFragment : Fragment() {
         genres.add(GenreItem("Horror", 24))
         genres.add(GenreItem("Comedy", 25))
         genres.add(GenreItem("Sci-Fi", 26))
+
+        val genreMovies = mutableListOf<GenreMovieItem>()
+        genreMovies.add(GenreMovieItem("Good Father",1,2020,R.drawable.test2,4.2f))
+        genreMovies.add(GenreMovieItem("Hi",2,2020,R.drawable.test2,4.2f))
+        genreMovies.add(GenreMovieItem("Hello",3,2020,R.drawable.test2,4.2f))
+        genreMovies.add(GenreMovieItem("&&",20,2020,R.drawable.test2,10f))
+        genreMovies.add(GenreMovieItem(":-)",40,2020,R.drawable.test2,0f))
+
+        genreMovieRecycler.adapter=GenreMovieAdapter(genreMovies)
+
 
         viewPager.adapter = NowTrendingAdapter(items)
         viewPager.clipToPadding = false
