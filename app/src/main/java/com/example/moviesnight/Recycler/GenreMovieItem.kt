@@ -1,4 +1,4 @@
-package com.example.moviesnight.Recycler
+package com.example.moviesnight.recycler
 
 data class GenreMovieItem(val genreMovieName: String,
                           val genreMovieID: Int,

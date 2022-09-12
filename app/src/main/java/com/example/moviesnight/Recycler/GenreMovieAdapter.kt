@@ -6,11 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.slider.GenreItem
+import com.example.moviesnight.recycler.GenreMovieItem
 import com.makeramen.roundedimageview.RoundedImageView
 
 class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
@@ -46,7 +45,7 @@ class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
 
         @SuppressLint("SetTextI18n")
         fun bindItem(anItem: GenreMovieItem) {
-            genreMovieText.text = "${anItem.genreMovieName} \n ${anItem.genreMovieYear} | ${anItem.genreMovieRating}"
+            genreMovieText.text = "${anItem.genreMovieName}\n${anItem.genreMovieYear} | ${anItem.genreMovieRating}"
             genreMovieImage.setImageResource(anItem.genreMovieImage)
         }
     }

@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviesnight.R
 import com.example.moviesnight.Recycler.GenreMovieAdapter
-import com.example.moviesnight.Recycler.GenreMovieItem
+import com.example.moviesnight.recycler.GenreMovieItem
 import com.example.moviesnight.slider.GenreAdapter
 import com.example.moviesnight.slider.GenreItem
 import com.example.moviesnight.slider.NowTrendingAdapter
