@@ -4,34 +4,225 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8E24AA"
+    android:background="@color/primary_dark"
     tools:context=".fragment.DetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ImageView
-        android:id="@+id/imageDetail"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@mipmap/ic_launcher"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movieDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ratingFrame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/movie_detail_round_corner"
+            android:backgroundTint="@color/secondary_dark"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toStartOf="@id/movieDetailRImageView"
+            app:layout_constraintTop_toTopOf="@id/movieDetailRImageView"
+            app:layout_constraintWidth_percent="0.7">
+
+            <ImageView
+                android:id="@+id/ratingIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="35dp"
+                android:src="@drawable/ic_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ratingValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/red_hat_display"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/ratingIcon"
+                app:layout_constraintStart_toStartOf="@id/ratingIcon"
+                app:layout_constraintTop_toBottomOf="@id/ratingIcon"
+                tools:text="4.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:fontFamily="@font/red_hat_display"
+                android:text="Rating"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/ratingValue"
+                app:layout_constraintStart_toStartOf="@id/ratingValue"
+                app:layout_constraintTop_toBottomOf="@id/ratingValue" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/durationFrame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/movie_detail_round_corner"
+            android:backgroundTint="@color/secondary_dark"
+            app:layout_constraintBottom_toTopOf="@id/yearFrame"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toStartOf="@id/movieDetailRImageView"
+            app:layout_constraintTop_toBottomOf="@id/ratingFrame"
+            app:layout_constraintWidth_percent="0.7">
+
+            <ImageView
+                android:id="@+id/durationIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="35dp"
+                android:src="@drawable/ic_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/durationValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/red_hat_display"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/durationIcon"
+                app:layout_constraintStart_toStartOf="@id/durationIcon"
+                app:layout_constraintTop_toBottomOf="@id/durationIcon"
+                tools:text="2h 30m" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:fontFamily="@font/red_hat_display"
+                android:text="Duration"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/durationValue"
+                app:layout_constraintStart_toStartOf="@id/durationValue"
+                app:layout_constraintTop_toBottomOf="@id/durationValue" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/yearFrame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/movie_detail_round_corner"
+            android:backgroundTint="@color/secondary_dark"
+            app:layout_constraintBottom_toBottomOf="@id/movieDetailRImageView"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toStartOf="@id/movieDetailRImageView"
+            app:layout_constraintWidth_percent="0.7">
+
+            <ImageView
+                android:id="@+id/yearIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="35dp"
+                android:src="@drawable/ic_year"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/yearValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/red_hat_display"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/yearIcon"
+                app:layout_constraintStart_toStartOf="@id/yearIcon"
+                app:layout_constraintTop_toBottomOf="@id/yearIcon"
+                tools:text="2h 30m" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:fontFamily="@font/red_hat_display"
+                android:text="Duration"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/yearValue"
+                app:layout_constraintStart_toStartOf="@id/yearValue"
+                app:layout_constraintTop_toBottomOf="@id/yearValue" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/movieDetailRImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:src="@drawable/test2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="26dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/overviewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:fontFamily="@font/red_hat_display"
+        android:text="Overview:"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/movieDetails"
+        app:layout_constraintTop_toBottomOf="@id/movieDetails" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageDetail" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toStartOf="@id/movieDetails"
+        app:layout_constraintTop_toBottomOf="@id/overviewTitle"
+        tools:text="mmm mmmmmm m  mmmmm dddd sss\n ssssssmmm mmmmmm m  mmmmm dddd sss\n ssssss"
+        android:textColor="@android:color/darker_gray"
+        android:fontFamily="@font/red_hat_display"
+        android:textSize="15sp"
+        />
 
     <TextView
+        android:id="@+id/similarMoviesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Movie Name"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="40dp"
+        android:fontFamily="@font/red_hat_display"
+        android:text="Similar Movies:"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/movieDetails"
+        app:layout_constraintBottom_toTopOf="@id/similarMoviesRecycler"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/similarMoviesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageDetail" />
+        tools:background="@color/white"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
