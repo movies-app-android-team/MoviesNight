@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root"
     android:background="#1B1A1D"
     tools:context=".MainActivity">
 
@@ -55,6 +56,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageSlider" />
 
+    <FrameLayout
+        android:id="@+id/fragmentHolder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bubbleTabBar"
+        />
+
     <io.ak1.BubbleTabBar
         android:id="@+id/bubbleTabBar"
         android:layout_width="match_parent"
@@ -70,5 +81,4 @@
         app:bubbletab_title_size="16sp"
         app:bubbletab_vertical_padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
