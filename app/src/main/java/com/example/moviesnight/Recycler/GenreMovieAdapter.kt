@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.slider.GenreItem
+import com.makeramen.roundedimageview.RoundedImageView
 
 class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
     RecyclerView.Adapter<GenreMovieAdapter.GenreMovieViewHolder>() {
@@ -31,7 +32,7 @@ class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
 
     inner class GenreMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val genreMovieText: TextView
-        private val genreMovieImage: ImageView
+        private val genreMovieImage: RoundedImageView
         //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
 
         init {
@@ -46,6 +47,7 @@ class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
         @SuppressLint("SetTextI18n")
         fun bindItem(anItem: GenreMovieItem) {
             genreMovieText.text = "${anItem.genreMovieName} \n ${anItem.genreMovieYear} | ${anItem.genreMovieRating}"
+            genreMovieImage.setImageResource(anItem.genreMovieImage)
         }
     }
 }

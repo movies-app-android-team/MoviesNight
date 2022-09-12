@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/genreMovieItem"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="30dp"
     android:background="@android:color/transparent">
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -16,19 +17,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_corner_radius="25dp" />
+        app:riv_corner_radius="15dp"
+        tools:src="@drawable/test2" />
 
     <TextView
         android:id="@+id/genreMovieText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/secondary_dark"
+        android:background="@drawable/round_corner"
         android:fontFamily="@font/red_hat_display"
-        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:circularflow_radiusInDP="25dp"
         app:layout_constraintBottom_toBottomOf="@id/genreMovieImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.25"
