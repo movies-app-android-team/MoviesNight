@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.Recycler.MovieListAdapter
-import com.example.moviesnight.recycler.MovieListItem
+import com.example.moviesnight.recycler.SimilarMovieAdapter
+import com.example.moviesnight.recycler.SimilarMovieItem
 
 class DetailFragment : Fragment() {
     private lateinit var appNavigator: AppNavigator
-    private lateinit var moviesList:RecyclerView
+    private lateinit var similarMoviesRecycler:RecyclerView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -25,16 +25,14 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-        moviesList = view.findViewById(R.id.similarMoviesRecycler)
-        val genreMovies = mutableListOf<MovieListItem>()
-        genreMovies.add(MovieListItem("Good Father",1,2020,R.drawable.test2,4.2f))
-        genreMovies.add(MovieListItem("Hi",2,2020,R.drawable.test2,4.2f))
-        genreMovies.add(MovieListItem("Hello",3,2020,R.drawable.test2,4.2f))
-        genreMovies.add(MovieListItem("&&",20,2020,R.drawable.test2,10f))
-        genreMovies.add(MovieListItem(":-)",40,2020,R.drawable.test2,0f))
-
-        moviesList.adapter= MovieListAdapter(genreMovies)
-
+        similarMoviesRecycler = view.findViewById(R.id.similarMoviesRecycler)
+        val similarMovies = mutableListOf<SimilarMovieItem>()
+        similarMovies.add(SimilarMovieItem(R.drawable.test2,1))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2,2))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2,3))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2,4))
+        similarMovies.add(SimilarMovieItem(R.drawable.test2,4))
+        similarMoviesRecycler.adapter= SimilarMovieAdapter(similarMovies)
         return view
     }
 }

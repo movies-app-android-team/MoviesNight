@@ -5,7 +5,7 @@
     android:id="@+id/genreMovieItem"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
+    android:layout_margin="30dp"
     android:background="@android:color/transparent">
 
     <com.makeramen.roundedimageview.RoundedImageView

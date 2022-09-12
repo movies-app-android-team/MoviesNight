@@ -1,4 +1,4 @@
-package com.example.moviesnight.Recycler
+package com.example.moviesnight.recycler
 
 
 import android.annotation.SuppressLint
@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.recycler.MovieListItem
 import com.makeramen.roundedimageview.RoundedImageView
 
-class MovieListAdapter(private val genreMovies: List<MovieListItem>) :
-    RecyclerView.Adapter<MovieListAdapter.GenreMovieViewHolder>() {
+class GenreMovieAdapter(private val genreMovies: List<GenreMovieItem>) :
+    RecyclerView.Adapter<GenreMovieAdapter.GenreMovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreMovieViewHolder {
         return GenreMovieViewHolder(
             LayoutInflater.from(parent.context)
@@ -44,7 +43,7 @@ class MovieListAdapter(private val genreMovies: List<MovieListItem>) :
         }
 
         @SuppressLint("SetTextI18n")
-        fun bindItem(anItem: MovieListItem) {
+        fun bindItem(anItem: GenreMovieItem) {
             genreMovieText.text = "${anItem.genreMovieName}\n${anItem.genreMovieYear} | ${anItem.genreMovieRating}"
             genreMovieImage.setImageResource(anItem.genreMovieImage)
         }

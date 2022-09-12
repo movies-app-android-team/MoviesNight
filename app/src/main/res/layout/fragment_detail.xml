@@ -40,7 +40,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/ratingValue"
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
                 android:fontFamily="@font/red_hat_display"
-                android:text="Rating"
+                android:text="@string/rating"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -98,7 +99,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/durationValue"
@@ -120,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
                 android:fontFamily="@font/red_hat_display"
-                android:text="Duration"
+                android:text="@string/duration"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -155,7 +157,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
 
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/yearValue"
@@ -177,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
                 android:fontFamily="@font/red_hat_display"
-                android:text="Year"
+                android:text="@string/year"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -205,7 +208,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:fontFamily="@font/red_hat_display"
-        android:text="Overview:"
+        android:text="@string/overview"
         android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -222,7 +225,7 @@
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@id/movieDetails"
         app:layout_constraintTop_toBottomOf="@id/overviewTitle"
-        tools:text="mmm mmmmmm m  mmmmm dddd sss\n ssssssmmm mmmmmm m  mmmmm dddd sss\n ssssss" />
+        tools:text="This is a dummy text" />
 
     <TextView
         android:id="@+id/similarMoviesTitle"
@@ -230,7 +233,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:fontFamily="@font/red_hat_display"
-        android:text="Similar Movies:"
+        android:text="@string/similar_movies"
         android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -247,7 +250,7 @@
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.20"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
         tools:background="@color/white" />
 
