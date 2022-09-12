@@ -46,13 +46,13 @@
                 android:id="@+id/ratingValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
                 android:fontFamily="@font/red_hat_display"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/ratingTitle"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ratingIcon"
                 app:layout_constraintTop_toTopOf="@id/ratingIcon"
                 tools:text="4.5" />
 
@@ -104,13 +104,13 @@
                 android:id="@+id/durationValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/red_hat_display"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/durationTitle"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/durationIcon"
                 app:layout_constraintTop_toTopOf="@id/durationIcon"
                 tools:text="2h 30m" />
 
@@ -153,6 +153,7 @@
                 android:src="@drawable/ic_year"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -160,13 +161,13 @@
                 android:id="@+id/yearValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
                 android:fontFamily="@font/red_hat_display"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/yearTitle"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/yearIcon"
                 app:layout_constraintTop_toTopOf="@id/yearIcon"
                 tools:text="2022" />
 
@@ -239,12 +240,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarMoviesRecycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.20"
         app:layout_constraintStart_toStartOf="parent"
         tools:background="@color/white" />
 
