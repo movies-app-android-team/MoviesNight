@@ -11,7 +11,8 @@
         android:layout_gravity="center"
         android:fontFamily="@font/red_hat_display"
         android:gravity="center"
-        android:textColor="@color/yellow"
+        android:textStyle="bold"
         android:textAlignment="center"
+        android:textColor="@color/yellow"
         android:textSize="25sp" />
 </FrameLayout>

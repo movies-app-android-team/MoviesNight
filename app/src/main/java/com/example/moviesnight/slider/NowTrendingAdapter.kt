@@ -13,7 +13,7 @@ class NowTrendingAdapter(private val items: List<NowTrendingItem>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowTrendingItemViewHolder {
         return NowTrendingItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.slider_item_layout, parent, false)
+                .inflate(R.layout.now_trending_slider_item_layout, parent, false)
         )
     }
 
