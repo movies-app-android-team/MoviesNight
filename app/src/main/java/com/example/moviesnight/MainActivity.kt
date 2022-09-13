@@ -45,19 +45,17 @@ class MainActivity : AppCompatActivity() {
         if (currentFocus == findViewById(R.id.searchFragment))
             Log.d("myApp", "searchFragment")
         counterBackBTN = false
-        navController = findNavController(R.id.nav_host_frag)
-        navController.navigate(R.id.dummyAction)
+        findNavController(R.id.nav_host_frag).navigate(R.id.homeToSearch)
     }
 
     private fun navigateToHome() {
         counterBackBTN = true
-        findNavController(R.id.nav_host_frag)
-            .navigate(R.id.homeFragment)
+//        findNavController(R.id.nav_host_frag)
+//            .navigate(R.id.homeFragment)
     }
 
     private fun navigateToSavedMovies() {
         counterBackBTN = false
-        findNavController(R.id.nav_host_frag)
-            .navigate(R.id.savedMoviesFragment)
+//        findNavController(R.id.nav_host_frag).navigate(R.id.homeToSearch)
     }
 }

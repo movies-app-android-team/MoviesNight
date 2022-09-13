@@ -25,7 +25,7 @@
             app:popEnterAnim="@anim/to_left"
             app:popExitAnim="@anim/from_right" />
         <action
-            android:id="@+id/dummyAction"
+            android:id="@+id/homeToSearch"
             app:destination="@id/searchFragment"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/from_left"
