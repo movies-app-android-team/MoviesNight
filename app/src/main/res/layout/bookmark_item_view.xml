@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="115dp"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,59 +20,68 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bookmarkMovieName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
             app:riv_corner_radius="10dp"
-            app:layout_constraintEnd_toStartOf="@id/bookmarkMovieName"
             tools:src="@drawable/test2" />
+
         <TextView
             android:id="@+id/bookmarkMovieName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/bookmarkMovieImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Fast and furious: hobbs and shaw"
-            app:layout_constraintBottom_toTopOf="@id/bookmarkMovieGenre"
             android:layout_margin="10dp"
+            android:fontFamily="@font/red_hat_display"
             android:textColor="@color/white"
             android:textSize="23sp"
-            android:fontFamily="@font/red_hat_display"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/bookmarkMovieGenre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bookmarkMovieImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Fast and furious: hobbs and shaw" />
+
         <TextView
             android:id="@+id/bookmarkMovieGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/bookmarkMovieImage"
-            tools:text="Action, thriller"
             android:layout_margin="10dp"
+            android:fontFamily="@font/red_hat_display"
             android:textColor="@android:color/darker_gray"
             android:textSize="18sp"
-            android:fontFamily="@font/red_hat_display"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bookmarkMovieImage"
+            tools:text="Action, thriller" />
+
         <ImageView
+            android:id="@+id/bookmarkMovieRatingIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_rating"
-            app:layout_constraintTop_toTopOf="@id/bookmarkMovieGenre"
+            android:layout_marginStart="70dp"
             app:layout_constraintBottom_toBottomOf="@id/bookmarkMovieGenre"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@id/bookmarkMovieRating"
+            app:layout_constraintStart_toEndOf="@id/bookmarkMovieGenre"
+            app:layout_constraintTop_toTopOf="@id/bookmarkMovieGenre" />
+
+        <TextView
+            android:id="@+id/bookmarkMovieRating"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/bookmarkMovieRatingIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bookmarkMovieRatingIcon"
+            app:layout_constraintTop_toTopOf="@id/bookmarkMovieRatingIcon"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/red_hat_display"
+            android:layout_gravity="center"
+            tools:text="6,6"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/bookmarkItemGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="278dp"
-        tools:layout_editor_absoluteY="133dp"
-        tools:text=""
-        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
