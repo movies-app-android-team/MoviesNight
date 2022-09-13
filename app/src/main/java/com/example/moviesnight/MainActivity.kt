@@ -2,22 +2,26 @@ package com.example.moviesnight
 
 
 import android.os.Bundle
-import android.util.Pair as UtilPair
 import android.util.Log
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.moviesnight.fragment.HomeFragmentDirections
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController: NavController
+    private lateinit var homeFragment: Fragment
+    private lateinit var detailFragment: Fragment
+    private lateinit var savedMoviesFragment: Fragment
+    private lateinit var searchFragment: Fragment
     private var counterBackBTN = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        homeFragment = supportFragmentManager.findFragmentById(R.id.homeFragment)!!
+        detailFragment = supportFragmentManager.findFragmentById(R.id.detailFragment)!!
+        savedMoviesFragment = supportFragmentManager.findFragmentById(R.id.savedMoviesFragment)!!
+        searchFragment = supportFragmentManager.findFragmentById(R.id.searchFragment)!!
         val bubbleTB = findViewById<io.ak1.BubbleTabBar>(R.id.bubbleTabBar)
         bubbleTB.addBubbleListener { id ->
             Log.d("myApp", "button $id clicked")
@@ -40,22 +44,33 @@ class MainActivity : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
     }
 
-
     private fun navigateToSearch() {
-        if (currentFocus == findViewById(R.id.searchFragment))
-            Log.d("myApp", "searchFragment")
+        val toSearch = findNavController(R.id.nav_host_frag)
         counterBackBTN = false
-        findNavController(R.id.nav_host_frag).navigate(R.id.homeToSearch)
+        when (currentFocus) {
+            homeFragment -> toSearch.navigate(R.id.homeToSearch)
+            detailFragment -> toSearch.navigate(R.id.detail_to_search)
+            savedMoviesFragment -> toSearch.navigate(R.id.saved_to_search)
+        }
     }
 
     private fun navigateToHome() {
-        counterBackBTN = true
-//        findNavController(R.id.nav_host_frag)
-//            .navigate(R.id.homeFragment)
+        val toSearch = findNavController(R.id.nav_host_frag)
+        counterBackBTN = false
+        when (currentFocus) {
+            savedMoviesFragment -> toSearch.navigate(R.id.saved_to_home)
+            detailFragment -> toSearch.navigate(R.id.detail_to_home)
+            searchFragment -> toSearch.navigate(R.id.search_to_home)
+        }
     }
 
     private fun navigateToSavedMovies() {
+        val toSearch = findNavController(R.id.nav_host_frag)
         counterBackBTN = false
-        findNavController(R.id.nav_host_frag).navigate(R.id.home_to_saved_movies)
+        when (currentFocus) {
+            homeFragment -> toSearch.navigate(R.id.home_to_saved_movies)
+            detailFragment -> toSearch.navigate(R.id.homeToDetail)
+            searchFragment -> toSearch.navigate(R.id.homeToSearch)
+        }
     }
 }

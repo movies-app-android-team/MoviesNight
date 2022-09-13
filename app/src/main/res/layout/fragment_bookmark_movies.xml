@@ -20,13 +20,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myBookmarksTitle"
-        tools:background="@color/white" />
+        tools:listitem="@layout/bookmark_movie_item_view"/>
 
     <TextView
         android:id="@+id/myBookmarksTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/red_hat_display"
         android:text="@string/my_bookmarks"
         android:textColor="@color/white"

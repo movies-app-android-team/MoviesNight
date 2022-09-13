@@ -38,7 +38,6 @@ class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>) 
             bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
             bookmarkMovieGenre = itemView.findViewById(R.id.bookmarkMovieGenre)
             bookmarkMovieRating = itemView.findViewById(R.id.bookmarkMovieRating)
-            Log.d("myApp", "item $layoutPosition created")
             itemView.setOnClickListener {
                 // code goes here
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
