@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviesnight.MainActivity
 import com.example.moviesnight.R
 import com.makeramen.roundedimageview.RoundedImageView
 

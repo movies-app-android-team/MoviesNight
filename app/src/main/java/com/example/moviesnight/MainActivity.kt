@@ -1,42 +1,63 @@
 package com.example.moviesnight
 
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Pair as UtilPair
 import android.util.Log
-import com.example.moviesnight.fragment.AppNavigator
-import com.example.moviesnight.fragment.DetailFragment
-import com.example.moviesnight.fragment.HomeFragment
-import com.example.moviesnight.fragment.SearchFragment
+import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import com.example.moviesnight.fragment.HomeFragmentDirections
+import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity(), AppNavigator {
+class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+    private var counterBackBTN = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        navigateToHome()
         val bubbleTB = findViewById<io.ak1.BubbleTabBar>(R.id.bubbleTabBar)
         bubbleTB.addBubbleListener { id ->
             Log.d("myApp", "button $id clicked")
             when (id) {
                 R.id.navHome -> navigateToHome()
                 R.id.navSearch -> navigateToSearch()
-                R.id.navFav -> navigateToDetail()
+                R.id.navFav -> navigateToSavedMovies()
             }
         }
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (counterBackBTN)
+                        exitProcess(1)
+                    navigateToHome()
+                    bubbleTB.setSelected(0, true)
+                    counterBackBTN = true
+                }
+            }
+        this.onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    override fun navigateToDetail() {
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentHolder, DetailFragment())
-            .commit()
+
+    private fun navigateToSearch() {
+        if (currentFocus == findViewById(R.id.searchFragment))
+            Log.d("myApp", "searchFragment")
+        counterBackBTN = false
+        navController = findNavController(R.id.nav_host_frag)
+        navController.navigate(R.id.dummyAction)
     }
 
-    override fun navigateToSearch() {
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentHolder, SearchFragment())
-            .commit()
+    private fun navigateToHome() {
+        counterBackBTN = true
+        findNavController(R.id.nav_host_frag)
+            .navigate(R.id.homeFragment)
     }
 
-    override fun navigateToHome() {
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentHolder, HomeFragment())
-            .commit()
+    private fun navigateToSavedMovies() {
+        counterBackBTN = false
+        findNavController(R.id.nav_host_frag)
+            .navigate(R.id.savedMoviesFragment)
     }
 }

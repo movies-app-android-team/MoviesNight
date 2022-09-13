@@ -1,7 +1,8 @@
 package com.example.moviesnight.fragment
 
 interface AppNavigator {
-    fun navigateToDetail()
+    fun navigateToDetail(movieID: Int)
     fun navigateToSearch()
     fun navigateToHome()
+    fun navigateToSavedMovies()
 }

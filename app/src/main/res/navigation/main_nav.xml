@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.moviesnight.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/home_to_saved_movies"
+            app:destination="@id/savedMoviesFragment"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/homeToDetail"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right" />
+        <action
+            android:id="@+id/dummyAction"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right"
+            app:popUpTo="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.moviesnight.fragment.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+        <action
+            android:id="@+id/detail_to_search"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/to_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/from_left" />
+        <action
+            android:id="@+id/detail_to_home"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/to_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/from_left" />
+        <action
+            android:id="@+id/detail_to_saved_movies"
+            app:destination="@id/savedMoviesFragment"
+            app:enterAnim="@anim/to_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/from_left" />
+        <argument
+            android:name="movieIDtoShowInDetails"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedMoviesFragment"
+        android:name="com.example.moviesnight.fragment.SavedMoviesFragment"
+        android:label="fragment_saved_movies"
+        tools:layout="@layout/fragment_saved_movies" >
+        <action
+            android:id="@+id/saved_to_home"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/to_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/from_left" />
+
+        <action
+            android:id="@+id/saved_to_details"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right"/>
+        <action
+            android:id="@+id/saved_to_search"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/to_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/from_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.moviesnight.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/search_to_home"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/to_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/from_left" />
+
+        <action
+            android:id="@+id/search_to_saved"
+            app:destination="@id/savedMoviesFragment"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right"/>
+        <action
+            android:id="@+id/search_to_details"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right"/>
+    </fragment>
+</navigation>
