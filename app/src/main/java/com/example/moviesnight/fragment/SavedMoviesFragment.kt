@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.bookmarks.BookmarkMovieAdapter
 import com.example.moviesnight.bookmarks.BookmarkMovieItem
-import com.example.moviesnight.recycler.GenreMovieItem
 
 class SavedMoviesFragment : Fragment() {
     private lateinit var bookmarkRecycler:RecyclerView
@@ -18,10 +17,9 @@ class SavedMoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view= inflater.inflate(R.layout.fragment_saved_movies, container, false)
+        val view= inflater.inflate(R.layout.fragment_bookmark_movies, container, false)
 
         bookmarkRecycler=view.findViewById(R.id.bookmarkRecycler)
-
         val bookmarkMovies = mutableListOf<BookmarkMovieItem>()
         bookmarkMovies.add(BookmarkMovieItem(1,R.drawable.test2,"Fast and Furious", "Action",4.2f))
         bookmarkMovies.add(BookmarkMovieItem(2,R.drawable.test2,"Tomb Raider", "Action",0f))
@@ -35,8 +33,6 @@ class SavedMoviesFragment : Fragment() {
         bookmarkMovies.add(BookmarkMovieItem(5, R.drawable.test2, "Movie 5", "Genre 5", 2.2f))
         bookmarkMovies.add(BookmarkMovieItem(6, R.drawable.test2, "Movie 6", "Genre 6", 2.2f))
         bookmarkMovies.add(BookmarkMovieItem(7, R.drawable.test2, "Movie 7", "Genre 7", 2.2f))
-
-
         bookmarkRecycler.adapter=BookmarkMovieAdapter(bookmarkMovies)
 
         return view

@@ -67,7 +67,7 @@
         android:id="@+id/savedMoviesFragment"
         android:name="com.example.moviesnight.fragment.SavedMoviesFragment"
         android:label="fragment_saved_movies"
-        tools:layout="@layout/fragment_saved_movies" >
+        tools:layout="@layout/fragment_bookmark_movies" >
         <action
             android:id="@+id/saved_to_home"
             app:destination="@id/homeFragment"

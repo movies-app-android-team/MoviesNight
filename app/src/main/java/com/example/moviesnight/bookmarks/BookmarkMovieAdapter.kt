@@ -7,15 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.recycler.SimilarMovieItem
 import com.makeramen.roundedimageview.RoundedImageView
 
-class BookmarkMovieAdapter (private val bookmarkMovies: List<BookmarkMovieItem>) :
+class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>) :
     RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkMovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
         return BookmarkMovieViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.bookmark_item_view, parent, false)
+                .inflate(R.layout.bookmark_movie_item_view, parent, false)
         )
     }
 
@@ -39,6 +38,7 @@ class BookmarkMovieAdapter (private val bookmarkMovies: List<BookmarkMovieItem>)
             bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
             bookmarkMovieGenre = itemView.findViewById(R.id.bookmarkMovieGenre)
             bookmarkMovieRating = itemView.findViewById(R.id.bookmarkMovieRating)
+            Log.d("myApp", "item $layoutPosition created")
             itemView.setOnClickListener {
                 // code goes here
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
@@ -47,9 +47,9 @@ class BookmarkMovieAdapter (private val bookmarkMovies: List<BookmarkMovieItem>)
 
         fun bindItem(anItem: BookmarkMovieItem) {
             bookmarkMovieImageView.setImageResource(anItem.movieImage)
-            bookmarkMovieName.text=anItem.movieName
-            bookmarkMovieGenre.text=anItem.movieGenre
-            bookmarkMovieRating.text=anItem.movieRating.toString()
+            bookmarkMovieName.text = anItem.movieName
+            bookmarkMovieGenre.text = anItem.movieGenre
+            bookmarkMovieRating.text = "${anItem.movieRating}"
         }
     }
 }

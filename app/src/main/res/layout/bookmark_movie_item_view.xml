@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginVertical="20dp"
     android:background="@drawable/round_corner">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +65,8 @@
             app:layout_constraintBottom_toBottomOf="@id/bookmarkMovieGenre"
             app:layout_constraintEnd_toStartOf="@id/bookmarkMovieRating"
             app:layout_constraintStart_toEndOf="@id/bookmarkMovieGenre"
-            app:layout_constraintTop_toTopOf="@id/bookmarkMovieGenre" />
+            app:layout_constraintTop_toTopOf="@id/bookmarkMovieGenre"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/bookmarkMovieRating"
