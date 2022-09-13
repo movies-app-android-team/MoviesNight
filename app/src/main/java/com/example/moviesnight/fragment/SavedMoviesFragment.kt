@@ -5,56 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.bookmarks.BookmarkMovieAdapter
+import com.example.moviesnight.bookmarks.BookmarkMovieItem
+import com.example.moviesnight.recycler.GenreMovieItem
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SavedMoviesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SavedMoviesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var bookmarkRecycler:RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved_movies, container, false)
-    }
+        val view= inflater.inflate(R.layout.fragment_saved_movies, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SavedMoviesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SavedMoviesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        bookmarkRecycler=view.findViewById(R.id.bookmarkRecycler)
+
+        val bookmarkMovies = mutableListOf<BookmarkMovieItem>()
+        bookmarkMovies.add(BookmarkMovieItem(1,R.drawable.test2,"Fast and Furious", "Action",4.2f))
+        bookmarkMovies.add(BookmarkMovieItem(2,R.drawable.test2,"Tomb Raider", "Action",0f))
+        bookmarkMovies.add(BookmarkMovieItem(3,R.drawable.test2,"Maze Runner", "Action",5.5f))
+        bookmarkMovies.add(BookmarkMovieItem(4,R.drawable.test2,"Fast and Furious", "Sci-Fi",4.2f))
+        bookmarkMovies.add(BookmarkMovieItem(5,R.drawable.test2,"Fast and Furious", "Action",4.2f))
+        bookmarkMovies.add(BookmarkMovieItem(1, R.drawable.test2, "Movie 1", "Genre 1", 1.1f))
+        bookmarkMovies.add(BookmarkMovieItem(2, R.drawable.test2, "Movie 2", "Genre 2", 2.2f))
+        bookmarkMovies.add(BookmarkMovieItem(3, R.drawable.test2, "Movie 3", "Genre 3", 2.2f))
+        bookmarkMovies.add(BookmarkMovieItem(4, R.drawable.test2, "Movie 4", "Genre 4", 2.2f))
+        bookmarkMovies.add(BookmarkMovieItem(5, R.drawable.test2, "Movie 5", "Genre 5", 2.2f))
+        bookmarkMovies.add(BookmarkMovieItem(6, R.drawable.test2, "Movie 6", "Genre 6", 2.2f))
+        bookmarkMovies.add(BookmarkMovieItem(7, R.drawable.test2, "Movie 7", "Genre 7", 2.2f))
+
+
+        bookmarkRecycler.adapter=BookmarkMovieAdapter(bookmarkMovies)
+
+        return view
     }
 }

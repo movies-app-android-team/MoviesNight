@@ -56,6 +56,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToSavedMovies() {
         counterBackBTN = false
-//        findNavController(R.id.nav_host_frag).navigate(R.id.homeToSearch)
+        findNavController(R.id.nav_host_frag).navigate(R.id.home_to_saved_movies)
     }
 }
