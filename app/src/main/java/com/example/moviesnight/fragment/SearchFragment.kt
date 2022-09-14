@@ -7,15 +7,20 @@ import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.recycler.GenreMovieAdapter
-import com.example.moviesnight.recycler.GenreMovieItem
+import com.example.moviesnight.`interface`.RItemClickListener
+import com.example.moviesnight.recycler.RMovieAdapter
+import com.example.moviesnight.recycler.RMovieItem
+import io.ak1.BubbleTabBar
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), RItemClickListener {
     private lateinit var searchResultRecycler: RecyclerView
     private lateinit var searchTab: EditText
+    private lateinit var listener: RItemClickListener
+    private lateinit var bubbleTB: BubbleTabBar
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -26,13 +31,11 @@ class SearchFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         searchResultRecycler = view.findViewById(R.id.searchResultsRecycler)
         searchTab = view.findViewById(R.id.searchTab)
-
         searchTab.setOnTouchListener(OnTouchListener { _, event ->
             val rightDrawable = 2
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= searchTab.right - searchTab.compoundDrawables[rightDrawable].bounds.width()
                 ) {
-
                     //handle the search icon click
                     Log.d("myApp", "search icon clicked")
                     return@OnTouchListener true
@@ -40,6 +43,8 @@ class SearchFragment : Fragment() {
             }
             false
         })
+
+        bubbleTB = requireActivity().findViewById(R.id.bubbleTabBar)
 
         searchTab.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
@@ -50,15 +55,25 @@ class SearchFragment : Fragment() {
             false
         })
 
-        val searchMovies = mutableListOf<GenreMovieItem>()
-        searchMovies.add(GenreMovieItem("Good Father", 1, 2020, R.drawable.test2, 4.2f))
-        searchMovies.add(GenreMovieItem("Hi", 2, 2020, R.drawable.test2, 4.2f))
-        searchMovies.add(GenreMovieItem("Hello", 3, 2020, R.drawable.test2, 4.2f))
-        searchMovies.add(GenreMovieItem("&&", 20, 2020, R.drawable.test2, 10f))
-        searchMovies.add(GenreMovieItem(":-)", 40, 2020, R.drawable.test2, 0f))
+        val searchMovies = mutableListOf<RMovieItem>()
+        searchMovies.add(RMovieItem(1, R.drawable.test2))
+        searchMovies.add(RMovieItem(2, R.drawable.test2))
+        searchMovies.add(RMovieItem(3, R.drawable.test2))
+        searchMovies.add(RMovieItem(4, R.drawable.test2))
+        searchMovies.add(RMovieItem(5, R.drawable.test2))
+        searchMovies.add(RMovieItem(6, R.drawable.test2))
 
-        searchResultRecycler.adapter = GenreMovieAdapter(searchMovies)
+        listener = this
+        searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
 
         return view
+    }
+
+    override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
+        bubbleTB.setSelected(0, false)
+        val x = Bundle()
+        x.putInt("movieID", movieItem.movieID)
+        findNavController().navigate(R.id.searchToDetails, x)
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 }

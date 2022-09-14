@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myBookmarksTitle"
-        tools:listitem="@layout/bookmark_movie_item_view"/>
+        tools:listitem="@layout/bookmark_movie_item_layout"/>
 
     <TextView
         android:id="@+id/myBookmarksTitle"

@@ -14,7 +14,7 @@ class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>) 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
         return BookmarkMovieViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.bookmark_movie_item_view, parent, false)
+                .inflate(R.layout.bookmark_movie_item_layout, parent, false)
         )
     }
 

@@ -11,18 +11,20 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviesnight.R
-import com.example.moviesnight.recycler.GenreMovieAdapter
-import com.example.moviesnight.recycler.GenreMovieItem
+import com.example.moviesnight.`interface`.RItemClickListener
+import com.example.moviesnight.recycler.RMovieAdapter
+import com.example.moviesnight.recycler.RMovieItem
 import com.example.moviesnight.slider.GenreAdapter
 import com.example.moviesnight.slider.GenreItem
-import com.example.moviesnight.slider.NowTrendingAdapter
-import com.example.moviesnight.slider.NowTrendingItem
+import com.example.moviesnight.slider.SMovieAdapter
+import com.example.moviesnight.slider.SMovieItem
 import kotlin.math.abs
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), RItemClickListener {
     private lateinit var viewPager: ViewPager2
     private lateinit var genreViewPager: ViewPager2
     private lateinit var genreMovieRecycler: RecyclerView
+    lateinit var listener: RItemClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +34,14 @@ class HomeFragment : Fragment() {
         viewPager = view.findViewById(R.id.nowTrendingMoviesSlider)
         genreViewPager = view.findViewById(R.id.genreSlider)
         genreMovieRecycler = view.findViewById(R.id.genreMoviesRecycler)
+        listener = this
 
         // setting list of movies to slide
-        val items = mutableListOf<NowTrendingItem>()
-        items.add(NowTrendingItem(1, R.drawable.test2))
-        items.add(NowTrendingItem(2, R.drawable.test2))
-        items.add(NowTrendingItem(3, R.drawable.test2))
-        items.add(NowTrendingItem(4, R.drawable.test2))
+        val items = mutableListOf<SMovieItem>()
+        items.add(SMovieItem(1, R.drawable.test2))
+        items.add(SMovieItem(2, R.drawable.test2))
+        items.add(SMovieItem(3, R.drawable.test2))
+        items.add(SMovieItem(4, R.drawable.test2))
 
         val genres = mutableListOf<GenreItem>()
         genres.add(GenreItem("Action", 21))
@@ -48,17 +51,18 @@ class HomeFragment : Fragment() {
         genres.add(GenreItem("Comedy", 25))
         genres.add(GenreItem("Sci-Fi", 26))
 
-        val genreMovies = mutableListOf<GenreMovieItem>()
-        genreMovies.add(GenreMovieItem("Good Father", 1, 2020, R.drawable.test2, 4.2f))
-        genreMovies.add(GenreMovieItem("Hi", 2, 2020, R.drawable.test2, 4.2f))
-        genreMovies.add(GenreMovieItem("Hello", 3, 2020, R.drawable.test2, 4.2f))
-        genreMovies.add(GenreMovieItem("&&", 20, 2020, R.drawable.test2, 10f))
-        genreMovies.add(GenreMovieItem(":-)", 40, 2020, R.drawable.test2, 0f))
+        val genreMovies = mutableListOf<RMovieItem>()
+        genreMovies.add(RMovieItem(1, R.drawable.test2))
+        genreMovies.add(RMovieItem(2, R.drawable.test2))
+        genreMovies.add(RMovieItem(3, R.drawable.test2))
+        genreMovies.add(RMovieItem(4, R.drawable.test2))
+        genreMovies.add(RMovieItem(5, R.drawable.test2))
+        genreMovies.add(RMovieItem(6, R.drawable.test2))
 
-        genreMovieRecycler.adapter = GenreMovieAdapter(genreMovies)
+        genreMovieRecycler.adapter = RMovieAdapter(genreMovies, listener)
 
 
-        viewPager.adapter = NowTrendingAdapter(items)
+        viewPager.adapter = SMovieAdapter(items)
         viewPager.clipToPadding = false
         viewPager.clipChildren = false
         viewPager.offscreenPageLimit = 3
@@ -88,8 +92,11 @@ class HomeFragment : Fragment() {
         genreViewPager.setPageTransformer(cpt)
         //image slider
 
-
         return view
+    }
+
+    override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 
 }

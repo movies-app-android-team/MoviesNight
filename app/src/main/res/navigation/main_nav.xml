@@ -11,7 +11,7 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/home_to_saved_movies"
+            android:id="@+id/homeToBookmarks"
             app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
@@ -19,7 +19,7 @@
             app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/homeToDetail"
-            app:destination="@id/bookmarksFragment"
+            app:destination="@id/detailsFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
@@ -38,7 +38,7 @@
         android:label="fragment_saved_movies"
         tools:layout="@layout/fragment_bookmark_movies">
         <action
-            android:id="@+id/saved_to_home"
+            android:id="@+id/bookmarksToHome"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/from_left"
             app:exitAnim="@anim/to_right"
@@ -46,14 +46,14 @@
             app:popExitAnim="@anim/to_left" />
 
         <action
-            android:id="@+id/saved_to_details"
-            app:destination="@id/bookmarksFragment"
+            android:id="@+id/bookmarksToDetails"
+            app:destination="@id/detailsFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
         <action
-            android:id="@+id/saved_to_search"
+            android:id="@+id/bookmarksToSearch"
             app:destination="@id/searchFragment"
             app:enterAnim="@anim/from_left"
             app:exitAnim="@anim/to_right"
@@ -66,7 +66,7 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/search_to_home"
+            android:id="@+id/searchToHome"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/from_left"
             app:exitAnim="@anim/to_right"
@@ -74,18 +74,46 @@
             app:popExitAnim="@anim/to_left" />
 
         <action
-            android:id="@+id/search_to_saved"
+            android:id="@+id/searchToBookmarks"
             app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
         <action
-            android:id="@+id/search_to_details"
-            app:destination="@id/bookmarksFragment"
+            android:id="@+id/searchToDetails"
+            app:destination="@id/detailsFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.moviesnight.fragment.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+    <action
+        android:id="@+id/detailsToHome"
+        app:destination="@id/homeFragment"
+        app:enterAnim="@anim/from_left"
+        app:exitAnim="@anim/to_right"
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
+
+    <action
+        android:id="@+id/detailsToBookmarks"
+        app:destination="@id/bookmarksFragment"
+        app:enterAnim="@anim/from_left"
+        app:exitAnim="@anim/to_right"
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
+    <action
+        android:id="@+id/detailsToSearch"
+        app:destination="@id/detailsFragment"
+        app:enterAnim="@anim/from_left"
+        app:exitAnim="@anim/to_right"
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
     </fragment>
 </navigation>
