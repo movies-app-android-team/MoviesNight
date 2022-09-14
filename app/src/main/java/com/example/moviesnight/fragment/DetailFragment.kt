@@ -14,14 +14,14 @@ import com.example.moviesnight.recycler.SimilarMovieAdapter
 import com.example.moviesnight.recycler.SimilarMovieItem
 
 class DetailFragment : Fragment() {
-    private val args: DetailFragmentArgs by navArgs()
+//    private val args: DetailFragmentArgs by navArgs()
     private lateinit var appNavigator: AppNavigator
     private lateinit var similarMoviesRecycler: RecyclerView
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        appNavigator = context as AppNavigator
-    }
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        appNavigator = context as AppNavigator
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,7 @@ class DetailFragment : Fragment() {
 
 
         // handling the passed value here
-        Log.d("myApp", "${args.movieIDtoShowInDetails}")
+//        Log.d("myApp", "${args.movieIDtoShowInDetails}")
 
 
         //passing a list of fetched movies to the similar movies recycler view here
