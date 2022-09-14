@@ -10,7 +10,10 @@ import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.BItemClickListener
 import com.makeramen.roundedimageview.RoundedImageView
 
-class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>, val bInterface: BItemClickListener) :
+class BookmarkMovieAdapter(
+    private val bookmarkMovies: List<BookmarkMovieItem>,
+    val bInterface: BItemClickListener
+) :
     RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkMovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
         return BookmarkMovieViewHolder(
@@ -32,7 +35,6 @@ class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>, 
         private val bookmarkMovieName: TextView
         private val bookmarkMovieGenre: TextView
         private val bookmarkMovieRating: TextView
-
 
         init {
             bookmarkMovieImageView = itemView.findViewById(R.id.bookmarkMovieImage)

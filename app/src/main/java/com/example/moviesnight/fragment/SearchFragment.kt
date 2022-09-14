@@ -16,7 +16,6 @@ import com.example.moviesnight.recycler.RMovieItem
 
 
 class SearchFragment : Fragment(), RItemClickListener {
-    private lateinit var searchResultRecycler: RecyclerView
     private lateinit var listener: RItemClickListener
 
     @SuppressLint("ClickableViewAccessibility")
@@ -24,12 +23,10 @@ class SearchFragment : Fragment(), RItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         listener = this
-        searchResultRecycler = view.findViewById(R.id.searchResultsRecycler)
 
-
+        //configuring search bar settings
         val searchTab = view.findViewById<EditText>(R.id.searchTab)
         searchTab.setOnTouchListener(OnTouchListener { _, event ->
             val rightDrawable = 2
@@ -52,7 +49,7 @@ class SearchFragment : Fragment(), RItemClickListener {
             false
         })
 
-
+        ////////////// Search Results recycler //////////////
         val searchMovies = mutableListOf<RMovieItem>()
         searchMovies.add(RMovieItem(1, R.drawable.test2))
         searchMovies.add(RMovieItem(2, R.drawable.test2))
@@ -60,7 +57,9 @@ class SearchFragment : Fragment(), RItemClickListener {
         searchMovies.add(RMovieItem(4, R.drawable.test2))
         searchMovies.add(RMovieItem(5, R.drawable.test2))
         searchMovies.add(RMovieItem(6, R.drawable.test2))
+        val searchResultRecycler = view.findViewById<RecyclerView>(R.id.searchResultsRecycler)
         searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
+        ////////////// Search Results recycler //////////////
 
         return view
     }

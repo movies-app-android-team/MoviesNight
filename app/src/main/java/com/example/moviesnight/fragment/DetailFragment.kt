@@ -20,6 +20,8 @@ class DetailFragment : Fragment(), RItemClickListener{
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
+
+        //adding dummy data to similar movies recycler
         similarMoviesRecycler = view.findViewById(R.id.similarMoviesRecycler)
         val similarMovies = mutableListOf<RMovieItem>()
         similarMovies.add(RMovieItem(1, R.drawable.test2))
@@ -29,6 +31,7 @@ class DetailFragment : Fragment(), RItemClickListener{
         similarMovies.add(RMovieItem(5, R.drawable.test2))
         similarMovies.add(RMovieItem(6, R.drawable.test2))
         similarMoviesRecycler.adapter = RMovieAdapter(similarMovies, this)
+
         return view
     }
 
