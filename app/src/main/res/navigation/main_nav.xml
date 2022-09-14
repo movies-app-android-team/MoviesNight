@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/home_to_saved_movies"
-            app:destination="@id/savedMoviesFragment"
+            app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/homeToDetail"
-            app:destination="@id/detailFragment"
+            app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
@@ -33,37 +33,7 @@
             app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
-        android:id="@+id/detailFragment"
-        android:name="com.example.moviesnight.fragment.DetailFragment"
-        android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail">
-        <action
-            android:id="@+id/detail_to_search"
-            app:destination="@id/searchFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left" />
-        <action
-            android:id="@+id/detail_to_home"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left" />
-        <action
-            android:id="@+id/detail_to_saved_movies"
-            app:destination="@id/savedMoviesFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left" />
-        <argument
-            android:name="movieIDtoShowInDetails"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/savedMoviesFragment"
+        android:id="@+id/bookmarksFragment"
         android:name="com.example.moviesnight.fragment.SavedMoviesFragment"
         android:label="fragment_saved_movies"
         tools:layout="@layout/fragment_bookmark_movies">
@@ -77,7 +47,7 @@
 
         <action
             android:id="@+id/saved_to_details"
-            app:destination="@id/detailFragment"
+            app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
@@ -105,14 +75,14 @@
 
         <action
             android:id="@+id/search_to_saved"
-            app:destination="@id/savedMoviesFragment"
+            app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/search_to_details"
-            app:destination="@id/detailFragment"
+            app:destination="@id/bookmarksFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"

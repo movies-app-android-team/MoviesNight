@@ -5,15 +5,15 @@
         android:checked="true"
         android:color="@color/white"
         android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/searchFragment"
         android:color="@color/white"
         android:icon="@drawable/ic_search"
-        android:title="Search" />
+        android:title="@string/search" />
     <item
-        android:id="@+id/detailFragment"
+        android:id="@+id/bookmarksFragment"
         android:color="@color/white"
         android:icon="@drawable/ic_bookmark"
-        android:title="Bookmarks" />
+        android:title="@string/bookmarks" />
 </menu>

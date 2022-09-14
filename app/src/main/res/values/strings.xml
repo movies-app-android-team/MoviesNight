@@ -10,4 +10,6 @@
     <string name="now_trending">Now Trending</string>
     <string name="search">Search</string>
     <string name="my_bookmarks">My Bookmarks</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="home">Home</string>
 </resources>
