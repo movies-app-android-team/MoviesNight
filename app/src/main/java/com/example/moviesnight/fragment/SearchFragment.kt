@@ -13,14 +13,11 @@ import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.RItemClickListener
 import com.example.moviesnight.recycler.RMovieAdapter
 import com.example.moviesnight.recycler.RMovieItem
-import io.ak1.BubbleTabBar
 
 
 class SearchFragment : Fragment(), RItemClickListener {
     private lateinit var searchResultRecycler: RecyclerView
-    private lateinit var searchTab: EditText
     private lateinit var listener: RItemClickListener
-    private lateinit var bubbleTB: BubbleTabBar
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -29,8 +26,11 @@ class SearchFragment : Fragment(), RItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+        listener = this
         searchResultRecycler = view.findViewById(R.id.searchResultsRecycler)
-        searchTab = view.findViewById(R.id.searchTab)
+
+
+        val searchTab = view.findViewById<EditText>(R.id.searchTab)
         searchTab.setOnTouchListener(OnTouchListener { _, event ->
             val rightDrawable = 2
             if (event.action == MotionEvent.ACTION_UP) {
@@ -43,9 +43,6 @@ class SearchFragment : Fragment(), RItemClickListener {
             }
             false
         })
-
-        bubbleTB = requireActivity().findViewById(R.id.bubbleTabBar)
-
         searchTab.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //handle the enter key click
@@ -55,6 +52,7 @@ class SearchFragment : Fragment(), RItemClickListener {
             false
         })
 
+
         val searchMovies = mutableListOf<RMovieItem>()
         searchMovies.add(RMovieItem(1, R.drawable.test2))
         searchMovies.add(RMovieItem(2, R.drawable.test2))
@@ -62,17 +60,15 @@ class SearchFragment : Fragment(), RItemClickListener {
         searchMovies.add(RMovieItem(4, R.drawable.test2))
         searchMovies.add(RMovieItem(5, R.drawable.test2))
         searchMovies.add(RMovieItem(6, R.drawable.test2))
-
-        listener = this
         searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
 
         return view
     }
 
     override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
-        bubbleTB.setSelected(0, false)
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
+
         findNavController().navigate(R.id.searchToDetails, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }

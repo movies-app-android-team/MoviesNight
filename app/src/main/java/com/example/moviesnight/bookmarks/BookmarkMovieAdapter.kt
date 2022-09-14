@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.`interface`.BItemClickListener
 import com.makeramen.roundedimageview.RoundedImageView
 
-class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>) :
+class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>, val bInterface: BItemClickListener) :
     RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkMovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
         return BookmarkMovieViewHolder(
@@ -39,7 +40,7 @@ class BookmarkMovieAdapter(private val bookmarkMovies: List<BookmarkMovieItem>) 
             bookmarkMovieGenre = itemView.findViewById(R.id.bookmarkMovieGenre)
             bookmarkMovieRating = itemView.findViewById(R.id.bookmarkMovieRating)
             itemView.setOnClickListener {
-                // code goes here
+                bInterface.onBMovieItemClick(it, bookmarkMovies[layoutPosition])
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
             }
         }

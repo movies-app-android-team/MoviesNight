@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.`interface`.SItemClickListener
 import com.makeramen.roundedimageview.RoundedImageView
 
-class SMovieAdapter(private val movies: List<SMovieItem>) :
+class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemClickListener) :
     RecyclerView.Adapter<SMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
@@ -32,7 +33,7 @@ class SMovieAdapter(private val movies: List<SMovieItem>) :
         init {
             movieImageView = itemView.findViewById(R.id.sliderMovieImage)
             itemView.setOnClickListener {
-                // code goes here
+                sInterface.onSMovieItemClick(it, movies[layoutPosition])
                 Log.d("myApp", "item ${movies[layoutPosition]} clicked")
             }
         }

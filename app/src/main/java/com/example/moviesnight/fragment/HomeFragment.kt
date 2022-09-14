@@ -6,12 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.RItemClickListener
+import com.example.moviesnight.`interface`.SItemClickListener
 import com.example.moviesnight.recycler.RMovieAdapter
 import com.example.moviesnight.recycler.RMovieItem
 import com.example.moviesnight.slider.GenreAdapter
@@ -20,11 +22,11 @@ import com.example.moviesnight.slider.SMovieAdapter
 import com.example.moviesnight.slider.SMovieItem
 import kotlin.math.abs
 
-class HomeFragment : Fragment(), RItemClickListener {
+class HomeFragment : Fragment(), RItemClickListener, SItemClickListener {
     private lateinit var viewPager: ViewPager2
     private lateinit var genreViewPager: ViewPager2
     private lateinit var genreMovieRecycler: RecyclerView
-    lateinit var listener: RItemClickListener
+    private lateinit var listener: RItemClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +64,7 @@ class HomeFragment : Fragment(), RItemClickListener {
         genreMovieRecycler.adapter = RMovieAdapter(genreMovies, listener)
 
 
-        viewPager.adapter = SMovieAdapter(items)
+        viewPager.adapter = SMovieAdapter(items, this)
         viewPager.clipToPadding = false
         viewPager.clipChildren = false
         viewPager.offscreenPageLimit = 3
@@ -76,7 +78,6 @@ class HomeFragment : Fragment(), RItemClickListener {
         }
         viewPager.setPageTransformer(cpt)
         //image slider
-
 
         genreViewPager.adapter = GenreAdapter(genres)
         genreViewPager.clipToPadding = false
@@ -96,7 +97,17 @@ class HomeFragment : Fragment(), RItemClickListener {
     }
 
     override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
+        val x = Bundle()
+        x.putInt("movieID", movieItem.movieID)
+        findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 
+    override fun onSMovieItemClick(view: View, movieItem: SMovieItem) {
+        val x = Bundle()
+        x.putInt("movieID", movieItem.movieID)
+
+        findNavController().navigate(R.id.homeToDetail, x)
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
+    }
 }

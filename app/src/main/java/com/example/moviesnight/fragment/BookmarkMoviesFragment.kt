@@ -1,16 +1,19 @@
 package com.example.moviesnight.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.`interface`.BItemClickListener
 import com.example.moviesnight.bookmarks.BookmarkMovieAdapter
 import com.example.moviesnight.bookmarks.BookmarkMovieItem
 
-class SavedMoviesFragment : Fragment() {
+class BookmarkMoviesFragment : Fragment(), BItemClickListener {
     private lateinit var bookmarkRecycler:RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +36,16 @@ class SavedMoviesFragment : Fragment() {
         bookmarkMovies.add(BookmarkMovieItem(5, R.drawable.test2, "Movie 5", "Genre 5", 2.2f))
         bookmarkMovies.add(BookmarkMovieItem(6, R.drawable.test2, "Movie 6", "Genre 6", 2.2f))
         bookmarkMovies.add(BookmarkMovieItem(7, R.drawable.test2, "Movie 7", "Genre 7", 2.2f))
-        bookmarkRecycler.adapter=BookmarkMovieAdapter(bookmarkMovies)
+        bookmarkRecycler.adapter=BookmarkMovieAdapter(bookmarkMovies, this)
 
         return view
+    }
+
+    override fun onBMovieItemClick(view: View, movieItem: BookmarkMovieItem) {
+        val x = Bundle()
+        x.putInt("movieID", movieItem.movieId)
+
+        findNavController().navigate(R.id.bookmarksToDetails, x)
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieId}")
     }
 }

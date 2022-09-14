@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/bookmarksFragment"
-        android:name="com.example.moviesnight.fragment.SavedMoviesFragment"
+        android:name="com.example.moviesnight.fragment.BookmarkMoviesFragment"
         android:label="fragment_saved_movies"
         tools:layout="@layout/fragment_bookmark_movies">
         <action
@@ -93,27 +93,34 @@
         android:name="com.example.moviesnight.fragment.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
-    <action
-        android:id="@+id/detailsToHome"
-        app:destination="@id/homeFragment"
-        app:enterAnim="@anim/from_left"
-        app:exitAnim="@anim/to_right"
-        app:popEnterAnim="@anim/from_right"
-        app:popExitAnim="@anim/to_left" />
 
-    <action
-        android:id="@+id/detailsToBookmarks"
-        app:destination="@id/bookmarksFragment"
-        app:enterAnim="@anim/from_left"
-        app:exitAnim="@anim/to_right"
-        app:popEnterAnim="@anim/from_right"
-        app:popExitAnim="@anim/to_left" />
-    <action
-        android:id="@+id/detailsToSearch"
-        app:destination="@id/detailsFragment"
-        app:enterAnim="@anim/from_left"
-        app:exitAnim="@anim/to_right"
-        app:popEnterAnim="@anim/from_right"
-        app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/detailsToHome"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/detailsToBookmarks"
+            app:destination="@id/bookmarksFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/detailsToSearch"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/detailsToDetails"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
 </navigation>

@@ -33,7 +33,7 @@ class RMovieAdapter(private val movies: List<RMovieItem>, val rInterface: RItemC
         init {
             movieImageView = itemView.findViewById(R.id.recyclerMovieImage)
             itemView.setOnClickListener {
-                rInterface.onRMovieItemClick(it,movies[layoutPosition])
+                rInterface.onRMovieItemClick(it, movies[layoutPosition])
                 Log.d("myApp", "item ${movies[layoutPosition]} clicked")
             }
         }
@@ -41,8 +41,5 @@ class RMovieAdapter(private val movies: List<RMovieItem>, val rInterface: RItemC
         fun bindItem(anItem: RMovieItem) {
             movieImageView.setImageResource(anItem.imageID)
         }
-    }
-    private fun navigateToDetails(movieID: Int) {
-
     }
 }
