@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myBookmarksTitle"
-        tools:listitem="@layout/bookmark_movie_item_layout"/>
+        tools:listitem="@layout/bookmark_movie_item_layout" />
 
     <TextView
         android:id="@+id/myBookmarksTitle"
@@ -28,14 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
+        android:background="@android:color/transparent"
         android:fontFamily="@font/red_hat_display"
         android:text="@string/my_bookmarks"
         android:textColor="@color/white"
         android:textSize="27sp"
-        android:background="@android:color/transparent"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bookmarkRecycler"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

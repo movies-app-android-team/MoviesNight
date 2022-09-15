@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/detailsFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_dark"
@@ -211,6 +211,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="26dp" />
+
+        <ProgressBar
+            android:id="@+id/movieDetailsProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/movieDetailRImageView"
+            app:layout_constraintEnd_toEndOf="@+id/movieDetailRImageView"
+            app:layout_constraintStart_toStartOf="@+id/movieDetailRImageView"
+            app:layout_constraintTop_toTopOf="@+id/movieDetailRImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

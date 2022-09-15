@@ -5,5 +5,6 @@ class BookmarkMovieItem(
     val movieImage: Int,
     val movieName: String,
     val movieGenre: String,
-    val movieRating: Float
+    val movieRating: Float,
+    var isBookmarked: Boolean = false
 )

@@ -37,7 +37,6 @@ class BookmarkMovieAdapter(
         private val bookmarkMovieName: TextView
         private val bookmarkMovieGenre: TextView
         private val bookmarkMovieRating: TextView
-        private var bookmarkCheck = false
         init {
             bookmarkMovieImageView = itemView.findViewById(R.id.bookmarkMovieImage)
             bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
@@ -49,14 +48,14 @@ class BookmarkMovieAdapter(
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                if(bookmarkCheck) {
-                    bookmarkCheck = false
+                if(bookmarkMovies[layoutPosition].isBookmarked) {
+                    bookmarkMovies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     Log.d("myApp", "unBookmarked")
                     //handle un bookmarking here
                     return@setOnClickListener
                 }
-                bookmarkCheck = true
+                bookmarkMovies[layoutPosition].isBookmarked = true
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 //handle bookmarking here
                 Log.d("myApp", "bookmarked")
@@ -68,6 +67,11 @@ class BookmarkMovieAdapter(
             bookmarkMovieName.text = anItem.movieName
             bookmarkMovieGenre.text = anItem.movieGenre
             bookmarkMovieRating.text = "${anItem.movieRating}"
+            if(anItem.isBookmarked) {
+                bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                return
+            }
+            bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
         }
     }
 }
