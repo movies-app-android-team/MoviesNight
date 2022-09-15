@@ -21,7 +21,6 @@ class BookmarkMoviesFragment : Fragment(), BItemClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_bookmark_movies, container, false)
 
-
         //adding dummy icons to a recycler view
         bookmarkRecycler = view.findViewById(R.id.bookmarkRecycler)
         val bookmarkMovies = mutableListOf<BookmarkMovieItem>()
@@ -45,8 +44,7 @@ class BookmarkMoviesFragment : Fragment(), BItemClickListener {
     override fun onBMovieItemClick(view: View, movieItem: BookmarkMovieItem) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieId)
-
         findNavController().navigate(R.id.bookmarksToDetails, x)
-        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieId}")
+        Log.d("myApp", "movie with ID: ${movieItem.movieId} clicked")
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
@@ -32,18 +33,33 @@ class BookmarkMovieAdapter(
 
     inner class BookmarkMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bookmarkMovieImageView: RoundedImageView
+        private val bookmarkStatus: ImageView
         private val bookmarkMovieName: TextView
         private val bookmarkMovieGenre: TextView
         private val bookmarkMovieRating: TextView
-
+        private var bookmarkCheck = false
         init {
             bookmarkMovieImageView = itemView.findViewById(R.id.bookmarkMovieImage)
             bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
             bookmarkMovieGenre = itemView.findViewById(R.id.bookmarkMovieGenre)
             bookmarkMovieRating = itemView.findViewById(R.id.bookmarkMovieRating)
+            bookmarkStatus = itemView.findViewById(R.id.bookmarkStatusImageView)
             itemView.setOnClickListener {
                 bInterface.onBMovieItemClick(it, bookmarkMovies[layoutPosition])
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
+            }
+            bookmarkStatus.setOnClickListener {
+                if(bookmarkCheck) {
+                    bookmarkCheck = false
+                    bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
+                    Log.d("myApp", "unBookmarked")
+                    //handle un bookmarking here
+                    return@setOnClickListener
+                }
+                bookmarkCheck = true
+                bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                //handle bookmarking here
+                Log.d("myApp", "bookmarked")
             }
         }
 

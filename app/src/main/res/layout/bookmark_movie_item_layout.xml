@@ -61,7 +61,7 @@
             android:id="@+id/bookmarkMovieRatingIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="70dp"
+            android:layout_marginStart="40dp"
             android:src="@drawable/ic_rating"
             app:layout_constraintBottom_toBottomOf="@id/bookmarkMovieGenre"
             app:layout_constraintEnd_toStartOf="@id/bookmarkMovieRating"
@@ -71,7 +71,7 @@
 
         <TextView
             android:id="@+id/bookmarkMovieRating"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:fontFamily="@font/red_hat_display"
@@ -79,10 +79,24 @@
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/bookmarkMovieRatingIcon"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bookmarkMovieRatingIcon"
             app:layout_constraintTop_toTopOf="@id/bookmarkMovieRatingIcon"
             tools:text="6,6" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="@id/bookmarkMovieRating"
+            app:layout_constraintBottom_toBottomOf="@id/bookmarkMovieRating"
+            app:layout_constraintStart_toEndOf="@id/bookmarkMovieRating"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_height="80dp">
+            <ImageView
+                android:id="@+id/bookmarkStatusImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_un_bookmarked"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

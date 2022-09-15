@@ -33,7 +33,7 @@ class GenreAdapter(private val genres: List<GenreItem>) :
             genreItemView = itemView.findViewById(R.id.slidedGenre)
             itemView.setOnClickListener {
                 // code goes here
-                Log.d("myApp", "item ${genres[layoutPosition]} clicked")
+                Log.d("myApp", "item ${genres[layoutPosition].genreName} clicked")
             }
         }
 

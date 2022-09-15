@@ -34,7 +34,7 @@ class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemC
             movieImageView = itemView.findViewById(R.id.sliderMovieImage)
             itemView.setOnClickListener {
                 sInterface.onSMovieItemClick(it, movies[layoutPosition])
-                Log.d("myApp", "item ${movies[layoutPosition]} clicked")
+                Log.d("myApp", "now trending item ${movies[layoutPosition]} clicked")
             }
         }
 
