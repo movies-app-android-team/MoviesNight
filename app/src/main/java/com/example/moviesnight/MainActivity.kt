@@ -2,15 +2,12 @@ package com.example.moviesnight
 
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import io.ak1.BubbleTabBar
-import kotlin.system.exitProcess
 
-private var counterBackButton = true
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bubbleTB: BubbleTabBar
@@ -25,21 +22,20 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             bubbleTB.setSelectedWithId(destination.id, false)
         }
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (counterBackButton) {
-                        exitProcess(1)
-                    }
-                    counterBackButton = true
-                    val x = findNavController(R.id.nav_host_frag)
-                    supportFragmentManager.findFragmentById(R.id.homeFragment)
-                        ?.let { onNavDestinationSelected(it.id, x) }
-                    bubbleTB.setSelected(0, true)
-                }
-            }
-        this.onBackPressedDispatcher.addCallback(this, callback)
     }
+}
+
+private fun moveBackward(x: NavOptions.Builder) {
+    x.setEnterAnim(R.anim.from_left)
+        .setExitAnim(R.anim.to_right)
+        .setPopEnterAnim(R.anim.from_right)
+        .setPopExitAnim(R.anim.to_left)
+}
+private fun moveForward(x: NavOptions.Builder) {
+    x.setEnterAnim(R.anim.from_right)
+        .setExitAnim(R.anim.to_left)
+        .setPopEnterAnim(R.anim.from_left)
+        .setPopExitAnim(R.anim.to_right)
 }
 
 private fun onNavDestinationSelected(
@@ -51,101 +47,20 @@ private fun onNavDestinationSelected(
     val toHome = R.id.homeFragment == toId
     val toSearch = R.id.searchFragment == toId
     val toBookmarks = R.id.bookmarksFragment == toId
-    val toDetails = R.id.detailsFragment == toId
     val fromHome = R.id.homeFragment == navController.currentDestination?.id
     val fromSearch = R.id.searchFragment == navController.currentDestination?.id
     val fromBookmarks = R.id.bookmarksFragment == navController.currentDestination?.id
-    val fromDetails = R.id.detailsFragment == navController.currentDestination?.id
     when {
-        fromHome && toSearch -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_right)
-                .setExitAnim(R.anim.to_left)
-                .setPopEnterAnim(R.anim.from_left)
-                .setPopExitAnim(R.anim.to_right)
-        }
-        fromHome && toBookmarks -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_right)
-                .setExitAnim(R.anim.to_left)
-                .setPopEnterAnim(R.anim.from_left)
-                .setPopExitAnim(R.anim.to_right)
-        }
-        fromHome && toDetails -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_right)
-                .setExitAnim(R.anim.to_left)
-                .setPopEnterAnim(R.anim.from_left)
-                .setPopExitAnim(R.anim.to_right)
-        }
-        fromSearch && toHome -> {
-            counterBackButton = true
-            builder.setEnterAnim(R.anim.from_left)
-                .setExitAnim(R.anim.to_right)
-                .setPopEnterAnim(R.anim.from_right)
-                .setPopExitAnim(R.anim.to_left)
-        }
-        fromSearch && toBookmarks -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_right)
-                .setExitAnim(R.anim.to_left)
-                .setPopEnterAnim(R.anim.from_left)
-                .setPopExitAnim(R.anim.to_right)
-        }
-        fromSearch && toDetails -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_right)
-                .setExitAnim(R.anim.to_left)
-                .setPopEnterAnim(R.anim.from_left)
-                .setPopExitAnim(R.anim.to_right)
-        }
-        fromBookmarks && toHome -> {
-            counterBackButton = true
-            builder.setEnterAnim(R.anim.from_left)
-                .setExitAnim(R.anim.to_right)
-                .setPopEnterAnim(R.anim.from_right)
-                .setPopExitAnim(R.anim.to_left)
-        }
-        fromBookmarks && toSearch -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_left)
-                .setExitAnim(R.anim.to_right)
-                .setPopEnterAnim(R.anim.from_right)
-                .setPopExitAnim(R.anim.to_left)
-        }
-        fromBookmarks && toDetails -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_right)
-                .setExitAnim(R.anim.to_left)
-                .setPopEnterAnim(R.anim.from_left)
-                .setPopExitAnim(R.anim.to_right)
-        }
-        fromDetails && toHome -> {
-            counterBackButton = true
-            builder.setEnterAnim(R.anim.from_left)
-                .setExitAnim(R.anim.to_right)
-                .setPopEnterAnim(R.anim.from_right)
-                .setPopExitAnim(R.anim.to_left)
-        }
-        fromDetails && toSearch -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_left)
-                .setExitAnim(R.anim.to_right)
-                .setPopEnterAnim(R.anim.from_right)
-                .setPopExitAnim(R.anim.to_left)
-        }
-        fromDetails && toBookmarks -> {
-            counterBackButton = false
-            builder.setEnterAnim(R.anim.from_left)
-                .setExitAnim(R.anim.to_right)
-                .setPopEnterAnim(R.anim.from_right)
-                .setPopExitAnim(R.anim.to_left)
-        }
+        (fromHome && toSearch)
+                || (fromHome && toBookmarks)
+                || (fromSearch && toBookmarks) -> moveForward(builder)
+        (fromSearch && toHome)
+                || (fromBookmarks && toHome)
+                || (fromBookmarks && toSearch)-> moveBackward(builder)
     }
     builder.setPopUpTo(toId, true)
     val options: NavOptions = builder.build()
     return try {
-        //TODO provide proper API instead of using Exceptions as Control-Flow.
         navController.navigate(toId, null, options)
         true
     } catch (e: IllegalArgumentException) {
