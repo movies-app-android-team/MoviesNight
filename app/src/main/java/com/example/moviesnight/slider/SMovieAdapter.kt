@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.SItemClickListener
@@ -28,18 +29,38 @@ class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemC
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val movieImageView: RoundedImageView
+        private val bookmarkStatus: ImageView
         //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
 
         init {
             movieImageView = itemView.findViewById(R.id.sliderMovieImage)
+            bookmarkStatus = itemView.findViewById(R.id.nowTrendingMoviesBookmarkStatus)
             itemView.setOnClickListener {
                 sInterface.onSMovieItemClick(it, movies[layoutPosition])
                 Log.d("myApp", "now trending item ${movies[layoutPosition]} clicked")
+            }
+            bookmarkStatus.setOnClickListener {
+                if(movies[layoutPosition].isBookmarked) {
+                    movies[layoutPosition].isBookmarked = false
+                    bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
+                    Log.d("myApp", "unBookmarked")
+                    //handle un bookmarking here
+                    return@setOnClickListener
+                }
+                movies[layoutPosition].isBookmarked = true
+                bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                //handle bookmarking here
+                Log.d("myApp", "bookmarked")
             }
         }
 
         fun bindItem(anItem: SMovieItem) {
             movieImageView.setImageResource(anItem.imageID)
+            if(anItem.isBookmarked) {
+                bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                return
+            }
+            bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
         }
     }
 }

@@ -103,6 +103,7 @@ class HomeFragment : Fragment(), RItemClickListener, SItemClickListener {
     override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
+        x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
@@ -110,7 +111,7 @@ class HomeFragment : Fragment(), RItemClickListener, SItemClickListener {
     override fun onSMovieItemClick(view: View, movieItem: SMovieItem) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-
+        x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }

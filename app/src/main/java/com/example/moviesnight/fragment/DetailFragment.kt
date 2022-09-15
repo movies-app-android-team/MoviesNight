@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
@@ -23,6 +23,20 @@ class DetailFragment : Fragment(), RItemClickListener {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         //adding dummy data to similar movies recycler
         val similarMoviesRecycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
+        val bookmarkStatus = view.findViewById<ImageView>(R.id.movieDetailsBookmarkStatus)
+
+        var isBookmarked = requireArguments().getBoolean("isBookmarked")
+        setBookmarkIcon(isBookmarked, bookmarkStatus)
+        bookmarkStatus.setOnClickListener {
+            if(isBookmarked) {
+                isBookmarked = false
+                bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
+                //handle un bookmarking here
+                return@setOnClickListener
+            }
+            isBookmarked = true
+            bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+        }
         val similarMovies = mutableListOf<RMovieItem>()
         similarMovies.add(RMovieItem(1, R.drawable.test2))
         similarMovies.add(RMovieItem(2, R.drawable.test2))
@@ -36,16 +50,21 @@ class DetailFragment : Fragment(), RItemClickListener {
         backBTN.setOnClickListener {
             requireActivity().onBackPressed()
         }
-
         return view
     }
 
     override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
-
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-
+        x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.detailsToDetails, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
+    }
+
+    private fun setBookmarkIcon(x: Boolean, y:ImageView) {
+        if(x)
+            y.setImageResource(R.drawable.ic_bookmarked)
+        else
+            y.setImageResource(R.drawable.ic_un_bookmarked)
     }
 }

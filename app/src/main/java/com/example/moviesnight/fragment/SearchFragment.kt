@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviesnight.PassedMovie
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.RItemClickListener
 import com.example.moviesnight.recycler.RMovieAdapter
@@ -67,7 +68,7 @@ class SearchFragment : Fragment(), RItemClickListener {
     override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-
+        x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.searchToDetails, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }

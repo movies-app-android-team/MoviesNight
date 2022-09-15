@@ -19,6 +19,23 @@
         app:riv_corner_radius="12dp"
         tools:src="@drawable/test2" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_corner"
+        app:layout_constraintBottom_toBottomOf="@id/recyclerMovieImage"
+        app:layout_constraintEnd_toEndOf="@id/recyclerMovieImage">
+
+        <ImageView
+            android:id="@+id/recyclerMoviesBookmarkStatus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ProgressBar
         android:id="@+id/rMovieItemProgress"
         android:layout_width="wrap_content"

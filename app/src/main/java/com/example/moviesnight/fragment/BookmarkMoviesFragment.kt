@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviesnight.PassedMovie
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.BItemClickListener
 import com.example.moviesnight.bookmarks.BookmarkMovieAdapter
@@ -44,6 +45,7 @@ class BookmarkMoviesFragment : Fragment(), BItemClickListener {
     override fun onBMovieItemClick(view: View, movieItem: BookmarkMovieItem) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieId)
+        x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.bookmarksToDetails, x)
         Log.d("myApp", "movie with ID: ${movieItem.movieId} clicked")
     }

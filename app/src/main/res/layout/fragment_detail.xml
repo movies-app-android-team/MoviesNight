@@ -222,6 +222,23 @@
             app:layout_constraintStart_toStartOf="@+id/movieDetailRImageView"
             app:layout_constraintTop_toTopOf="@+id/movieDetailRImageView" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:background="@drawable/movie_details_bookmark_corners"
+            app:layout_constraintBottom_toBottomOf="@id/movieDetailRImageView"
+            app:layout_constraintEnd_toEndOf="@id/movieDetailRImageView">
+
+            <ImageView
+                android:id="@+id/movieDetailsBookmarkStatus"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
