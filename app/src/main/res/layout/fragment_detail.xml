@@ -8,6 +8,16 @@
     android:background="@color/primary_dark"
     tools:context=".fragment.DetailFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_back_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/movieDetails"
@@ -18,16 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_back_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ratingFrame"
             android:layout_width="0dp"
@@ -35,9 +35,9 @@
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
             app:layout_constraintBottom_toTopOf="@id/durationFrame"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintHeight_percent="0.23"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/movieDetailRImageView"
             app:layout_constraintWidth_percent="0.7">
 
@@ -45,11 +45,12 @@
                 android:id="@+id/ratingIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
                 android:src="@drawable/ic_rating"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/ratingValue"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -86,14 +87,14 @@
             android:id="@+id/durationFrame"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
             app:layout_constraintBottom_toTopOf="@id/yearFrame"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintHeight_percent="0.23"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ratingFrame"
             app:layout_constraintWidth_percent="0.7">
 
@@ -101,13 +102,11 @@
                 android:id="@+id/durationIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
                 android:src="@drawable/ic_duration"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/durationValue"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
@@ -120,9 +119,9 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/durationTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/durationIcon"
-                app:layout_constraintTop_toTopOf="@id/durationIcon"
+                app:layout_constraintEnd_toEndOf="@id/durationIcon"
+                app:layout_constraintStart_toStartOf="@id/durationIcon"
+                app:layout_constraintTop_toBottomOf="@id/durationIcon"
                 tools:text="2h 30m" />
 
             <TextView
@@ -141,16 +140,17 @@
                 app:layout_constraintTop_toBottomOf="@id/durationValue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/yearFrame"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="40dp"
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailRImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHeight_percent="0.23"
             app:layout_constraintTop_toBottomOf="@id/durationFrame"
             app:layout_constraintWidth_percent="0.7">
 
@@ -158,14 +158,11 @@
                 android:id="@+id/yearIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
                 android:src="@drawable/ic_year"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/yearValue"
                 app:layout_constraintEnd_toEndOf="parent"
-
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
@@ -178,9 +175,9 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/yearTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/yearIcon"
-                app:layout_constraintTop_toTopOf="@id/yearIcon"
+                app:layout_constraintEnd_toEndOf="@id/yearIcon"
+                app:layout_constraintStart_toStartOf="@id/yearIcon"
+                app:layout_constraintTop_toBottomOf="@id/yearIcon"
                 tools:text="2022" />
 
             <TextView
