@@ -1,4 +1,4 @@
-package com.example.moviesnight.recycler
+package com.example.moviesnight.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
-import com.example.moviesnight.`interface`.RItemClickListener
+import com.squareup.picasso.Picasso
 
-class RMovieAdapter(private val movies: List<RMovieItem>, val rInterface: RItemClickListener) :
-    RecyclerView.Adapter<RMovieAdapter.MovieItemViewHolder>() {
+class SMovieAdapter(private val movies: List<Movie>, val sInterface: MovieClickListener) :
+    RecyclerView.Adapter<SMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_movie_item_layout, parent, false)
+                .inflate(R.layout.slider_movie_item_layout, parent, false)
         )
     }
 
@@ -30,14 +32,15 @@ class RMovieAdapter(private val movies: List<RMovieItem>, val rInterface: RItemC
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val movieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
+        private val imageBase="https://image.tmdb.org/t/p/w500/"
         //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
 
         init {
-            movieImageView = itemView.findViewById(R.id.recyclerMovieImage)
-            bookmarkStatus = itemView.findViewById(R.id.recyclerMoviesBookmarkStatus)
+            movieImageView = itemView.findViewById(R.id.sliderMovieImage)
+            bookmarkStatus = itemView.findViewById(R.id.nowTrendingMoviesBookmarkStatus)
             itemView.setOnClickListener {
-                rInterface.onRMovieItemClick(it, movies[layoutPosition])
-                Log.d("myApp", "item ${movies[layoutPosition]} clicked")
+                sInterface.onMovieItemClick(it, movies[layoutPosition])
+                Log.d("myApp", "now trending item ${movies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
                 if(movies[layoutPosition].isBookmarked) {
@@ -54,8 +57,8 @@ class RMovieAdapter(private val movies: List<RMovieItem>, val rInterface: RItemC
             }
         }
 
-        fun bindItem(anItem: RMovieItem) {
-            movieImageView.setImageResource(anItem.imageID)
+        fun bindItem(anItem: Movie) {
+            Picasso.get().load(imageBase+anItem.posterPath).into(movieImageView)
             if(anItem.isBookmarked) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return

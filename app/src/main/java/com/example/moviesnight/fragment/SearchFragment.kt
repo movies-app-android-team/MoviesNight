@@ -8,16 +8,13 @@ import android.view.View.OnTouchListener
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.moviesnight.PassedMovie
 import com.example.moviesnight.R
-import com.example.moviesnight.`interface`.RItemClickListener
-import com.example.moviesnight.recycler.RMovieAdapter
-import com.example.moviesnight.recycler.RMovieItem
+import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.model.Movie
 
 
-class SearchFragment : Fragment(), RItemClickListener {
-    private lateinit var listener: RItemClickListener
+class SearchFragment : Fragment(), MovieClickListener {
+    private lateinit var listener: MovieClickListener
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -51,21 +48,21 @@ class SearchFragment : Fragment(), RItemClickListener {
         })
 
         ////////////// Search Results recycler //////////////
-        val searchMovies = mutableListOf<RMovieItem>()
-        searchMovies.add(RMovieItem(1, R.drawable.test2))
-        searchMovies.add(RMovieItem(2, R.drawable.test2))
-        searchMovies.add(RMovieItem(3, R.drawable.test2))
-        searchMovies.add(RMovieItem(4, R.drawable.test2))
-        searchMovies.add(RMovieItem(5, R.drawable.test2))
-        searchMovies.add(RMovieItem(6, R.drawable.test2))
-        val searchResultRecycler = view.findViewById<RecyclerView>(R.id.searchResultsRecycler)
-        searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
+//        val searchMovies = mutableListOf<RMovieItem>()
+//        searchMovies.add(RMovieItem(1, R.drawable.test2))
+//        searchMovies.add(RMovieItem(2, R.drawable.test2))
+//        searchMovies.add(RMovieItem(3, R.drawable.test2))
+//        searchMovies.add(RMovieItem(4, R.drawable.test2))
+//        searchMovies.add(RMovieItem(5, R.drawable.test2))
+//        searchMovies.add(RMovieItem(6, R.drawable.test2))
+//        val searchResultRecycler = view.findViewById<RecyclerView>(R.id.searchResultsRecycler)
+//        searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
         ////////////// Search Results recycler //////////////
 
         return view
     }
 
-    override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
+    override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
         x.putBoolean("isBookmarked", movieItem.isBookmarked)

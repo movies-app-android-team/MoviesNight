@@ -1,4 +1,4 @@
-package com.example.moviesnight.slider
+package com.example.moviesnight.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.model.Genre
 
-class GenreAdapter(private val genres: List<GenreItem>) :
+class GenreAdapter(private val genres: List<Genre>) :
     RecyclerView.Adapter<GenreAdapter.GenreItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreItemViewHolder {
         return GenreItemViewHolder(
@@ -37,7 +38,7 @@ class GenreAdapter(private val genres: List<GenreItem>) :
             }
         }
 
-        fun bindItem(anItem: GenreItem) {
+        fun bindItem(anItem: Genre) {
             genreItemView.text = anItem.genreName
         }
     }

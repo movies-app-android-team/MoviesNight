@@ -1,4 +1,4 @@
-package com.example.moviesnight.bookmarks
+package com.example.moviesnight.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.`interface`.BItemClickListener
+import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
 
 class BookmarkMovieAdapter(
-    private val bookmarkMovies: List<BookmarkMovieItem>,
-    val bInterface: BItemClickListener
+    private val bookmarkMovies: List<Movie>,
+    val bInterface: MovieClickListener
 ) :
     RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkMovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
@@ -37,6 +39,7 @@ class BookmarkMovieAdapter(
         private val bookmarkMovieName: TextView
         private val bookmarkMovieGenre: TextView
         private val bookmarkMovieRating: TextView
+        private val imageBase="https://image.tmdb.org/t/p/w500/"
         init {
             bookmarkMovieImageView = itemView.findViewById(R.id.bookmarkMovieImage)
             bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
@@ -44,7 +47,7 @@ class BookmarkMovieAdapter(
             bookmarkMovieRating = itemView.findViewById(R.id.bookmarkMovieRating)
             bookmarkStatus = itemView.findViewById(R.id.bookmarkStatusImageView)
             itemView.setOnClickListener {
-                bInterface.onBMovieItemClick(it, bookmarkMovies[layoutPosition])
+                bInterface.onMovieItemClick(it, bookmarkMovies[layoutPosition])
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
@@ -62,11 +65,11 @@ class BookmarkMovieAdapter(
             }
         }
 
-        fun bindItem(anItem: BookmarkMovieItem) {
-            bookmarkMovieImageView.setImageResource(anItem.movieImage)
-            bookmarkMovieName.text = anItem.movieName
-            bookmarkMovieGenre.text = anItem.movieGenre
-            bookmarkMovieRating.text = "${anItem.movieRating}"
+        fun bindItem(anItem: Movie) {
+            Picasso.get().load(imageBase+anItem.posterPath).into(bookmarkMovieImageView)
+            bookmarkMovieName.text = anItem.movieTitle
+            bookmarkMovieGenre.text = anItem.genres.toString()
+            bookmarkMovieRating.text = "${anItem.voteAverage}"
             if(anItem.isBookmarked) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
