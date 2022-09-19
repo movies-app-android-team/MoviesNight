@@ -46,7 +46,8 @@ class HomeFragment : Fragment(), MovieClickListener {
         ////////////// Now Trending Movies //////////////
         //Fetching data from internet
         val nowTrendingMoviesRecycler = view.findViewById<ViewPager2>(R.id.nowTrendingMoviesSlider)
-        val nowTrendingMoviesProgress = view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
+        val nowTrendingMoviesProgress =
+            view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
         val nowTrendingSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
                 nowTrendingMoviesProgress.visibility = View.GONE
@@ -55,7 +56,7 @@ class HomeFragment : Fragment(), MovieClickListener {
         }
         val nowTrendingFailure = ErrorCallback {
             nowTrendingMoviesProgress.visibility = View.GONE
-            val errorTextView = view.findViewById<TextView>(R.id.errorMessage)
+            val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
             errorTextView.visibility = View.VISIBLE
         }
         //Configuring viewpager settings
@@ -74,7 +75,7 @@ class HomeFragment : Fragment(), MovieClickListener {
         val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)
         val genreProgressBar = view.findViewById<ProgressBar>(R.id.genreProgress)
         var genreAdapter: GenreAdapter
-        var genreName: String
+        var genreId: Int
         val onClickListener = this
         val genreSuccess = GenreCallback { genres ->
             if (!genres.isNullOrEmpty()) {
@@ -85,13 +86,13 @@ class HomeFragment : Fragment(), MovieClickListener {
                 .OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        genreName = genreAdapter.getCurrentItemName(genreRecycler.currentItem)
+                        genreId = genreAdapter.getCurrentItemID(genreRecycler.currentItem)
                         val genreMovieSuccess = MovieCallback { movies ->
                             if (!movies.isNullOrEmpty()) {
                                 genreMovieRecycler.adapter = RMovieAdapter(movies, onClickListener)
                             }
                         }
-                        Networking.getGenreMovieData(genreMovieSuccess, {}, genreName)
+                        Networking.getGenreMovieData(genreMovieSuccess, {}, genreId)
                     }
                 })
             }

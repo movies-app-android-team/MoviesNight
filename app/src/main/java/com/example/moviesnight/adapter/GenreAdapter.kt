@@ -42,8 +42,9 @@ class GenreAdapter(private val genres: List<Genre>) :
             genreItemView.text = anItem.genreName
         }
     }
-    fun getCurrentItemName(position:Int):String{
-        return genres[position].genreName
+
+    fun getCurrentItemID(position: Int): Int {
+        return genres[position].genreID
     }
 
 }

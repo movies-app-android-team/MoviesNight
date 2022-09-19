@@ -67,7 +67,7 @@
                         app:layout_constraintTop_toBottomOf="@id/main_text_view" />
 
                     <TextView
-                        android:id="@+id/errorMessage"
+                        android:id="@+id/sliderMovieError"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:fontFamily="@font/red_hat_display"

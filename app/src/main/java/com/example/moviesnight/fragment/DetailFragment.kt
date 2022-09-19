@@ -6,15 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.`interface`.DetailedMovieCallback
+import com.example.moviesnight.`interface`.ErrorCallback
 import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Movie
+import com.example.moviesnight.network.Networking
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
 
 class DetailFragment : Fragment(), MovieClickListener {
+    private val imageBase="https://image.tmdb.org/t/p/w500/"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,8 +32,26 @@ class DetailFragment : Fragment(), MovieClickListener {
         //adding dummy data to similar movies recycler
         val similarMoviesRecycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
         val bookmarkStatus = view.findViewById<ImageView>(R.id.movieDetailsBookmarkStatus)
+        val movieImage = view.findViewById<RoundedImageView>(R.id.movieDetailRImageView)
+        val movieRating = view.findViewById<TextView>(R.id.ratingValue)
+        val movieDuration = view.findViewById<TextView>(R.id.durationValue)
+        val movieYear = view.findViewById<TextView>(R.id.yearValue)
+        val movieOverview = view.findViewById<TextView>(R.id.overviewValue)
+        val loadingProgressBar = view.findViewById<ProgressBar>(R.id.movieDetailsProgressBar)
 
         var isBookmarked = requireArguments().getBoolean("isBookmarked")
+        val movieID = requireArguments().getInt("movieID")
+
+        val movieSuccess = DetailedMovieCallback { movie ->
+            loadingProgressBar.visibility = View.GONE
+            Picasso.get().load(imageBase+movie.posterPath).into(movieImage)
+            movieRating.text = movie.voteAverage.toString()
+            movieDuration.text = movie.runTime.toString()
+            movieYear.text = movie.year
+            movieOverview.text = movie.overview.toString()
+        }
+        //Configuring viewpager settings
+        Networking.getMovieDetails(movieSuccess, {}, movieID)
         setBookmarkIcon(isBookmarked, bookmarkStatus)
         bookmarkStatus.setOnClickListener {
             if(isBookmarked) {
