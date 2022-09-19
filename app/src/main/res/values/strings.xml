@@ -12,4 +12,5 @@
     <string name="my_bookmarks">My Bookmarks</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="home">Home</string>
+    <string name="movies_error">No movies to show</string>
 </resources>

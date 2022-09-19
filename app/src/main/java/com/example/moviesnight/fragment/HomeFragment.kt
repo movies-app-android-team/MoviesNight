@@ -6,7 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -14,8 +15,11 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.ErrorCallback
+import com.example.moviesnight.`interface`.GenreCallback
 import com.example.moviesnight.`interface`.MovieCallback
 import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.adapter.GenreAdapter
+import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
@@ -39,16 +43,23 @@ class HomeFragment : Fragment(), MovieClickListener {
             passedView.scaleY = 0.85f + r * 0.15f
         }
 
+        ////////////// Now Trending Movies //////////////
+        //Fetching data from internet
         val nowTrendingMoviesRecycler = view.findViewById<ViewPager2>(R.id.nowTrendingMoviesSlider)
-        val moviesCallback= MovieCallback { movies ->
+        val nowTrendingMoviesProgress = view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
+        val nowTrendingSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
+                nowTrendingMoviesProgress.visibility = View.GONE
                 nowTrendingMoviesRecycler.adapter = SMovieAdapter(movies, this)
             }
         }
-        val errorCallback= ErrorCallback {
-            Toast.makeText(activity, "Error loading movies", Toast.LENGTH_SHORT).show()
+        val nowTrendingFailure = ErrorCallback {
+            nowTrendingMoviesProgress.visibility = View.GONE
+            val errorTextView = view.findViewById<TextView>(R.id.errorMessage)
+            errorTextView.visibility = View.VISIBLE
         }
-        Networking.getTrendingMovieData(moviesCallback,errorCallback)
+        //Configuring viewpager settings
+        Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure)
         nowTrendingMoviesRecycler.clipToPadding = false
         nowTrendingMoviesRecycler.clipChildren = false
         nowTrendingMoviesRecycler.offscreenPageLimit = 3
@@ -56,47 +67,43 @@ class HomeFragment : Fragment(), MovieClickListener {
         nowTrendingMoviesRecycler.setPageTransformer(cpt)
         ////////////// Now Trending Movies //////////////
 
-
-
+        ////////////// Genre Movies //////////////
+        val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
 
         ////////////// Genres //////////////
-        //setting genres list
-//        val genres = mutableListOf<GenreItem>()
-//        genres.add(GenreItem("Action", 21))
-//        genres.add(GenreItem("Thriller", 22))
-//        genres.add(GenreItem("Drama", 23))
-//        genres.add(GenreItem("Horror", 24))
-//        genres.add(GenreItem("Comedy", 25))
-//        genres.add(GenreItem("Sci-Fi", 26))
-
-        //configuring genres slider settings
         val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)
-//        genreRecycler.adapter = GenreAdapter(genres)
+        val genreProgressBar = view.findViewById<ProgressBar>(R.id.genreProgress)
+        var genreAdapter: GenreAdapter
+        var genreName: String
+        val onClickListener = this
+        val genreSuccess = GenreCallback { genres ->
+            if (!genres.isNullOrEmpty()) {
+                genreProgressBar.visibility = View.GONE
+                genreAdapter = GenreAdapter(genres)
+                genreRecycler.adapter = genreAdapter
+                genreRecycler.registerOnPageChangeCallback(object : ViewPager2
+                .OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        genreName = genreAdapter.getCurrentItemName(genreRecycler.currentItem)
+                        val genreMovieSuccess = MovieCallback { movies ->
+                            if (!movies.isNullOrEmpty()) {
+                                genreMovieRecycler.adapter = RMovieAdapter(movies, onClickListener)
+                            }
+                        }
+                        Networking.getGenreMovieData(genreMovieSuccess, {}, genreName)
+                    }
+                })
+            }
+        }
+        //configuring genres slider settings
+        Networking.getGenreData(genreSuccess) {}
         genreRecycler.clipToPadding = false
         genreRecycler.clipChildren = false
         genreRecycler.offscreenPageLimit = 5
         genreRecycler.setPageTransformer(cpt)
         genreRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        genreRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-//                Log.d("myApp", "genre ${genres[position].genreName} selected")
-            }
-        })
         ////////////// Genres //////////////
-
-        ////////////// Genre Movies //////////////
-//        val genreMovies = mutableListOf<RMovieItem>()
-//        genreMovies.add(RMovieItem(1, R.drawable.test2))
-//        genreMovies.add(RMovieItem(2, R.drawable.test2))
-//        genreMovies.add(RMovieItem(3, R.drawable.test2))
-//        genreMovies.add(RMovieItem(4, R.drawable.test2))
-//        genreMovies.add(RMovieItem(5, R.drawable.test2))
-//        genreMovies.add(RMovieItem(6, R.drawable.test2))
-//
-//        val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
-//        genreMovieRecycler.adapter = RMovieAdapter(genreMovies, listener)
-        ////////////// Genre Movies //////////////
         return view
     }
 
