@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.DetailedMovieCallback
 import com.example.moviesnight.`interface`.ErrorCallback
+import com.example.moviesnight.`interface`.MovieCallback
 import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
@@ -23,7 +25,7 @@ import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
 class DetailFragment : Fragment(), MovieClickListener {
-    private val imageBase="https://image.tmdb.org/t/p/w500/"
+    private val imageBase = "https://image.tmdb.org/t/p/w500/"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,13 +40,15 @@ class DetailFragment : Fragment(), MovieClickListener {
         val movieYear = view.findViewById<TextView>(R.id.yearValue)
         val movieOverview = view.findViewById<TextView>(R.id.overviewValue)
         val loadingProgressBar = view.findViewById<ProgressBar>(R.id.movieDetailsProgressBar)
+        val similarMovierRcycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
+        val similarMoviesLoadingBar=view.findViewById<ProgressBar>(R.id.similarMoviesProgress)
 
         var isBookmarked = requireArguments().getBoolean("isBookmarked")
         val movieID = requireArguments().getInt("movieID")
 
         val movieSuccess = DetailedMovieCallback { movie ->
             loadingProgressBar.visibility = View.GONE
-            Picasso.get().load(imageBase+movie.posterPath).into(movieImage)
+            Picasso.get().load(imageBase + movie.posterPath).into(movieImage)
             movieRating.text = movie.voteAverage.toString()
             movieDuration.text = movie.runTime.toString()
             movieYear.text = movie.year
@@ -52,9 +56,24 @@ class DetailFragment : Fragment(), MovieClickListener {
         }
         //Configuring viewpager settings
         Networking.getMovieDetails(movieSuccess, {}, movieID)
+
+        val similarMovieSuccess = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                similarMoviesLoadingBar.visibility = View.GONE
+                similarMovierRcycler.adapter = RMovieAdapter(movies, this)
+            }
+        }
+        val similarMovieFailure = ErrorCallback {
+            similarMoviesLoadingBar.visibility = View.GONE
+            val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
+            errorTextView.visibility = View.VISIBLE
+        }
+        //Configuring viewpager settings
+        Networking.getSimilarMovieData(similarMovieSuccess, similarMovieFailure,movieID)
+
         setBookmarkIcon(isBookmarked, bookmarkStatus)
         bookmarkStatus.setOnClickListener {
-            if(isBookmarked) {
+            if (isBookmarked) {
                 isBookmarked = false
                 bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                 //handle un bookmarking here
@@ -87,8 +106,8 @@ class DetailFragment : Fragment(), MovieClickListener {
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 
-    private fun setBookmarkIcon(x: Boolean, y:ImageView) {
-        if(x)
+    private fun setBookmarkIcon(x: Boolean, y: ImageView) {
+        if (x)
             y.setImageResource(R.drawable.ic_bookmarked)
         else
             y.setImageResource(R.drawable.ic_un_bookmarked)

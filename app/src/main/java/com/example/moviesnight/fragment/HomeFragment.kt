@@ -27,6 +27,9 @@ import kotlin.math.abs
 
 class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var listener: MovieClickListener
+    private var trendingPage=1
+    private var genrePage=1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,14 +63,25 @@ class HomeFragment : Fragment(), MovieClickListener {
             errorTextView.visibility = View.VISIBLE
         }
         //Configuring viewpager settings
-        Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure)
+        Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure,trendingPage)
         nowTrendingMoviesRecycler.clipToPadding = false
         nowTrendingMoviesRecycler.clipChildren = false
         nowTrendingMoviesRecycler.offscreenPageLimit = 3
         nowTrendingMoviesRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         nowTrendingMoviesRecycler.setPageTransformer(cpt)
         ////////////// Now Trending Movies //////////////
-
+        nowTrendingMoviesRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                if(!nowTrendingMoviesRecycler.canScrollHorizontally(1)){
+                    Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure,trendingPage)
+                    Log.d("myApp","Cann't right scroll horizontally")
+                }
+                if(!nowTrendingMoviesRecycler.canScrollHorizontally(-1)){
+                    Log.d("myApp","Cann't left scroll horizontally")
+                }
+            }
+        })
         ////////////// Genre Movies //////////////
         val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
 
@@ -111,6 +125,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
+        Log.d("myApp","${movieItem.movieID} sss")
         x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")

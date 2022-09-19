@@ -287,4 +287,15 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:background="@color/white" />
 
+    <ProgressBar
+        android:id="@+id/similarMoviesProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/similarMoviesRecycler"
+        app:layout_constraintEnd_toEndOf="@id/similarMoviesRecycler"
+        app:layout_constraintStart_toStartOf="@id/similarMoviesRecycler"
+        app:layout_constraintTop_toTopOf="@id/similarMoviesRecycler" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
