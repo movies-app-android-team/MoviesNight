@@ -6,9 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.example.moviesnight.model.Movie
 import io.ak1.BubbleTabBar
 
-
+var bookmarkedMovies = mutableListOf<Movie>()
 class MainActivity : AppCompatActivity() {
     private lateinit var bubbleTB: BubbleTabBar
     override fun onCreate(savedInstanceState: Bundle?) {

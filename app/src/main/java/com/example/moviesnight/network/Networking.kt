@@ -18,11 +18,15 @@ object Networking {
         .build()
 
     private val moviesService = retrofit.create(ApiService::class.java)
-    fun getTrendingMovieData(callback: MovieCallback, errorCallback: ErrorCallback? = null,page:Int) {
+    fun getTrendingMovieData(
+        callback: MovieCallback,
+        errorCallback: ErrorCallback? = null,
+        page: Int
+    ) {
         moviesService.getTrendingMovieList(page).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
-                Log.d("myApp",response.body()?.movies.toString() + "sss")
+                Log.d("myApp", response.body()?.movies.toString() + "sss")
                 callback.onMoviesReady(movies)
 
             }
@@ -34,7 +38,11 @@ object Networking {
         })
     }
 
-    fun getGenreMovieData(callback: MovieCallback, errorCallback: ErrorCallback? = null, genre: Int) {
+    fun getGenreMovieData(
+        callback: MovieCallback,
+        errorCallback: ErrorCallback? = null,
+        genre: Int
+    ) {
         moviesService.getGenreMovieList(genre).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
@@ -49,7 +57,11 @@ object Networking {
         })
     }
 
-    fun getSearchData(callback: MovieCallback, errorCallback: ErrorCallback? = null, search: String) {
+    fun getSearchData(
+        callback: MovieCallback,
+        errorCallback: ErrorCallback? = null,
+        search: String
+    ) {
         moviesService.getSearchList(search).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
@@ -80,11 +92,15 @@ object Networking {
         })
     }
 
-    fun getMovieDetails(callback: DetailedMovieCallback, errorCallback: ErrorCallback? = null, movieID: Int) {
+    fun getMovieDetails(
+        callback: DetailedMovieCallback,
+        errorCallback: ErrorCallback? = null,
+        movieID: Int
+    ) {
         moviesService.getMovieByID(movieID).enqueue(object : Callback<DetailedMovie> {
             override fun onResponse(call: Call<DetailedMovie>, response: Response<DetailedMovie>) {
                 val movie = response.body()
-                Log.d("myApp",response.toString()+"${movieID}")
+                Log.d("myApp", "Movie details \n $response$movieID")
                 if (movie != null) {
                     callback.onMovieReady(movie)
                 }
@@ -98,12 +114,17 @@ object Networking {
         })
     }
 
-    fun getSimilarMovieData(callback: MovieCallback, errorCallback: ErrorCallback? = null,ID:Int) {
+    fun getSimilarMovieData(
+        callback: MovieCallback,
+        errorCallback: ErrorCallback? = null,
+        ID: Int
+    ) {
         moviesService.getSimilarList(ID).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
                 callback.onMoviesReady(movies)
             }
+
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 t.printStackTrace()
                 errorCallback?.onError(t)

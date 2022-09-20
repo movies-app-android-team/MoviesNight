@@ -22,6 +22,7 @@ import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.GenreAdapter
 import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.adapter.SMovieAdapter
+import com.example.moviesnight.model.Genre
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
 import kotlin.math.abs
@@ -121,7 +122,7 @@ class HomeFragment : Fragment(), MovieClickListener {
         val genreSuccess = GenreCallback { genres ->
             if (!genres.isNullOrEmpty()) {
                 genreProgressBar.visibility = View.GONE
-                genreAdapter = GenreAdapter(genres)
+                genreAdapter = GenreAdapter(genresWithArrows(genres))
                 genreRecycler.adapter = genreAdapter
                 genreRecycler.registerOnPageChangeCallback(object : ViewPager2
                 .OnPageChangeCallback() {
@@ -156,5 +157,14 @@ class HomeFragment : Fragment(), MovieClickListener {
         x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
+    }
+
+    private fun genresWithArrows(x: List<Genre>): List<Genre> {
+        x[0].genreName = "${x[0].genreName}   \u2192"
+        for (i in 1 until x.size - 1) {
+            x[i].genreName = "\u2190  ${x[i].genreName}   \u2192"
+        }
+        x[x.size - 1].genreName = "\u2190   ${x[x.size - 1].genreName}"
+        return x
     }
 }

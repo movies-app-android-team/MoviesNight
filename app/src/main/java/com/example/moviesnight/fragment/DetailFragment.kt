@@ -14,18 +14,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.DetailedMovieCallback
-import com.example.moviesnight.`interface`.ErrorCallback
 import com.example.moviesnight.`interface`.MovieCallback
 import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.RMovieAdapter
+import com.example.moviesnight.model.Genre
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
-import java.util.*
 
 class DetailFragment : Fragment(), MovieClickListener {
     private val imageBase = "https://image.tmdb.org/t/p/w500/"
+
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +50,8 @@ class DetailFragment : Fragment(), MovieClickListener {
             Picasso.get().load(imageBase + movie.posterPath).into(poster)
             title.text = movie.movieTitle
             rating.rating = movie.voteAverage / 2
-            yearGenre.text = "${movie.year.substringBefore("-")}\u2022${movie.genres}"
+            yearGenre.text =
+                "${movie.year.substringBefore("-")}${getGenreNames(movie.genres)}"
             duration.text = "${movie.runTime} minutes"
             overView.text = movie.overview
         }
@@ -63,12 +64,6 @@ class DetailFragment : Fragment(), MovieClickListener {
                 similarMovies.adapter = RMovieAdapter(movies, this)
             }
         }
-//        val similarMovieFailure = ErrorCallback {
-//            similarMoviesLoadingBar.visibility = View.GONE
-//            val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
-//            errorTextView.visibility = View.VISIBLE
-//        }
-        //Configuring viewpager settings
         Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID)
 
         setBookmarkIcon(isBookmarked, bookmarkStatus)
@@ -82,15 +77,6 @@ class DetailFragment : Fragment(), MovieClickListener {
             isBookmarked = true
             bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
         }
-//        val similarMovies = mutableListOf<RMovieItem>()
-//        similarMovies.add(RMovieItem(1, R.drawable.test2))
-//        similarMovies.add(RMovieItem(2, R.drawable.test2))
-//        similarMovies.add(RMovieItem(3, R.drawable.test2))
-//        similarMovies.add(RMovieItem(4, R.drawable.test2))
-//        similarMovies.add(RMovieItem(5, R.drawable.test2))
-//        similarMovies.add(RMovieItem(6, R.drawable.test2))
-//        similarMoviesRecycler.adapter = RMovieAdapter(similarMovies, this)
-
         val backBTN = view.findViewById<FloatingActionButton>(R.id.back_btn)
         backBTN.setOnClickListener {
             requireActivity().onBackPressed()
@@ -111,5 +97,19 @@ class DetailFragment : Fragment(), MovieClickListener {
             y.setImageResource(R.drawable.ic_bookmarked)
         else
             y.setImageResource(R.drawable.ic_un_bookmarked)
+    }
+
+    private fun getGenreNames(x: List<Genre>): String {
+        val dot = " \u2022 "
+        if(x.isEmpty())
+            return ""
+        if(x.size>1) {
+            var y = x[0].genreName
+            for(i in 1 until x.size) {
+                y = "$y$dot${x[i].genreName}"
+            }
+            return " $dot$y"
+        }
+        return "$dot${x[0].genreName}"
     }
 }

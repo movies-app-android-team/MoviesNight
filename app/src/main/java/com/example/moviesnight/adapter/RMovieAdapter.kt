@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.makeramen.roundedimageview.RoundedImageView
 import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -52,14 +53,14 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
                 if(movies[layoutPosition].isBookmarked) {
                     movies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                    Log.d("myApp", "unBookmarked")
+                    bookmarkedMovies.remove(movies[layoutPosition])
                     //handle un bookmarking here
                     return@setOnClickListener
                 }
                 movies[layoutPosition].isBookmarked = true
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 //handle bookmarking here
-                Log.d("myApp", "bookmarked")
+                bookmarkedMovies.add(movies[layoutPosition])
             }
         }
 

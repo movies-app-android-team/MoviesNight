@@ -10,6 +10,6 @@ data class Genre(
     val genreID: Int,
 
     @SerializedName("name")
-    val genreName: String
+    var genreName: String
 
 ) : Parcelable

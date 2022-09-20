@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
@@ -54,14 +55,14 @@ class BookmarkMovieAdapter(
                 if(bookmarkMovies[layoutPosition].isBookmarked) {
                     bookmarkMovies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                    Log.d("myApp", "unBookmarked")
+                    bookmarkedMovies.remove(bookmarkMovies[layoutPosition])
                     //handle un bookmarking here
                     return@setOnClickListener
                 }
                 bookmarkMovies[layoutPosition].isBookmarked = true
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 //handle bookmarking here
-                Log.d("myApp", "bookmarked")
+                bookmarkedMovies.add(bookmarkMovies[layoutPosition])
             }
         }
 
