@@ -8,12 +8,17 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.example.moviesnight.model.Movie
 import io.ak1.BubbleTabBar
+import io.paperdb.Paper
 
 var bookmarkedMovies = mutableListOf<Movie>()
+
 class MainActivity : AppCompatActivity() {
     private lateinit var bubbleTB: BubbleTabBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Paper.init(this)
+        val getSavedBookmarks = Paper.book().read<MutableList<Movie>>("bookmarkedMovies")
+        if (getSavedBookmarks != null) bookmarkedMovies = getSavedBookmarks
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_frag)
         bubbleTB = findViewById(R.id.bubbleTabBar)
@@ -24,6 +29,11 @@ class MainActivity : AppCompatActivity() {
             bubbleTB.setSelectedWithId(destination.id, false)
         }
     }
+
+    override fun onStop() {
+        Paper.book().write("bookmarkedMovies", bookmarkedMovies)
+        super.onStop()
+    }
 }
 
 private fun moveBackward(x: NavOptions.Builder) {
@@ -32,6 +42,7 @@ private fun moveBackward(x: NavOptions.Builder) {
         .setPopEnterAnim(R.anim.from_right)
         .setPopExitAnim(R.anim.to_left)
 }
+
 private fun moveForward(x: NavOptions.Builder) {
     x.setEnterAnim(R.anim.from_right)
         .setExitAnim(R.anim.to_left)
@@ -57,7 +68,7 @@ private fun onNavDestinationSelected(
                 || (fromSearch && toBookmarks) -> moveForward(builder)
         (fromSearch && toHome)
                 || (fromBookmarks && toHome)
-                || (fromBookmarks && toSearch)-> moveBackward(builder)
+                || (fromBookmarks && toSearch) -> moveBackward(builder)
     }
     builder.setPopUpTo(toId, true)
     val options: NavOptions = builder.build()
@@ -67,4 +78,5 @@ private fun onNavDestinationSelected(
     } catch (e: IllegalArgumentException) {
         false
     }
+
 }
