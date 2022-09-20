@@ -1,5 +1,6 @@
 package com.example.moviesnight.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviesnight.R
+import com.example.moviesnight.*
 import com.example.moviesnight.`interface`.MovieClickListener
-import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+
 
 class BookmarkMovieAdapter(
     private val bookmarkMovies: List<Movie>,
@@ -34,13 +35,15 @@ class BookmarkMovieAdapter(
         return bookmarkMovies.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     inner class BookmarkMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bookmarkMovieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
         private val bookmarkMovieName: TextView
         private val bookmarkMovieGenre: TextView
         private val bookmarkMovieRating: TextView
-        private val imageBase="https://image.tmdb.org/t/p/w500/"
+        private val imageBase = "https://image.tmdb.org/t/p/w500/"
+
         init {
             bookmarkMovieImageView = itemView.findViewById(R.id.bookmarkMovieImage)
             bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
@@ -52,26 +55,26 @@ class BookmarkMovieAdapter(
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                if(bookmarkMovies[layoutPosition].isBookmarked) {
+                val found = contains(bookmarkedMovies, bookmarkMovies[layoutPosition].movieID)
+                if (found.first) {
                     bookmarkMovies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                    bookmarkedMovies.remove(bookmarkMovies[layoutPosition])
-                    //handle un bookmarking here
-                    return@setOnClickListener
+                    bookmarkedMovies.remove(found.second!!)
+                    notifyDataSetChanged()
+                } else {
+                    bookmarkedMovies.add(bookmarkMovies[layoutPosition])
+                    bookmarkMovies[layoutPosition].isBookmarked = true
+                    bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 }
-                bookmarkMovies[layoutPosition].isBookmarked = true
-                bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
-                //handle bookmarking here
-                bookmarkedMovies.add(bookmarkMovies[layoutPosition])
             }
         }
 
         fun bindItem(anItem: Movie) {
-            Picasso.get().load(imageBase+anItem.posterPath).into(bookmarkMovieImageView)
+            Picasso.get().load(imageBase + anItem.posterPath).into(bookmarkMovieImageView)
             bookmarkMovieName.text = anItem.movieTitle
             bookmarkMovieGenre.text = anItem.genres.toString()
             bookmarkMovieRating.text = "${anItem.voteAverage}"
-            if(anItem.isBookmarked) {
+            if (anItem.isBookmarked) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
             }
