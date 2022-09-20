@@ -12,7 +12,7 @@ import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
-class SMovieAdapter(private val movies: List<Movie>, val sInterface: MovieClickListener) :
+class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickListener) :
     RecyclerView.Adapter<SMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
@@ -27,6 +27,11 @@ class SMovieAdapter(private val movies: List<Movie>, val sInterface: MovieClickL
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+
+    fun appendList(newMovies:List<Movie>){
+        val current=movies+newMovies
+        movies=current
     }
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

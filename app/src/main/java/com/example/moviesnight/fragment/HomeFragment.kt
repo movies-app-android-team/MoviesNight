@@ -1,6 +1,8 @@
 package com.example.moviesnight.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +25,8 @@ import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
+import kotlinx.coroutines.delay
+import java.util.*
 import kotlin.math.abs
 
 class HomeFragment : Fragment(), MovieClickListener {
@@ -45,16 +49,40 @@ class HomeFragment : Fragment(), MovieClickListener {
             val r = 1 - abs(fl)
             passedView.scaleY = 0.85f + r * 0.15f
         }
-
         ////////////// Now Trending Movies //////////////
         //Fetching data from internet
         val nowTrendingMoviesRecycler = view.findViewById<ViewPager2>(R.id.nowTrendingMoviesSlider)
         val nowTrendingMoviesProgress =
             view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
+        var trendingAdapter:SMovieAdapter
         val nowTrendingSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
                 nowTrendingMoviesProgress.visibility = View.GONE
-                nowTrendingMoviesRecycler.adapter = SMovieAdapter(movies, this)
+                trendingAdapter= SMovieAdapter(movies, this)
+                nowTrendingMoviesRecycler.adapter =trendingAdapter
+
+                nowTrendingMoviesRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                        if(!nowTrendingMoviesRecycler.canScrollHorizontally(1)){
+
+                            trendingPage+=1
+                            val nowTrendingNewPageSuccess = MovieCallback { movies ->
+                                if (!movies.isNullOrEmpty()) {
+                                    Log.d("myApp","hi ${trendingPage}")
+                                    trendingAdapter.appendList(movies)
+                                    trendingAdapter.notifyDataSetChanged()
+                                }
+                            }
+                            Networking.getTrendingMovieData(nowTrendingNewPageSuccess, {},trendingPage)
+                            Log.d("myApp","Cann't right scroll horizontally,this is page ${trendingPage}")
+                        }
+                        if(!nowTrendingMoviesRecycler.canScrollHorizontally(-1)){
+                            Log.d("myApp","Cann't left scroll horizontally")
+                        }
+                    }
+                })
             }
         }
         val nowTrendingFailure = ErrorCallback {
@@ -70,18 +98,7 @@ class HomeFragment : Fragment(), MovieClickListener {
         nowTrendingMoviesRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         nowTrendingMoviesRecycler.setPageTransformer(cpt)
         ////////////// Now Trending Movies //////////////
-        nowTrendingMoviesRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                if(!nowTrendingMoviesRecycler.canScrollHorizontally(1)){
-                    Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure,trendingPage)
-                    Log.d("myApp","Cann't right scroll horizontally")
-                }
-                if(!nowTrendingMoviesRecycler.canScrollHorizontally(-1)){
-                    Log.d("myApp","Cann't left scroll horizontally")
-                }
-            }
-        })
+
         ////////////// Genre Movies //////////////
         val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
 

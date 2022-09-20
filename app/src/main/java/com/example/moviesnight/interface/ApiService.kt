@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.http.Path
 
 interface ApiService {
-    @GET("/3/trending/all/day?api_key=823cec0678552086f9eb5cbdce233bbe")
+    @GET("/3/trending/movie/day?api_key=823cec0678552086f9eb5cbdce233bbe")
     fun getTrendingMovieList(@Query("page") page: Int): Call<MovieResponse>
 
     @GET("/3/search/movie?api_key=823cec0678552086f9eb5cbdce233bbe")

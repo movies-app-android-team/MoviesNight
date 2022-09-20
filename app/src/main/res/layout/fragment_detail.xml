@@ -200,7 +200,7 @@
             android:id="@+id/movieDetailRImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/test2"
+            tools:src="@drawable/test2"
             app:layout_constraintStart_toStartOf="@id/ratingFrame"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="26dp" />
