@@ -9,12 +9,14 @@
     tools:context=".fragment.DetailFragment">
 
     <ImageView
-        android:id="@+id/movieDetailImageView"
+        android:id="@+id/movieDetailBackdrop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:scaleType="fitStart"
         android:src="@drawable/blank_backdrop"
+        app:layout_constraintBottom_toTopOf="@id/ratingValue"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.384"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -26,7 +28,7 @@
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="@id/durationValue"
-        app:layout_constraintStart_toStartOf="@id/movieDetailImageView"
+        app:layout_constraintStart_toStartOf="@id/movieDetailBackdrop"
         tools:ignore="ContentDescription"
         tools:src="@android:color/transparent" />
 
@@ -43,7 +45,7 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailImageView"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailBackdrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.07"
         app:layout_constraintStart_toEndOf="@id/movieDetailPoster"
@@ -105,7 +107,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:pressedTranslationZ="10dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="35dp"

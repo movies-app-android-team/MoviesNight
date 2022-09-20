@@ -1,12 +1,13 @@
 package com.example.moviesnight.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,54 +21,55 @@ import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class DetailFragment : Fragment(), MovieClickListener {
     private val imageBase = "https://image.tmdb.org/t/p/w500/"
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-        //adding dummy data to similar movies recycler
-        val similarMoviesRecycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
-        val bookmarkStatus = view.findViewById<ImageView>(R.id.movieDetailsBookmarkStatus)
-        val movieImage = view.findViewById<RoundedImageView>(R.id.movieDetailImageView)
-        val movieRating = view.findViewById<TextView>(R.id.ratingValue)
-        val movieDuration = view.findViewById<TextView>(R.id.durationValue)
-        val movieOverview = view.findViewById<TextView>(R.id.overView)
-        val loadingProgressBar = view.findViewById<ProgressBar>(R.id.movieDetailsProgressBar)
-        val similarMovierRcycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
-        val similarMoviesLoadingBar=view.findViewById<ProgressBar>(R.id.similarMoviesProgress)
+        val bookmarkStatus: ImageView = view.findViewById(R.id.movieDetailsBookmarkStatus)
+        val backDrop: ImageView = view.findViewById(R.id.movieDetailBackdrop)
+        val poster: ImageView = view.findViewById(R.id.movieDetailPoster)
+        val title: TextView = view.findViewById(R.id.movieDetailTitle)
+        val rating: RatingBar = view.findViewById(R.id.ratingValue)
+        val yearGenre: TextView = view.findViewById(R.id.movieDetailReleaseDatePlusGenre)
+        val duration: TextView = view.findViewById(R.id.durationValue)
+        val overView: TextView = view.findViewById(R.id.overView)
+        val similarMovies: RecyclerView = view.findViewById(R.id.similarMoviesRecycler)
 
         var isBookmarked = requireArguments().getBoolean("isBookmarked")
         val movieID = requireArguments().getInt("movieID")
 
         val movieSuccess = DetailedMovieCallback { movie ->
-            loadingProgressBar.visibility = View.GONE
-            Picasso.get().load(imageBase + movie.posterPath).into(movieImage)
-            movieRating.text = movie.voteAverage.toString()
-            movieDuration.text = movie.runTime.toString()
-            movieYear.text = movie.year
-            movieOverview.text = movie.overview.toString()
+            Picasso.get().load(imageBase + movie.backdropPath).into(backDrop)
+            Picasso.get().load(imageBase + movie.posterPath).into(poster)
+            title.text = movie.movieTitle
+            rating.rating = movie.voteAverage / 2
+            yearGenre.text = "${movie.year.substringBefore("-")}\u2022${movie.genres}"
+            duration.text = "${movie.runTime} minutes"
+            overView.text = movie.overview
         }
+
         //Configuring viewpager settings
         Networking.getMovieDetails(movieSuccess, {}, movieID)
 
         val similarMovieSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
-                similarMoviesLoadingBar.visibility = View.GONE
-                similarMovierRcycler.adapter = RMovieAdapter(movies, this)
+                similarMovies.adapter = RMovieAdapter(movies, this)
             }
         }
-        val similarMovieFailure = ErrorCallback {
-            similarMoviesLoadingBar.visibility = View.GONE
-            val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
-            errorTextView.visibility = View.VISIBLE
-        }
+//        val similarMovieFailure = ErrorCallback {
+//            similarMoviesLoadingBar.visibility = View.GONE
+//            val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
+//            errorTextView.visibility = View.VISIBLE
+//        }
         //Configuring viewpager settings
-        Networking.getSimilarMovieData(similarMovieSuccess, similarMovieFailure,movieID)
+        Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID)
 
         setBookmarkIcon(isBookmarked, bookmarkStatus)
         bookmarkStatus.setOnClickListener {

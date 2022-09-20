@@ -15,6 +15,9 @@ data class DetailedMovie(
     @SerializedName("poster_path")
     val posterPath: String?,
 
+    @SerializedName("backdrop_path")
+    val backdropPath: String?,
+
     @SerializedName("vote_average")
     val voteAverage: Float,
 
