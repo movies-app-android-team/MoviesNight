@@ -17,7 +17,6 @@ import com.example.moviesnight.`interface`.ErrorCallback
 import com.example.moviesnight.`interface`.MovieCallback
 import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.RMovieAdapter
-import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,11 +33,10 @@ class DetailFragment : Fragment(), MovieClickListener {
         //adding dummy data to similar movies recycler
         val similarMoviesRecycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
         val bookmarkStatus = view.findViewById<ImageView>(R.id.movieDetailsBookmarkStatus)
-        val movieImage = view.findViewById<RoundedImageView>(R.id.movieDetailRImageView)
+        val movieImage = view.findViewById<RoundedImageView>(R.id.movieDetailImageView)
         val movieRating = view.findViewById<TextView>(R.id.ratingValue)
         val movieDuration = view.findViewById<TextView>(R.id.durationValue)
-        val movieYear = view.findViewById<TextView>(R.id.yearValue)
-        val movieOverview = view.findViewById<TextView>(R.id.overviewValue)
+        val movieOverview = view.findViewById<TextView>(R.id.overView)
         val loadingProgressBar = view.findViewById<ProgressBar>(R.id.movieDetailsProgressBar)
         val similarMovierRcycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
         val similarMoviesLoadingBar=view.findViewById<ProgressBar>(R.id.similarMoviesProgress)

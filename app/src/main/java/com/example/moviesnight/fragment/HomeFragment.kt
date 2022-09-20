@@ -1,8 +1,7 @@
 package com.example.moviesnight.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,14 +24,11 @@ import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
-import kotlinx.coroutines.delay
-import java.util.*
 import kotlin.math.abs
 
 class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var listener: MovieClickListener
-    private var trendingPage=1
-    private var genrePage=1
+    private var trendingPage = 1
 
 
     override fun onCreateView(
@@ -54,32 +50,45 @@ class HomeFragment : Fragment(), MovieClickListener {
         val nowTrendingMoviesRecycler = view.findViewById<ViewPager2>(R.id.nowTrendingMoviesSlider)
         val nowTrendingMoviesProgress =
             view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
-        var trendingAdapter:SMovieAdapter
+        var trendingAdapter: SMovieAdapter
         val nowTrendingSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
                 nowTrendingMoviesProgress.visibility = View.GONE
-                trendingAdapter= SMovieAdapter(movies, this)
-                nowTrendingMoviesRecycler.adapter =trendingAdapter
+                trendingAdapter = SMovieAdapter(movies, this)
+                nowTrendingMoviesRecycler.adapter = trendingAdapter
 
-                nowTrendingMoviesRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                nowTrendingMoviesRecycler.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
 
-                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int
+                    ) {
                         super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                        if(!nowTrendingMoviesRecycler.canScrollHorizontally(1)){
+                        if (!nowTrendingMoviesRecycler.canScrollHorizontally(1)) {
 
-                            trendingPage+=1
+                            trendingPage += 1
                             val nowTrendingNewPageSuccess = MovieCallback { movies ->
                                 if (!movies.isNullOrEmpty()) {
-                                    Log.d("myApp","hi ${trendingPage}")
+                                    Log.d("myApp", "hi $trendingPage")
                                     trendingAdapter.appendList(movies)
                                     trendingAdapter.notifyDataSetChanged()
                                 }
                             }
-                            Networking.getTrendingMovieData(nowTrendingNewPageSuccess, {},trendingPage)
-                            Log.d("myApp","Cann't right scroll horizontally,this is page ${trendingPage}")
+                            Networking.getTrendingMovieData(
+                                nowTrendingNewPageSuccess,
+                                {},
+                                trendingPage
+                            )
+                            Log.d(
+                                "myApp",
+                                "Can't right scroll horizontally,this is page $trendingPage"
+                            )
                         }
-                        if(!nowTrendingMoviesRecycler.canScrollHorizontally(-1)){
-                            Log.d("myApp","Cann't left scroll horizontally")
+                        if (!nowTrendingMoviesRecycler.canScrollHorizontally(-1)) {
+                            Log.d("myApp", "Can't left scroll horizontally")
                         }
                     }
                 })
@@ -91,12 +100,13 @@ class HomeFragment : Fragment(), MovieClickListener {
             errorTextView.visibility = View.VISIBLE
         }
         //Configuring viewpager settings
-        Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure,trendingPage)
+        Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure, trendingPage)
         nowTrendingMoviesRecycler.clipToPadding = false
         nowTrendingMoviesRecycler.clipChildren = false
         nowTrendingMoviesRecycler.offscreenPageLimit = 3
-        nowTrendingMoviesRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         nowTrendingMoviesRecycler.setPageTransformer(cpt)
+        nowTrendingMoviesRecycler.getChildAt(0)
+            .overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         ////////////// Now Trending Movies //////////////
 
         ////////////// Genre Movies //////////////
@@ -142,7 +152,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-        Log.d("myApp","${movieItem.movieID} sss")
+        Log.d("myApp", "${movieItem.movieID} sss")
         x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
