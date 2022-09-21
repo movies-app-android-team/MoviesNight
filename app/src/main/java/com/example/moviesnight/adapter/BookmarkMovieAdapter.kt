@@ -1,6 +1,5 @@
 package com.example.moviesnight.adapter
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
-private lateinit var x: BookmarkMovieAdapter
 class BookmarkMovieAdapter(
     private val bookmarkMovies: List<Movie>,
     val bInterface: MovieClickListener
@@ -42,7 +40,6 @@ class BookmarkMovieAdapter(
         private val imageBase = "https://image.tmdb.org/t/p/w500/"
 
         init {
-            x = this@BookmarkMovieAdapter
             itemView.findViewById<ProgressBar>(R.id.rMovieItemProgress).visibility = View.GONE
             bookmarkMovieImageView = itemView.findViewById(R.id.recyclerMovieImage)
             bookmarkStatus = itemView.findViewById(R.id.recyclerMoviesBookmarkStatus)
@@ -56,7 +53,6 @@ class BookmarkMovieAdapter(
                     bookmarkMovies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     bookmarkedMovies.remove(found.second!!)
-                    notifyBookmarks()
                 }
             }
         }
@@ -71,8 +67,4 @@ class BookmarkMovieAdapter(
             bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
         }
     }
-}
-@SuppressLint("NotifyDataSetChanged")
-fun notifyBookmarks() {
-    x.notifyDataSetChanged()
 }

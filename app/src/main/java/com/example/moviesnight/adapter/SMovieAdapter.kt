@@ -55,12 +55,10 @@ class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickL
                     movies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     bookmarkedMovies.remove(found.second!!)
-                    notifyBookmarks()
                 } else {
                     bookmarkedMovies.add(movies[layoutPosition])
                     movies[layoutPosition].isBookmarked = true
                     bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
-                    notifyBookmarks()
                 }
             }
         }
