@@ -15,9 +15,10 @@ import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 import java.lang.Exception
 
-class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickListener) :
+class RMovieAdapter(private var movies: List<Movie>, val rInterface: MovieClickListener) :
     RecyclerView.Adapter<RMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
@@ -32,6 +33,9 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+    fun mergeList(newList:List<Movie>){
+        movies=movies+newList
     }
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,14 +54,16 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
                 Log.d("myApp", "item ${movies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                if(movies[layoutPosition].isBookmarked) {
+                if(/*movies[layoutPosition].isBookmarked*/Paper.book().read<Int>("${movies[layoutPosition].movieID}")==1) {
                     movies[layoutPosition].isBookmarked = false
+                    Paper.book().delete("${movies[layoutPosition].movieID}")
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     bookmarkedMovies.remove(movies[layoutPosition])
                     //handle un bookmarking here
                     return@setOnClickListener
                 }
                 movies[layoutPosition].isBookmarked = true
+                Paper.book().write("${movies[layoutPosition].movieID}",1)
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 //handle bookmarking here
                 bookmarkedMovies.add(movies[layoutPosition])
@@ -75,7 +81,7 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
                     Toast.makeText(itemView.context, "Error loading movie", Toast.LENGTH_SHORT).show()
                 }
             })
-            if(anItem.isBookmarked) {
+            if(/*anItem.isBookmarked*/ Paper.book().read<Int>("${movies[layoutPosition].movieID}")==1) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
             }

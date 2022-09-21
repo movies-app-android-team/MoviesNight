@@ -38,12 +38,8 @@ object Networking {
         })
     }
 
-    fun getGenreMovieData(
-        callback: MovieCallback,
-        errorCallback: ErrorCallback? = null,
-        genre: Int
-    ) {
-        moviesService.getGenreMovieList(genre).enqueue(object : Callback<MovieResponse> {
+    fun getGenreMovieData(callback: MovieCallback, errorCallback: ErrorCallback? = null, genre: Int,page: Int=1) {
+        moviesService.getGenreMovieList(genre,page).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
                 println(response.body()?.movies.toString() + "sss")

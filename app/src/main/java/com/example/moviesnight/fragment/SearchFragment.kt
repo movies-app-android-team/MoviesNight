@@ -18,6 +18,7 @@ import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
+import io.paperdb.Paper
 
 
 class SearchFragment : Fragment(), MovieClickListener {
@@ -68,7 +69,7 @@ class SearchFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putBoolean("isBookmarked", /*movieItem.isBookmarked*/Paper.book().read<Int>("${movieItem.movieID}")==1)
         findNavController().navigate(R.id.searchToDetails, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }

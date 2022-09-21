@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         Paper.book().write("bookmarkedMovies", bookmarkedMovies)
+        Paper.book().destroy()
         super.onStop()
     }
 }

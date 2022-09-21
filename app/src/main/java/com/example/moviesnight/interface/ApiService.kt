@@ -19,7 +19,7 @@ interface ApiService {
     fun getGenreList(): Call<GenreResponse>
 
     @GET("/3/discover/movie?api_key=823cec0678552086f9eb5cbdce233bbe")
-    fun getGenreMovieList(@Query("with_genres") genre: Int): Call<MovieResponse>
+    fun getGenreMovieList(@Query("with_genres") genre: Int,@Query("page") page: Int): Call<MovieResponse>
 
     @GET("/3/movie/{movie_id}?api_key=823cec0678552086f9eb5cbdce233bbe")
     fun getMovieByID(@Path("movie_id")ID:Int):Call<DetailedMovie>

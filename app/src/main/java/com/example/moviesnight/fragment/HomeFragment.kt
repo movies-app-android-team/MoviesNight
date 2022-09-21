@@ -2,18 +2,25 @@ package com.example.moviesnight.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.example.moviesnight.MainActivity
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.ErrorCallback
 import com.example.moviesnight.`interface`.GenreCallback
@@ -22,9 +29,11 @@ import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.GenreAdapter
 import com.example.moviesnight.adapter.RMovieAdapter
 import com.example.moviesnight.adapter.SMovieAdapter
+import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Genre
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
+import io.paperdb.Paper
 import kotlin.math.abs
 
 class HomeFragment : Fragment(), MovieClickListener {
@@ -57,7 +66,6 @@ class HomeFragment : Fragment(), MovieClickListener {
                 nowTrendingMoviesProgress.visibility = View.GONE
                 trendingAdapter = SMovieAdapter(movies, this)
                 nowTrendingMoviesRecycler.adapter = trendingAdapter
-
                 nowTrendingMoviesRecycler.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
 
@@ -130,8 +138,45 @@ class HomeFragment : Fragment(), MovieClickListener {
                         super.onPageSelected(position)
                         genreId = genreAdapter.getCurrentItemID(genreRecycler.currentItem)
                         val genreMovieSuccess = MovieCallback { movies ->
+                            var page =1
+                            var isScrolling=false
+                            var currentItems:Int
+                            var scrollOutItems:Int
+                            var totalItems:Int
                             if (!movies.isNullOrEmpty()) {
-                                genreMovieRecycler.adapter = RMovieAdapter(movies, onClickListener)
+                                val adapter=RMovieAdapter(movies, onClickListener)
+                                val manager= GridLayoutManager(requireContext(),2,GridLayoutManager.VERTICAL,false)
+                                genreMovieRecycler.layoutManager=manager
+                                genreMovieRecycler.adapter = adapter
+                                genreMovieRecycler.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+                                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                                        super.onScrollStateChanged(recyclerView, newState)
+                                        if(newState==AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)isScrolling=true
+                                    }
+
+                                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                                        super.onScrolled(recyclerView, dx, dy)
+                                        currentItems=manager.childCount
+                                        totalItems=manager.itemCount
+                                        scrollOutItems=manager.findFirstVisibleItemPosition()
+                                        if(isScrolling&&(currentItems+scrollOutItems==totalItems)){
+                                            isScrolling=false
+                                            //fetch data
+//                                            Handler(Looper.getMainLooper()).postDelayed({
+                                            page+=1
+                                                Log.d("Page",page.toString())
+                                                val moviesCallback= MovieCallback { movies ->
+                                                    if (!movies.isNullOrEmpty()) {
+                                                        adapter.mergeList(movies)
+                                                        adapter.notifyDataSetChanged()
+                                                    }
+                                                }
+                                                Networking.getGenreMovieData(moviesCallback,{},genreId,page)
+//                                            },5000)
+
+                                        }
+                                    }
+                                })
                             }
                         }
                         Networking.getGenreMovieData(genreMovieSuccess, {}, genreId)
@@ -154,7 +199,8 @@ class HomeFragment : Fragment(), MovieClickListener {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
         Log.d("myApp", "${movieItem.movieID} sss")
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putBoolean("isBookmarked", /*movieItem.isBookmarked*/Paper.book().read<Int>("${movieItem.movieID}")==1)
+
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }

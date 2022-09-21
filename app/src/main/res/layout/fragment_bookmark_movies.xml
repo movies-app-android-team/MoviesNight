@@ -13,20 +13,21 @@
         android:id="@+id/bookmarkRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="30dp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_margin="0dp"
+        android:orientation="horizontal"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myBookmarksTitle"
-        tools:listitem="@layout/bookmark_movie_item_layout" />
+        tools:listitem="@layout/recycler_movie_item_layout" />
 
     <TextView
         android:id="@+id/myBookmarksTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/red_hat_display"

@@ -12,6 +12,7 @@ import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 
 class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickListener) :
     RecyclerView.Adapter<SMovieAdapter.MovieItemViewHolder>() {
@@ -49,14 +50,18 @@ class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickL
                 Log.d("myApp", "now trending item ${movies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                if(movies[layoutPosition].isBookmarked) {
+                Log.d("Paper1 selected","${movies[layoutPosition].movieID}")
+                Log.d("Paper1","${Paper.book().read<Int>("${movies[layoutPosition].movieID}")}")
+                if(/*movies[layoutPosition].isBookmarked*/Paper.book().read<Int>("${movies[layoutPosition].movieID}")==1) {
                     movies[layoutPosition].isBookmarked = false
+                    Paper.book().delete("${movies[layoutPosition].movieID}")
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     bookmarkedMovies.remove(movies[layoutPosition])
                     //handle un bookmarking here
                     return@setOnClickListener
                 }
                 movies[layoutPosition].isBookmarked = true
+                Paper.book().write("${movies[layoutPosition].movieID}",1)
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 bookmarkedMovies.add(movies[layoutPosition])
             }
@@ -64,7 +69,9 @@ class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickL
 
         fun bindItem(anItem: Movie) {
             Picasso.get().load(imageBase+anItem.posterPath).into(movieImageView)
-            if(anItem.isBookmarked) {
+            Log.d("PaperBind","${movies[layoutPosition].movieID}")
+            Log.d("Paper","${Paper.book().read<Int>("${movies[layoutPosition].movieID}")}")
+            if(/*anItem.isBookmarked*/Paper.book().read<Int>("${movies[layoutPosition].movieID}")==1) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
             }
