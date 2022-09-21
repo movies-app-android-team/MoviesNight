@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.*
 import com.example.moviesnight.`interface`.MovieClickListener
@@ -14,7 +14,7 @@ import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
-
+private lateinit var x: BookmarkMovieAdapter
 class BookmarkMovieAdapter(
     private val bookmarkMovies: List<Movie>,
     val bInterface: MovieClickListener
@@ -23,7 +23,7 @@ class BookmarkMovieAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
         return BookmarkMovieViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.bookmark_movie_item_layout, parent, false)
+                .inflate(R.layout.recycler_movie_item_layout, parent, false)
         )
     }
 
@@ -35,21 +35,17 @@ class BookmarkMovieAdapter(
         return bookmarkMovies.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
     inner class BookmarkMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bookmarkMovieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
-        private val bookmarkMovieName: TextView
-        private val bookmarkMovieGenre: TextView
-        private val bookmarkMovieRating: TextView
         private val imageBase = "https://image.tmdb.org/t/p/w500/"
 
         init {
-            bookmarkMovieImageView = itemView.findViewById(R.id.bookmarkMovieImage)
-            bookmarkMovieName = itemView.findViewById(R.id.bookmarkMovieName)
-            bookmarkMovieGenre = itemView.findViewById(R.id.bookmarkMovieGenre)
-            bookmarkMovieRating = itemView.findViewById(R.id.bookmarkMovieRating)
-            bookmarkStatus = itemView.findViewById(R.id.bookmarkStatusImageView)
+            x = this@BookmarkMovieAdapter
+            itemView.findViewById<ProgressBar>(R.id.rMovieItemProgress).visibility = View.GONE
+            bookmarkMovieImageView = itemView.findViewById(R.id.recyclerMovieImage)
+            bookmarkStatus = itemView.findViewById(R.id.recyclerMoviesBookmarkStatus)
             itemView.setOnClickListener {
                 bInterface.onMovieItemClick(it, bookmarkMovies[layoutPosition])
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
@@ -60,20 +56,14 @@ class BookmarkMovieAdapter(
                     bookmarkMovies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     bookmarkedMovies.remove(found.second!!)
-                    notifyDataSetChanged()
-                } else {
-                    bookmarkedMovies.add(bookmarkMovies[layoutPosition])
-                    bookmarkMovies[layoutPosition].isBookmarked = true
-                    bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                    notifyBookmarks()
                 }
             }
         }
 
         fun bindItem(anItem: Movie) {
             Picasso.get().load(imageBase + anItem.posterPath).into(bookmarkMovieImageView)
-            bookmarkMovieName.text = anItem.movieTitle
-            bookmarkMovieGenre.text = anItem.genres.toString()
-            bookmarkMovieRating.text = "${anItem.voteAverage}"
+
             if (anItem.isBookmarked) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
@@ -81,4 +71,8 @@ class BookmarkMovieAdapter(
             bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
         }
     }
+}
+@SuppressLint("NotifyDataSetChanged")
+fun notifyBookmarks() {
+    x.notifyDataSetChanged()
 }

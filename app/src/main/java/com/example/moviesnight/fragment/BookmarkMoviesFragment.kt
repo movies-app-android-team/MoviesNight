@@ -13,6 +13,7 @@ import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.BookmarkMovieAdapter
 import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
+import io.paperdb.Paper
 
 class BookmarkMoviesFragment : Fragment(), MovieClickListener {
     private lateinit var bookmarkRecycler: RecyclerView

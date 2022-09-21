@@ -1,11 +1,13 @@
 package com.example.moviesnight
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.example.moviesnight.adapter.BookmarkMovieAdapter
 import com.example.moviesnight.model.Movie
 import io.ak1.BubbleTabBar
 import io.paperdb.Paper
@@ -88,5 +90,4 @@ private fun onNavDestinationSelected(
     } catch (e: IllegalArgumentException) {
         false
     }
-
 }
