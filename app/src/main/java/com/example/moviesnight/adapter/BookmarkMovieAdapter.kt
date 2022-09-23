@@ -14,15 +14,12 @@ import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
 class BookmarkMovieAdapter(
-    private val bookmarkMovies: List<Movie>,
+    private var bookmarkMovies: MutableList<Movie>,
     val bInterface: MovieClickListener
 ) :
     RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkMovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMovieViewHolder {
-        return BookmarkMovieViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_movie_item_layout, parent, false)
-        )
+        return BookmarkMovieViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_movie_item_layout, parent, false))
     }
 
     override fun onBindViewHolder(holder: BookmarkMovieViewHolder, position: Int) {
@@ -48,12 +45,10 @@ class BookmarkMovieAdapter(
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                val found = contains(bookmarkedMovies, bookmarkMovies[layoutPosition].movieID)
-                if (found.first) {
                     bookmarkMovies[layoutPosition].isBookmarked = false
-                    bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                    bookmarkedMovies.remove(found.second!!)
-                }
+                    bookmarkedMovies.remove(bookmarkMovies[layoutPosition])
+                    bookmarkMovies.remove(bookmarkMovies[layoutPosition])
+                    notifyItemRemoved(layoutPosition)
             }
         }
 

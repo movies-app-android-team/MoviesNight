@@ -26,21 +26,26 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/searchResultsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/searchNestedScroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchResultsRecycler"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/searchNestedScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTab"
-        app:spanCount="2" />
+        app:layout_constraintTop_toBottomOf="@+id/searchTab">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResultsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
+    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/searchErrorText"
@@ -54,19 +59,19 @@
         android:textSize="38sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/searchResultsRecycler"
-        app:layout_constraintEnd_toEndOf="@id/searchResultsRecycler"
-        app:layout_constraintStart_toStartOf="@id/searchResultsRecycler"
-        app:layout_constraintTop_toTopOf="@id/searchResultsRecycler" />
+        app:layout_constraintBottom_toBottomOf="@id/searchNestedScroll"
+        app:layout_constraintEnd_toEndOf="@id/searchNestedScroll"
+        app:layout_constraintStart_toStartOf="@id/searchNestedScroll"
+        app:layout_constraintTop_toTopOf="@id/searchNestedScroll" />
     <ProgressBar
         android:id="@+id/searchRecyclerProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/searchResultsRecycler"
-        app:layout_constraintEnd_toEndOf="@id/searchResultsRecycler"
-        app:layout_constraintStart_toStartOf="@id/searchResultsRecycler"
-        app:layout_constraintTop_toTopOf="@id/searchResultsRecycler"
+        app:layout_constraintBottom_toBottomOf="@id/searchNestedScroll"
+        app:layout_constraintEnd_toEndOf="@id/searchNestedScroll"
+        app:layout_constraintStart_toStartOf="@id/searchNestedScroll"
+        app:layout_constraintTop_toTopOf="@id/searchNestedScroll"
         android:visibility="invisible"/>
 
 

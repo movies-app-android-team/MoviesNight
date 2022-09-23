@@ -17,10 +17,7 @@ import io.paperdb.Paper
 
 class BookmarkMoviesFragment : Fragment(), MovieClickListener {
     private lateinit var bookmarkRecycler: RecyclerView
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_bookmark_movies, container, false)
 
         //adding dummy icons to a recycler view

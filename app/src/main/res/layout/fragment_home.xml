@@ -49,22 +49,29 @@
                         android:textColor="@color/orange_grad"
                         android:textSize="25sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintBottom_toTopOf="@id/trendingScroll"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/logo_image_view" />
 
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/nowTrendingMoviesSlider"
+
+                    <androidx.core.widget.NestedScrollView
+                        android:id="@+id/trendingScroll"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:layout_marginTop="20dp"
-                        android:paddingStart="80dp"
-                        android:paddingEnd="80dp"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toTopOf="@id/genreSlider"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/main_text_view" />
+                        app:layout_constraintTop_toBottomOf="@id/main_text_view">
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/nowTrendingMoviesSlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="20dp"
+                            android:paddingStart="80dp"
+                            android:paddingEnd="80dp"
+                            />
+                    </androidx.core.widget.NestedScrollView>
 
                     <TextView
                         android:id="@+id/sliderMovieError"
@@ -78,10 +85,10 @@
                         android:textSize="38sp"
                         android:textStyle="bold"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@id/nowTrendingMoviesSlider"
-                        app:layout_constraintEnd_toEndOf="@id/nowTrendingMoviesSlider"
-                        app:layout_constraintStart_toStartOf="@id/nowTrendingMoviesSlider"
-                        app:layout_constraintTop_toTopOf="@+id/nowTrendingMoviesSlider" />
+                        app:layout_constraintBottom_toBottomOf="@id/trendingScroll"
+                        app:layout_constraintEnd_toEndOf="@id/trendingScroll"
+                        app:layout_constraintStart_toStartOf="@id/trendingScroll"
+                        app:layout_constraintTop_toTopOf="@+id/trendingScroll" />
 
 
                     <ProgressBar
@@ -89,10 +96,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:indeterminateTint="@color/white"
-                        app:layout_constraintBottom_toBottomOf="@id/nowTrendingMoviesSlider"
-                        app:layout_constraintEnd_toEndOf="@id/nowTrendingMoviesSlider"
-                        app:layout_constraintStart_toStartOf="@id/nowTrendingMoviesSlider"
-                        app:layout_constraintTop_toTopOf="@id/nowTrendingMoviesSlider" />
+                        app:layout_constraintBottom_toBottomOf="@id/trendingScroll"
+                        app:layout_constraintEnd_toEndOf="@id/trendingScroll"
+                        app:layout_constraintStart_toStartOf="@id/trendingScroll"
+                        app:layout_constraintTop_toTopOf="@id/trendingScroll" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/genreSlider"
@@ -102,7 +109,7 @@
                         android:foregroundGravity="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/nowTrendingMoviesSlider" />
+                        app:layout_constraintTop_toBottomOf="@id/trendingScroll" />
 
                     <ProgressBar
                         android:id="@+id/genreProgress"

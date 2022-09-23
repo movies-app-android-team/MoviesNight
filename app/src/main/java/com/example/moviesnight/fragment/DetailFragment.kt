@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,8 @@ import com.squareup.picasso.Picasso
 
 class DetailFragment : Fragment(), MovieClickListener {
     private val imageBase = "https://image.tmdb.org/t/p/w500/"
+    private lateinit var similarMovies:RecyclerView
+    private lateinit var scrollView: NestedScrollView
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -40,7 +43,9 @@ class DetailFragment : Fragment(), MovieClickListener {
         val yearGenre: TextView = view.findViewById(R.id.movieDetailReleaseDatePlusGenre)
         val duration: TextView = view.findViewById(R.id.durationValue)
         val overView: TextView = view.findViewById(R.id.overView)
-        val similarMovies: RecyclerView = view.findViewById(R.id.similarMoviesRecycler)
+        var page=1
+        similarMovies = view.findViewById(R.id.similarMoviesRecycler)
+        scrollView=view.findViewById(R.id.detailScroll)
 
         var isBookmarked = requireArguments().getBoolean("isBookmarked")
         val movieID = requireArguments().getInt("movieID")
@@ -55,16 +60,27 @@ class DetailFragment : Fragment(), MovieClickListener {
             duration.text = "${movie.runTime} minutes"
             overView.text = movie.overview
         }
-
         //Configuring viewpager settings
         Networking.getMovieDetails(movieSuccess, {}, movieID)
+        var y=scrollView.isHorizontalScrollBarEnabled
+        scrollView.setOnScrollChangeListener(object :NestedScrollView.OnScrollChangeListener{
+            override fun onScrollChange(v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                scrollX
+                v.getChildAt(0).measuredWidth
+                v.measuredWidth
+                var x=scrollX
+                if(scrollX==v.getChildAt(0).measuredWidth-v.measuredWidth){
+                    Log.d("Similar","Camm't scroll right")
+                }
+            }
+        })
 
         val similarMovieSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
                 similarMovies.adapter = RMovieAdapter(movies, this)
             }
         }
-        Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID)
+        Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID,1)
 
         setBookmarkIcon(isBookmarked, bookmarkStatus)
         bookmarkStatus.setOnClickListener {
@@ -112,4 +128,14 @@ class DetailFragment : Fragment(), MovieClickListener {
         }
         return "$dot${x[0].genreName}"
     }
+
+    private fun getNextPageSimilarMovies(movieID:Int,page:Int){
+        val similarMovieSuccess = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                similarMovies.adapter = RMovieAdapter(movies, this)
+            }
+        }
+        Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID,page)
+    }
+
 }

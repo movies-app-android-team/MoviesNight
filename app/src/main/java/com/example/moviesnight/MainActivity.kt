@@ -3,6 +3,7 @@ package com.example.moviesnight
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
             bookmarkedMovies = getSavedBookmarks
             for (i in bookmarkedMovies) i.isBookmarked = true
         }
+        Log.d("Paper","main activity ${Paper.book().read<Boolean>("810693")}")
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_frag)
         bubbleTB = findViewById(R.id.bubbleTabBar)
@@ -54,18 +56,15 @@ private fun moveForward(x: NavOptions.Builder) {
         .setPopEnterAnim(R.anim.from_left)
         .setPopExitAnim(R.anim.to_right)
 }
-fun contains(y:MutableList<Movie>, x: Int): Pair<Boolean, Movie?> {
-    for(i in y) {
-        if (i.movieID==x)
-            return Pair(true, i)
-    }
-    return Pair(false, null)
-}
+//fun contains(y:MutableList<Movie>, x: Int): Pair<Boolean, Movie?> {
+//    for(i in y) {
+//        if (i.movieID==x)
+//            return Pair(true, i)
+//    }
+//    return Pair(false, null)
+//}
 
-private fun onNavDestinationSelected(
-    toId: Int,
-    navController: NavController
-): Boolean {
+private fun onNavDestinationSelected(toId: Int, navController: NavController): Boolean {
     val builder = NavOptions.Builder()
         .setLaunchSingleTop(true)
     val toHome = R.id.homeFragment == toId

@@ -12,13 +12,14 @@ import com.example.moviesnight.R
 import com.makeramen.roundedimageview.RoundedImageView
 import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.bookmarkedMovies
-import com.example.moviesnight.contains
+//import com.example.moviesnight.contains
 import com.example.moviesnight.model.Movie
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 import java.lang.Exception
 
-class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickListener) :
+class RMovieAdapter(private var movies: List<Movie>, val rInterface: MovieClickListener) :
     RecyclerView.Adapter<RMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
@@ -33,6 +34,9 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+    fun mergeList(newList:List<Movie>){
+        movies=movies+newList
     }
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,14 +55,18 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
                 Log.d("myApp", "item ${movies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                val found = contains(bookmarkedMovies, movies[layoutPosition].movieID)
-                if (found.first) {
-                    movies[layoutPosition].isBookmarked = false
-                    bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                    bookmarkedMovies.remove(found.second!!)
+               if(movies[layoutPosition].isBookmarked == true){
+                        movies[layoutPosition].isBookmarked = false
+                        Paper.book().delete(movies[layoutPosition].movieID.toString())
+                        bookmarkedMovies.remove(movies[layoutPosition])
+                        bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                 } else {
-                    bookmarkedMovies.add(movies[layoutPosition])
-                    movies[layoutPosition].isBookmarked = true
+                        movies[layoutPosition].isBookmarked = true
+                        Paper.book().write<Boolean>(movies[layoutPosition].movieID.toString(),true)
+                        Log.d("Paper2","added to paper listener ${movies[layoutPosition].movieID.toString()}")
+                        Log.d("Paper2","check added to paper listener${Paper.book().read<Boolean>("${movies[layoutPosition].movieID}")==true})}")
+
+                        bookmarkedMovies.add(movies[layoutPosition])
                     bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 }
             }
