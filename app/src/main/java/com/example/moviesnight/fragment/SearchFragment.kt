@@ -68,7 +68,7 @@ class SearchFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.searchToDetails, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
@@ -80,7 +80,7 @@ class SearchFragment : Fragment(), MovieClickListener {
                 resultsRecyclerProgressBar.visibility = INVISIBLE
                 searchResultsRecycler.visibility = VISIBLE
                 errorText.visibility = INVISIBLE
-                searchResultsRecycler.adapter = RMovieAdapter(movies, this)
+                searchResultsRecycler.adapter = RMovieAdapter(movies, this, null)
                 return@MovieCallback
             }
             resultsRecyclerProgressBar.visibility = INVISIBLE

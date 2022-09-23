@@ -1,13 +1,11 @@
 package com.example.moviesnight
 
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import com.example.moviesnight.adapter.BookmarkMovieAdapter
 import com.example.moviesnight.model.Movie
 import io.ak1.BubbleTabBar
 import io.paperdb.Paper
@@ -20,10 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Paper.init(this)
         val getSavedBookmarks = Paper.book().read<MutableList<Movie>>("bookmarkedMovies")
-        if (getSavedBookmarks != null) {
-            bookmarkedMovies = getSavedBookmarks
-            for (i in bookmarkedMovies) i.isBookmarked = true
-        }
+        if (getSavedBookmarks != null) bookmarkedMovies = getSavedBookmarks
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_frag)
         bubbleTB = findViewById(R.id.bubbleTabBar)
@@ -54,12 +49,14 @@ private fun moveForward(x: NavOptions.Builder) {
         .setPopEnterAnim(R.anim.from_left)
         .setPopExitAnim(R.anim.to_right)
 }
-fun contains(y:MutableList<Movie>, x: Int): Pair<Boolean, Movie?> {
-    for(i in y) {
-        if (i.movieID==x)
-            return Pair(true, i)
-    }
+fun containsMovie(y:MutableList<Movie>, x: Int): Pair<Boolean, Movie?> {
+    for(i in y) { if (i.movieID==x) return Pair(true, i) }
     return Pair(false, null)
+}
+
+fun containsIndex(x: List<Movie>, y:Int): Int {
+    for (i in x.indices) if(y==x[i].movieID) return i
+    return -1
 }
 
 private fun onNavDestinationSelected(

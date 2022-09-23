@@ -13,7 +13,6 @@ import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.BookmarkMovieAdapter
 import com.example.moviesnight.bookmarkedMovies
 import com.example.moviesnight.model.Movie
-import io.paperdb.Paper
 
 class BookmarkMoviesFragment : Fragment(), MovieClickListener {
     private lateinit var bookmarkRecycler: RecyclerView
@@ -33,7 +32,7 @@ class BookmarkMoviesFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.bookmarksToDetails, x)
         Log.d("myApp", "movie with ID: ${movieItem.movieID} clicked")
     }

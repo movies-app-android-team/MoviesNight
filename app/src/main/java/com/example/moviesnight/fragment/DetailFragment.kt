@@ -17,11 +17,14 @@ import com.example.moviesnight.`interface`.DetailedMovieCallback
 import com.example.moviesnight.`interface`.MovieCallback
 import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.adapter.RMovieAdapter
+import com.example.moviesnight.bookmarkedMovies
+import com.example.moviesnight.containsMovie
 import com.example.moviesnight.model.Genre
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 
 class DetailFragment : Fragment(), MovieClickListener {
     private val imageBase = "https://image.tmdb.org/t/p/w500/"
@@ -32,6 +35,8 @@ class DetailFragment : Fragment(), MovieClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
+
+        //Views
         val bookmarkStatus: ImageView = view.findViewById(R.id.movieDetailsBookmarkStatus)
         val backDrop: ImageView = view.findViewById(R.id.movieDetailBackdrop)
         val poster: ImageView = view.findViewById(R.id.movieDetailPoster)
@@ -42,8 +47,12 @@ class DetailFragment : Fragment(), MovieClickListener {
         val overView: TextView = view.findViewById(R.id.overView)
         val similarMovies: RecyclerView = view.findViewById(R.id.similarMoviesRecycler)
 
-        var isBookmarked = requireArguments().getBoolean("isBookmarked")
+
+        //Arguments
         val movieID = requireArguments().getInt("movieID")
+        val moviePosterPath = requireArguments().getString("posterPath")
+        var movieIsBookmarked = Paper.book().read<Boolean>("$movieID") == true
+
 
         val movieSuccess = DetailedMovieCallback { movie ->
             Picasso.get().load(imageBase + movie.backdropPath).into(backDrop)
@@ -61,21 +70,24 @@ class DetailFragment : Fragment(), MovieClickListener {
 
         val similarMovieSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
-                similarMovies.adapter = RMovieAdapter(movies, this)
+                similarMovies.adapter = RMovieAdapter(movies, this, null)
             }
         }
         Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID)
 
-        setBookmarkIcon(isBookmarked, bookmarkStatus)
+        setBookmarkIcon(movieIsBookmarked, bookmarkStatus)
         bookmarkStatus.setOnClickListener {
-            if (isBookmarked) {
-                isBookmarked = false
+            if (movieIsBookmarked) {
+                movieIsBookmarked = false
                 bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                //handle un bookmarking here
+                bookmarkedMovies.remove(containsMovie(bookmarkedMovies, movieID).second)
+                Paper.book().delete("$movieID")
                 return@setOnClickListener
             }
-            isBookmarked = true
+            movieIsBookmarked = true
             bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+            bookmarkedMovies.add(Movie(movieID, moviePosterPath))
+            Paper.book().write("$movieID", true)
         }
         val backBTN = view.findViewById<FloatingActionButton>(R.id.back_btn)
         backBTN.setOnClickListener {
@@ -87,7 +99,7 @@ class DetailFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.detailsToDetails, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
@@ -101,11 +113,11 @@ class DetailFragment : Fragment(), MovieClickListener {
 
     private fun getGenreNames(x: List<Genre>): String {
         val dot = " \u2022 "
-        if(x.isEmpty())
+        if (x.isEmpty())
             return ""
-        if(x.size>1) {
+        if (x.size > 1) {
             var y = x[0].genreName
-            for(i in 1 until x.size) {
+            for (i in 1 until x.size) {
                 y = "$y$dot${x[i].genreName}"
             }
             return " $dot$y"

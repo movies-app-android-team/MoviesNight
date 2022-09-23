@@ -25,7 +25,6 @@ import com.example.moviesnight.adapter.SMovieAdapter
 import com.example.moviesnight.model.Genre
 import com.example.moviesnight.model.Movie
 import com.example.moviesnight.network.Networking
-import kotlin.math.abs
 
 class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var listener: MovieClickListener
@@ -43,7 +42,7 @@ class HomeFragment : Fragment(), MovieClickListener {
         val cpt = CompositePageTransformer()
         cpt.addTransformer(MarginPageTransformer(40))
         cpt.addTransformer { passedView: View, fl: Float ->
-            val r = 1 - abs(fl)
+            val r = 1 - kotlin.math.abs(fl)
             passedView.scaleY = 0.85f + r * 0.15f
         }
         ////////////// Now Trending Movies //////////////
@@ -51,11 +50,12 @@ class HomeFragment : Fragment(), MovieClickListener {
         val nowTrendingMoviesRecycler = view.findViewById<ViewPager2>(R.id.nowTrendingMoviesSlider)
         val nowTrendingMoviesProgress =
             view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
-        var trendingAdapter: SMovieAdapter
+        var trendingAdapter = SMovieAdapter(emptyList(), this, null)
+        var genreMovieAdapter = RMovieAdapter(emptyList(), this, null)
         val nowTrendingSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
                 nowTrendingMoviesProgress.visibility = View.GONE
-                trendingAdapter = SMovieAdapter(movies, this)
+                trendingAdapter = SMovieAdapter(movies, this, genreMovieAdapter)
                 nowTrendingMoviesRecycler.adapter = trendingAdapter
 
                 nowTrendingMoviesRecycler.registerOnPageChangeCallback(object :
@@ -95,6 +95,9 @@ class HomeFragment : Fragment(), MovieClickListener {
                 })
             }
         }
+        if (savedInstanceState!= null) {
+            Log.d("myApp", "${savedInstanceState.getInt("scroll")}")
+        }
         val nowTrendingFailure = ErrorCallback {
             nowTrendingMoviesProgress.visibility = View.GONE
             val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
@@ -126,12 +129,16 @@ class HomeFragment : Fragment(), MovieClickListener {
                 genreRecycler.adapter = genreAdapter
                 genreRecycler.registerOnPageChangeCallback(object : ViewPager2
                 .OnPageChangeCallback() {
+                    @SuppressLint("NotifyDataSetChanged")
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         genreId = genreAdapter.getCurrentItemID(genreRecycler.currentItem)
                         val genreMovieSuccess = MovieCallback { movies ->
                             if (!movies.isNullOrEmpty()) {
-                                genreMovieRecycler.adapter = RMovieAdapter(movies, onClickListener)
+                                genreMovieAdapter =
+                                    RMovieAdapter(movies, onClickListener, trendingAdapter)
+                                genreMovieRecycler.adapter = genreMovieAdapter
+                                trendingAdapter.rAdapter = genreMovieAdapter
                             }
                         }
                         Networking.getGenreMovieData(genreMovieSuccess, {}, genreId)
@@ -153,8 +160,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
         x.putInt("movieID", movieItem.movieID)
-        Log.d("myApp", "${movieItem.movieID} sss")
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.homeToDetail, x)
         Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
@@ -167,4 +173,5 @@ class HomeFragment : Fragment(), MovieClickListener {
         x[x.size - 1].genreName = "\u2190   ${x[x.size - 1].genreName}"
         return x
     }
+
 }

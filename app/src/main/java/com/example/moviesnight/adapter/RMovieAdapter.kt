@@ -6,19 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.makeramen.roundedimageview.RoundedImageView
 import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.bookmarkedMovies
-import com.example.moviesnight.contains
+import com.example.moviesnight.containsIndex
+import com.example.moviesnight.containsMovie
 import com.example.moviesnight.model.Movie
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 import java.lang.Exception
 
-class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickListener) :
+
+class RMovieAdapter(
+    var movies: List<Movie>,
+    val rInterface: MovieClickListener,
+    val sAdapter: SMovieAdapter?
+) :
     RecyclerView.Adapter<RMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
@@ -40,7 +46,6 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
         private val bookmarkStatus: ImageView
         private val imageBase = "https://image.tmdb.org/t/p/w500/"
         private val progressBar: ProgressBar
-        //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
 
         init {
             movieImageView = itemView.findViewById(R.id.recyclerMovieImage)
@@ -51,32 +56,41 @@ class RMovieAdapter(private val movies: List<Movie>, val rInterface: MovieClickL
                 Log.d("myApp", "item ${movies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                val found = contains(bookmarkedMovies, movies[layoutPosition].movieID)
-                if (found.first) {
-                    movies[layoutPosition].isBookmarked = false
+                val foundMovie = containsMovie(bookmarkedMovies, movies[layoutPosition].movieID)
+                if (foundMovie.first) {
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                    bookmarkedMovies.remove(found.second!!)
+                    bookmarkedMovies.remove(foundMovie.second)
+                    Paper.book().delete("${movies[layoutPosition].movieID}")
                 } else {
                     bookmarkedMovies.add(movies[layoutPosition])
-                    movies[layoutPosition].isBookmarked = true
                     bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                    Paper.book().write("${movies[layoutPosition].movieID}", true)
                 }
+                notifyItem(movies[layoutPosition].movieID)
+            }
+        }
+
+        private fun notifyItem(movieID: Int) {
+            if (sAdapter == null || sAdapter.movies.isEmpty())
+                return
+            val itemIndex = containsIndex(sAdapter.movies as MutableList<Movie>, movieID)
+            if (itemIndex != -1) {
+                sAdapter.notifyItemChanged(itemIndex)
             }
         }
 
         fun bindItem(anItem: Movie) {
+            val found = Paper.book()
+                .read<Boolean>("${movies[layoutPosition].movieID}") == true
             Picasso.get().load(imageBase + anItem.posterPath)
                 .into(movieImageView, object : Callback {
                     override fun onSuccess() {
                         progressBar.visibility = View.GONE
                     }
                     override fun onError(e: Exception?) {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(itemView.context, "Error loading movie", Toast.LENGTH_SHORT)
-                            .show()
                     }
                 })
-            if (anItem.isBookmarked) {
+            if (found) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
             }

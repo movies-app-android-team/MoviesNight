@@ -9,12 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.bookmarkedMovies
-import com.example.moviesnight.contains
+import com.example.moviesnight.containsIndex
+import com.example.moviesnight.containsMovie
 import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 
-class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickListener) :
+class SMovieAdapter(
+    var movies: List<Movie>,
+    val sInterface: MovieClickListener,
+    var rAdapter: RMovieAdapter?
+) :
     RecyclerView.Adapter<SMovieAdapter.MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
@@ -40,7 +46,6 @@ class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickL
         private val movieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
         private val imageBase = "https://image.tmdb.org/t/p/w500/"
-        //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
 
         init {
             movieImageView = itemView.findViewById(R.id.sliderMovieImage)
@@ -50,27 +55,38 @@ class SMovieAdapter(private var movies: List<Movie>, val sInterface: MovieClickL
                 Log.d("myApp", "now trending item ${movies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                val found = contains(bookmarkedMovies, movies[layoutPosition].movieID)
+                val found = containsMovie(bookmarkedMovies, movies[layoutPosition].movieID)
                 if (found.first) {
-                    movies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
                     bookmarkedMovies.remove(found.second!!)
+                    Paper.book().delete("${movies[layoutPosition].movieID}")
                 } else {
                     bookmarkedMovies.add(movies[layoutPosition])
-                    movies[layoutPosition].isBookmarked = true
                     bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+                    Paper.book().write("${movies[layoutPosition].movieID}", true)
                 }
+                notifyItem(movies[layoutPosition].movieID)
+            }
+        }
+
+        private fun notifyItem(movieID: Int) {
+            if (rAdapter == null || rAdapter!!.movies.isEmpty())
+                return
+            val itemIndex = containsIndex(rAdapter!!.movies as MutableList<Movie>, movieID)
+            if (itemIndex != -1) {
+                rAdapter!!.notifyItemChanged(itemIndex)
             }
         }
 
         fun bindItem(anItem: Movie) {
+            val found = Paper.book()
+                .read<Boolean>("${anItem.movieID}") == true
             Picasso.get().load(imageBase + anItem.posterPath).into(movieImageView)
-            if (anItem.isBookmarked) {
+            if (found) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
             }
             bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
         }
-
     }
 }

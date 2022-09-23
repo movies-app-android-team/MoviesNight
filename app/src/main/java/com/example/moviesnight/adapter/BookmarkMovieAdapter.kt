@@ -12,6 +12,7 @@ import com.example.moviesnight.`interface`.MovieClickListener
 import com.example.moviesnight.model.Movie
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 
 class BookmarkMovieAdapter(
     private val bookmarkMovies: List<Movie>,
@@ -38,7 +39,6 @@ class BookmarkMovieAdapter(
         private val bookmarkMovieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
         private val imageBase = "https://image.tmdb.org/t/p/w500/"
-
         init {
             itemView.findViewById<ProgressBar>(R.id.rMovieItemProgress).visibility = View.GONE
             bookmarkMovieImageView = itemView.findViewById(R.id.recyclerMovieImage)
@@ -48,19 +48,21 @@ class BookmarkMovieAdapter(
                 Log.d("myApp", "item ${bookmarkMovies[layoutPosition]} clicked")
             }
             bookmarkStatus.setOnClickListener {
-                val found = contains(bookmarkedMovies, bookmarkMovies[layoutPosition].movieID)
+                val found = containsMovie(bookmarkedMovies, bookmarkMovies[layoutPosition].movieID)
                 if (found.first) {
-                    bookmarkMovies[layoutPosition].isBookmarked = false
                     bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
+                    Paper.book().delete("${found.second!!.movieID}")
                     bookmarkedMovies.remove(found.second!!)
+                    notifyItemRemoved(layoutPosition)
                 }
             }
         }
 
         fun bindItem(anItem: Movie) {
+            val found = Paper.book()
+                .read<Boolean>("${anItem.movieID}") == true
             Picasso.get().load(imageBase + anItem.posterPath).into(bookmarkMovieImageView)
-
-            if (anItem.isBookmarked) {
+            if (found) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
             }
