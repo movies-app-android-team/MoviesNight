@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -29,6 +30,7 @@ import com.example.moviesnight.network.Networking
 class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var listener: MovieClickListener
     private var trendingPage = 1
+    private lateinit var trendingScroll: NestedScrollView
 
 
     override fun onCreateView(
@@ -119,8 +121,10 @@ class HomeFragment : Fragment(), MovieClickListener {
         ////////////// Genres //////////////
         val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)
         val genreProgressBar = view.findViewById<ProgressBar>(R.id.genreProgress)
+        val nestedScrollView=view.findViewById<NestedScrollView>(R.id.nestedScrollView)
         var genreAdapter: GenreAdapter
         var genreId: Int
+        var page=1
         val onClickListener = this
         val genreSuccess = GenreCallback { genres ->
             if (!genres.isNullOrEmpty()) {
@@ -139,9 +143,19 @@ class HomeFragment : Fragment(), MovieClickListener {
                                     RMovieAdapter(movies, onClickListener, trendingAdapter)
                                 genreMovieRecycler.adapter = genreMovieAdapter
                                 trendingAdapter.rAdapter = genreMovieAdapter
+                                nestedScrollView.setOnScrollChangeListener(object :NestedScrollView.OnScrollChangeListener{
+                                    override fun onScrollChange(v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                                        if(scrollY==v.getChildAt(0).measuredHeight-v.measuredHeight){
+                                            page++
+                                            //fetch next page data with handler
+                                            fetchNextGenreMoviePage(genreMovieAdapter,genreId,page)
+                                        }
+                                    }
+
+                                })
                             }
                         }
-                        Networking.getGenreMovieData(genreMovieSuccess, {}, genreId)
+                        Networking.getGenreMovieData(genreMovieSuccess, {}, genreId,page)
                     }
                 })
             }
@@ -173,5 +187,14 @@ class HomeFragment : Fragment(), MovieClickListener {
         x[x.size - 1].genreName = "\u2190   ${x[x.size - 1].genreName}"
         return x
     }
-
+    private fun fetchNextGenreMoviePage(genreMovieAdapter:RMovieAdapter,genreId:Int,page:Int){
+        val genreMovieSuccess = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                Log.d("Page","End of page,new page= $page")
+                genreMovieAdapter.appendList(movies)
+                genreMovieAdapter.notifyItemRangeChanged(page*20,20)
+            }
+        }
+        Networking.getGenreMovieData(genreMovieSuccess, {}, genreId,page)
+    }
 }

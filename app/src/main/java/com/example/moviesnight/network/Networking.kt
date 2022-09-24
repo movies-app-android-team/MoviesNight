@@ -41,9 +41,10 @@ object Networking {
     fun getGenreMovieData(
         callback: MovieCallback,
         errorCallback: ErrorCallback? = null,
-        genre: Int
+        genre: Int,
+        page:Int
     ) {
-        moviesService.getGenreMovieList(genre).enqueue(object : Callback<MovieResponse> {
+        moviesService.getGenreMovieList(genre,page).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
                 println(response.body()?.movies.toString() + "sss")
@@ -60,9 +61,10 @@ object Networking {
     fun getSearchData(
         callback: MovieCallback,
         errorCallback: ErrorCallback? = null,
-        search: String
+        search: String,
+        page:Int
     ) {
-        moviesService.getSearchList(search).enqueue(object : Callback<MovieResponse> {
+        moviesService.getSearchList(search,page).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movies: List<Movie>? = response.body()?.movies
                 callback.onMoviesReady(movies)

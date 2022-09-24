@@ -41,6 +41,11 @@ class RMovieAdapter(
         return movies.size
     }
 
+    fun appendList(newMovies: List<Movie>) {
+        val current = movies + newMovies
+        movies = current
+    }
+
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val movieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
