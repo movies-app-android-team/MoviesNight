@@ -8,16 +8,6 @@
     android:background="@color/primary_dark"
     tools:context=".fragment.DetailFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:src="@drawable/ic_back_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/movieDetails"
@@ -32,6 +22,7 @@
             android:id="@+id/ratingFrame"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/movie_detail_round_corner"
             android:backgroundTint="@color/secondary_dark"
             app:layout_constraintBottom_toTopOf="@id/durationFrame"
@@ -41,46 +32,8 @@
             app:layout_constraintTop_toTopOf="@id/movieDetailRImageView"
             app:layout_constraintWidth_percent="0.7">
 
-            <ImageView
-                android:id="@+id/ratingIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp"
-                android:src="@drawable/ic_rating"
-                app:layout_constraintBottom_toTopOf="@id/ratingValue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/ratingValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/red_hat_display"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/ratingTitle"
-                app:layout_constraintEnd_toEndOf="@id/ratingIcon"
-                app:layout_constraintStart_toStartOf="@id/ratingIcon"
-                app:layout_constraintTop_toBottomOf="@id/ratingIcon"
-                tools:text="4.5" />
 
-            <TextView
-                android:id="@+id/ratingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.75"
-                android:fontFamily="@font/red_hat_display"
-                android:text="@string/rating"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/ratingIcon"
-                app:layout_constraintEnd_toEndOf="@id/ratingValue"
-                app:layout_constraintStart_toStartOf="@id/ratingValue"
-                app:layout_constraintTop_toBottomOf="@id/ratingValue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -198,22 +151,23 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/movieDetailRImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="134dp"
+            android:layout_height="198dp"
+            android:layout_marginStart="40dp"
             android:src="@drawable/test2"
-            app:layout_constraintStart_toStartOf="@id/ratingFrame"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="26dp" />
 
-        <ProgressBar
-            android:id="@+id/movieDetailsProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/movieDetailRImageView"
-            app:layout_constraintEnd_toEndOf="@+id/movieDetailRImageView"
-            app:layout_constraintStart_toStartOf="@+id/movieDetailRImageView"
-            app:layout_constraintTop_toTopOf="@+id/movieDetailRImageView" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/movieDetailsProgressBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:indeterminateTint="@color/white"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/movieDetailRImageView"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/movieDetailRImageView"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/movieDetailRImageView"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/movieDetailRImageView" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="50dp"
@@ -248,6 +202,7 @@
         app:layout_constraintTop_toBottomOf="@id/movieDetails" />
 
     <TextView
+        android:id="@+id/overviewText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"

@@ -6,14 +6,18 @@ import android.util.Log
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviesnight.PassedMovie
+import com.example.moviesnight.ErrorCallback
+import com.example.moviesnight.MovieCallback
+import com.example.moviesnight.MovieNetworking
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.RItemClickListener
+import com.example.moviesnight.models.Moviee
 import com.example.moviesnight.recycler.RMovieAdapter
-import com.example.moviesnight.recycler.RMovieItem
+import com.example.moviesnight.recycler.Movie
 
 
 class SearchFragment : Fragment(), RItemClickListener {
@@ -29,6 +33,9 @@ class SearchFragment : Fragment(), RItemClickListener {
 
         //configuring search bar settings
         val searchTab = view.findViewById<EditText>(R.id.searchTab)
+//        val searchText = searchTab.text.toString()
+        val searchResultRecycler = view.findViewById<RecyclerView>(R.id.searchResultsRecycler)
+
         searchTab.setOnTouchListener(OnTouchListener { _, event ->
             val rightDrawable = 2
             if (event.action == MotionEvent.ACTION_UP) {
@@ -36,40 +43,88 @@ class SearchFragment : Fragment(), RItemClickListener {
                 ) {
                     //handle the search icon click
                     Log.d("myApp", "search icon clicked")
+//                    searchBar(searchResultRecycler, searchText)
+                    val moviesCallback= MovieCallback { movies ->
+
+                        if (!movies.isNullOrEmpty()) {
+                            searchResultRecycler.adapter = RMovieAdapter(movies, this)
+
+
+                        }
+                    }
+                    val errorCallback= ErrorCallback {
+
+                        Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
+                    }
+                    MovieNetworking.getSearchData(moviesCallback,errorCallback, searchTab.text.toString())
+
+
                     return@OnTouchListener true
                 }
             }
             false
         })
+
+
         searchTab.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //handle the enter key click
                 Log.d("myApp", "enter button clicked")
+//                searchBar(searchResultRecycler, searchText)
+                val moviesCallback= MovieCallback { movies ->
+
+                    if (!movies.isNullOrEmpty()) {
+                        searchResultRecycler.adapter = RMovieAdapter(movies, this)
+
+                    }
+                }
+                val errorCallback= ErrorCallback {
+
+                    Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
+                }
+                MovieNetworking.getSearchData(moviesCallback,errorCallback, searchTab.text.toString())
+
+
                 return@OnKeyListener true
             }
             false
         })
 
         ////////////// Search Results recycler //////////////
-        val searchMovies = mutableListOf<RMovieItem>()
-        searchMovies.add(RMovieItem(1, R.drawable.test2))
-        searchMovies.add(RMovieItem(2, R.drawable.test2))
-        searchMovies.add(RMovieItem(3, R.drawable.test2))
-        searchMovies.add(RMovieItem(4, R.drawable.test2))
-        searchMovies.add(RMovieItem(5, R.drawable.test2))
-        searchMovies.add(RMovieItem(6, R.drawable.test2))
-        val searchResultRecycler = view.findViewById<RecyclerView>(R.id.searchResultsRecycler)
-        searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
+//        val searchMovies = mutableListOf<RMovieItem>()
+//        searchMovies.add(RMovieItem(1, R.drawable.test2))
+//        searchMovies.add(RMovieItem(2, R.drawable.test2))
+//        searchMovies.add(RMovieItem(3, R.drawable.test2))
+//        searchMovies.add(RMovieItem(4, R.drawable.test2))
+//        searchMovies.add(RMovieItem(5, R.drawable.test2))
+//        searchMovies.add(RMovieItem(6, R.drawable.test2))
+
+//        searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
         ////////////// Search Results recycler //////////////
 
         return view
     }
 
-    override fun onRMovieItemClick(view: View, movieItem: RMovieItem) {
+    override fun onRMovieItemClick(view: View, movieItem: Moviee) {
         val x = Bundle()
-        x.putInt("movieID", movieItem.movieID)
+        x.putString("movieID", movieItem.id.toString())//
         x.putBoolean("isBookmarked", movieItem.isBookmarked)
         findNavController().navigate(R.id.searchToDetails, x)
-        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.id}")
     }
+
+//   private fun searchBar( x :RecyclerView,y : String ){
+//       val moviesCallback= MovieCallback { movies ->
+//
+//           if (!movies.isNullOrEmpty()) {
+//               x.adapter = RMovieAdapter(movies, this)
+//
+//           }
+//       }
+//       val errorCallback= ErrorCallback {
+//
+//           Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
+//       }
+//       MovieNetworking.getSearchData(moviesCallback,errorCallback, y)
+//   }
 }

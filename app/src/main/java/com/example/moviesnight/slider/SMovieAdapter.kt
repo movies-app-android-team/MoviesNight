@@ -8,10 +8,15 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
 import com.example.moviesnight.`interface`.SItemClickListener
+import com.example.moviesnight.fragment.HomeFragment
+import com.example.moviesnight.fragment.SearchFragment
+import com.example.moviesnight.models.Moviee
 import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
 
-class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemClickListener) :
+class SMovieAdapter(private val movies: List<Moviee>, val sInterface: SItemClickListener) :
     RecyclerView.Adapter<SMovieAdapter.MovieItemViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
             LayoutInflater.from(parent.context)
@@ -21,17 +26,21 @@ class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemC
 
     override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
         holder.bindItem(movies[position])
+
     }
 
     override fun getItemCount(): Int {
-        return movies.size
+        return  movies.size
     }
+
+
+
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val movieImageView: RoundedImageView
         private val bookmarkStatus: ImageView
         //private val myIntent: Intent = Intent(itemView.context, TestClass::class.java)
-
+        private val IMAGE_BASE="https://image.tmdb.org/t/p/w500/"
         init {
             movieImageView = itemView.findViewById(R.id.sliderMovieImage)
             bookmarkStatus = itemView.findViewById(R.id.nowTrendingMoviesBookmarkStatus)
@@ -54,8 +63,9 @@ class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemC
             }
         }
 
-        fun bindItem(anItem: SMovieItem) {
-            movieImageView.setImageResource(anItem.imageID)
+        fun bindItem(anItem: Moviee) {
+            Picasso.get().load(IMAGE_BASE+anItem.poster).into(movieImageView)
+//            movieImageView.setImageResource(anItem.id)
             if(anItem.isBookmarked) {
                 bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
                 return
@@ -63,4 +73,20 @@ class SMovieAdapter(private val movies: List<SMovieItem>, val sInterface: SItemC
             bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
         }
     }
+
+
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
+//        return MovieItemViewHolder(
+//            LayoutInflater.from(parent.context)
+//                .inflate(R.layout.slider_movie_item_layout, parent, false)
+//        )
+//    }
+//
+//    override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun getItemCount(): Int {
+//        TODO("Not yet implemented")
+//    }
 }
