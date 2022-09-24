@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
+import com.example.moviesnight.models.Genre
 
-class GenreAdapter(private val genres: List<GenreItem>) :
+class GenreAdapter(private val genres: List<Genre>) :
     RecyclerView.Adapter<GenreAdapter.GenreItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreItemViewHolder {
         return GenreItemViewHolder(
@@ -33,12 +34,15 @@ class GenreAdapter(private val genres: List<GenreItem>) :
             genreItemView = itemView.findViewById(R.id.slidedGenre)
             itemView.setOnClickListener {
                 // code goes here
-                Log.d("myApp", "item ${genres[layoutPosition].genreName} clicked")
+                Log.d("myApp", "item ${genres[layoutPosition].name} clicked")
             }
         }
 
-        fun bindItem(anItem: GenreItem) {
-            genreItemView.text = anItem.genreName
+        fun bindItem(anItem: Genre) {
+            genreItemView.text = anItem.name
         }
+    }
+    fun getCurrentItemID(position: Int): Int {
+        return genres[position].id
     }
 }
