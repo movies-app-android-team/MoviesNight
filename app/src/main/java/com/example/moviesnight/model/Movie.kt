@@ -1,16 +1,14 @@
-package com.example.moviesnight.recycler
+package com.example.moviesnight.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Movie(
     @SerializedName("id")
-    val id: String?,
+    val movieID: Int,
 
     @SerializedName("poster_path")
-    val poster: String?,
-
-    var isBookmarked: Boolean = false
+    val posterPath: String?
 ) : Parcelable

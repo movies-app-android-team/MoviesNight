@@ -2,99 +2,39 @@ package com.example.moviesnight
 
 
 import android.os.Bundle
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import com.example.moviesnight.models.Moviee
-import com.example.moviesnight.models.MovieResponse
-import com.example.moviesnight.services.MovieApiServices
-import com.example.moviesnight.services.MovieInterfaceApi
+import com.example.moviesnight.model.Movie
 import io.ak1.BubbleTabBar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.paperdb.Paper
 
+var bookmarkedMovies = mutableListOf<Movie>()
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var loadingBar : ProgressBar
     private lateinit var bubbleTB: BubbleTabBar
-   // private lateinit var mySharedPreferences: SharedPreferences
-   // private lateinit var bookmarkButton: ImageView
-   // private lateinit var bookmarkRecycler: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Paper.init(this)
+        val getSavedBookmarks = Paper.book().read<MutableList<Movie>>("bookmarkedMovies")
+        if (getSavedBookmarks != null) bookmarkedMovies = getSavedBookmarks
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_frag)
         bubbleTB = findViewById(R.id.bubbleTabBar)
-//       loadingBar = findViewById(R.id.movieDetailsProgressBar)
-       // bookmarkButton = findViewById(R.id.recyclerMoviesBookmarkStatus)
-        //bookmarkRecycler = findViewById(R.id.bookmarkRecycler)
-
-        //mySharedPreferences = getSharedPreferences("com_example_moviesnight_USERS_BOOKMARK", Context.MODE_PRIVATE)
-
-        //mySharedPreferences.edit{
-           // putInt("Bookmark_Value", 2)
-           // commit()
-      //  }
-       // mySharedPreferences.getInt("Bookmark_Value", 2)
-
         bubbleTB.addBubbleListener { id ->
             onNavDestinationSelected(id, navController)
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             bubbleTB.setSelectedWithId(destination.id, false)
         }
-//
-//        val retrofit = Retrofit.Builder().baseUrl("https://api.themoviedb.org").addConverterFactory(
-//            GsonConverterFactory.create()).build()
-//        val moviesServices = retrofit.create(MoviesServices::class.java)
-//        moviesServices.getMovies().enqueue(object : Callback<List<Movies>>{
-//            override fun onResponse(call: Call<List<Movies>>, response: Response<List<Movies>>) {
-//                loadingBar.visibility = View.GONE
-//                val movies: List<Movies>? = response.body()
-//            }
-//
-//            override fun onFailure(call: Call<List<Movies>>, t: Throwable) {
-//                loadingBar.visibility = View.GONE
-//                println(t.message)
-//            }
-//
-//        })
-
-
-
     }
 
-    private fun getMovieData(callback: (List<Moviee>) -> Unit){
-        val apiService = MovieApiServices.getInstance().create(MovieInterfaceApi::class.java)
-        apiService.getMovieList().enqueue(object : Callback<MovieResponse>{
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-            return callback(response.body()!!.movies)
-            }
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-
-            }
-        })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    override fun onStop() {
+        Paper.book().write("bookmarkedMovies", bookmarkedMovies)
+        super.onStop()
     }
-
+}
 
 private fun moveBackward(x: NavOptions.Builder) {
     x.setEnterAnim(R.anim.from_left)
@@ -102,11 +42,21 @@ private fun moveBackward(x: NavOptions.Builder) {
         .setPopEnterAnim(R.anim.from_right)
         .setPopExitAnim(R.anim.to_left)
 }
+
 private fun moveForward(x: NavOptions.Builder) {
     x.setEnterAnim(R.anim.from_right)
         .setExitAnim(R.anim.to_left)
         .setPopEnterAnim(R.anim.from_left)
         .setPopExitAnim(R.anim.to_right)
+}
+fun containsMovie(y:MutableList<Movie>, x: Int): Pair<Boolean, Movie?> {
+    for(i in y) { if (i.movieID==x) return Pair(true, i) }
+    return Pair(false, null)
+}
+
+fun containsIndex(x: List<Movie>, y:Int): Int {
+    for (i in x.indices) if(y==x[i].movieID) return i
+    return -1
 }
 
 private fun onNavDestinationSelected(
@@ -127,7 +77,7 @@ private fun onNavDestinationSelected(
                 || (fromSearch && toBookmarks) -> moveForward(builder)
         (fromSearch && toHome)
                 || (fromBookmarks && toHome)
-                || (fromBookmarks && toSearch)-> moveBackward(builder)
+                || (fromBookmarks && toSearch) -> moveBackward(builder)
     }
     builder.setPopUpTo(toId, true)
     val options: NavOptions = builder.build()
@@ -137,4 +87,4 @@ private fun onNavDestinationSelected(
     } catch (e: IllegalArgumentException) {
         false
     }
-}}
+}

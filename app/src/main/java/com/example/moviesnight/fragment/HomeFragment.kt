@@ -1,36 +1,36 @@
 package com.example.moviesnight.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.findNavController
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.moviesnight.ErrorCallback
-import com.example.moviesnight.MovieCallback
-import com.example.moviesnight.MovieNetworking
 import com.example.moviesnight.R
-import com.example.moviesnight.`interface`.GItemClickListener
-import com.example.moviesnight.`interface`.RItemClickListener
-import com.example.moviesnight.`interface`.SItemClickListener
-import com.example.moviesnight.models.*
-import com.example.moviesnight.recycler.RMovieAdapter
-import com.example.moviesnight.recycler.Movie
-import com.example.moviesnight.recycler.MoviesGenreAdaptor
-import com.example.moviesnight.slider.GenreAdapter
-import com.example.moviesnight.slider.GenreItem
-import com.example.moviesnight.slider.SMovieAdapter
-import kotlin.math.abs
+import com.example.moviesnight.`interface`.ErrorCallback
+import com.example.moviesnight.`interface`.GenreCallback
+import com.example.moviesnight.`interface`.MovieCallback
+import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.adapter.GenreAdapter
+import com.example.moviesnight.adapter.RMovieAdapter
+import com.example.moviesnight.adapter.SMovieAdapter
+import com.example.moviesnight.model.Genre
+import com.example.moviesnight.model.Movie
+import com.example.moviesnight.network.Networking
 
-class HomeFragment : Fragment(), RItemClickListener, SItemClickListener{
-    private lateinit var listener: RItemClickListener
+class HomeFragment : Fragment(), MovieClickListener {
+    private lateinit var listener: MovieClickListener
+    private var trendingPage = 1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,189 +43,156 @@ class HomeFragment : Fragment(), RItemClickListener, SItemClickListener{
         val cpt = CompositePageTransformer()
         cpt.addTransformer(MarginPageTransformer(40))
         cpt.addTransformer { passedView: View, fl: Float ->
-            val r = 1 - abs(fl)
+            val r = 1 - kotlin.math.abs(fl)
             passedView.scaleY = 0.85f + r * 0.15f
         }
-
         ////////////// Now Trending Movies //////////////
-        //setting now trending movies list
-//        val nowTrendingMovies = mutableListOf<SMovieItem>()
-//        nowTrendingMovies.add(SMovieItem(1, R.drawable.test2))
-//        nowTrendingMovies.add(SMovieItem(2, R.drawable.test2))
-//        nowTrendingMovies.add(SMovieItem(3, R.drawable.test2))
-//        nowTrendingMovies.add(SMovieItem(4, R.drawable.test2))
-
-        //configuring now trending movies slider settings
+        //Fetching data from internet
         val nowTrendingMoviesRecycler = view.findViewById<ViewPager2>(R.id.nowTrendingMoviesSlider)
-        val moviesCallback= MovieCallback { movies ->
-
+        val nowTrendingMoviesProgress =
+            view.findViewById<ProgressBar>(R.id.nowTrendingMoviesProgress)
+        var trendingAdapter = SMovieAdapter(emptyList(), this, null)
+        var genreMovieAdapter = RMovieAdapter(emptyList(), this, null)
+        val nowTrendingSuccess = MovieCallback { movies ->
             if (!movies.isNullOrEmpty()) {
-                nowTrendingMoviesRecycler.adapter = SMovieAdapter(movies, this)
+                nowTrendingMoviesProgress.visibility = View.GONE
+                trendingAdapter = SMovieAdapter(movies, this, genreMovieAdapter)
+                nowTrendingMoviesRecycler.adapter = trendingAdapter
 
+                nowTrendingMoviesRecycler.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int
+                    ) {
+                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                        if (!nowTrendingMoviesRecycler.canScrollHorizontally(1)) {
+
+                            trendingPage += 1
+                            val nowTrendingNewPageSuccess = MovieCallback { movies ->
+                                if (!movies.isNullOrEmpty()) {
+                                    Log.d("myApp", "hi $trendingPage")
+                                    trendingAdapter.appendList(movies)
+                                    trendingAdapter.notifyDataSetChanged()
+                                }
+                            }
+                            Networking.getTrendingMovieData(
+                                nowTrendingNewPageSuccess,
+                                {},
+                                trendingPage
+                            )
+                            Log.d(
+                                "myApp",
+                                "Can't right scroll horizontally,this is page $trendingPage"
+                            )
+                        }
+                        if (!nowTrendingMoviesRecycler.canScrollHorizontally(-1)) {
+                            Log.d("myApp", "Can't left scroll horizontally")
+                        }
+                    }
+                })
             }
         }
-            val errorCallback= ErrorCallback {
-
-                Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-            }
-            MovieNetworking.getMovieData(moviesCallback,errorCallback)
-
+        if (savedInstanceState != null) {
+            Log.d("myApp", "${savedInstanceState.getInt("scroll")}")
+        }
+        val nowTrendingFailure = ErrorCallback {
+            nowTrendingMoviesProgress.visibility = View.GONE
+            val errorTextView = view.findViewById<TextView>(R.id.sliderMovieError)
+            errorTextView.visibility = View.VISIBLE
+        }
+        //Configuring viewpager settings
+        Networking.getTrendingMovieData(nowTrendingSuccess, nowTrendingFailure, trendingPage)
         nowTrendingMoviesRecycler.clipToPadding = false
         nowTrendingMoviesRecycler.clipChildren = false
         nowTrendingMoviesRecycler.offscreenPageLimit = 3
-        nowTrendingMoviesRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         nowTrendingMoviesRecycler.setPageTransformer(cpt)
+        nowTrendingMoviesRecycler.getChildAt(0)
+            .overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         ////////////// Now Trending Movies //////////////
 
-        val moviesGenreRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
-        val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)
-        var genreId: Int
-        val thisRefr = this
-        val genreCallback= GenreCallback { movies ->
+        ////////////// Genre Movies //////////////
+        val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
 
-            if (!movies.isNullOrEmpty()) {
-                val adapter = GenreAdapter(movies)
-                    genreRecycler.adapter = adapter
-                genreRecycler.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        ////////////// Genres //////////////
+        val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)
+        val genreProgressBar = view.findViewById<ProgressBar>(R.id.genreProgress)
+        val nestedScrollView = view.findViewById<NestedScrollView>(R.id.nestedScrollView)
+        var genreAdapter: GenreAdapter
+        var genreId: Int
+        var page = 1
+        val onClickListener = this
+        val genreSuccess = GenreCallback { genres ->
+            if (!genres.isNullOrEmpty()) {
+                genreProgressBar.visibility = View.GONE
+                genreAdapter = GenreAdapter(genresWithArrows(genres))
+                genreRecycler.adapter = genreAdapter
+                genreRecycler.registerOnPageChangeCallback(object : ViewPager2
+                .OnPageChangeCallback() {
+                    @SuppressLint("NotifyDataSetChanged")
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        genreId = adapter.getCurrentItemID(genreRecycler.currentItem)
-                        val moviesGenreCallback= MovieCallback { movies ->
-
+                        genreId = genreAdapter.getCurrentItemID(genreRecycler.currentItem)
+                        val genreMovieSuccess = MovieCallback { movies ->
                             if (!movies.isNullOrEmpty()) {
-                                moviesGenreRecycler.adapter = RMovieAdapter(movies, thisRefr)
-
+                                genreMovieAdapter =
+                                    RMovieAdapter(movies, onClickListener, trendingAdapter)
+                                genreMovieRecycler.adapter = genreMovieAdapter
+                                trendingAdapter.rAdapter = genreMovieAdapter
+                                nestedScrollView.setOnScrollChangeListener(NestedScrollView
+                                    .OnScrollChangeListener { v, _, scrollY, _, _ ->
+                                    if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                                        page++
+                                        //fetch next page data with handler
+                                        fetchNextGenreMoviePage(genreMovieAdapter, genreId, page)
+                                    }
+                                })
                             }
                         }
-                        val moviesGenreserrorCallback= ErrorCallback {
-
-                            Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-                        }
-                        MovieNetworking.getMoviesGenreData(moviesGenreCallback,moviesGenreserrorCallback,genreId)
+                        Networking.getGenreMovieData(genreMovieSuccess, {}, genreId, page)
                     }
                 })
-                /*genreRecycler.adapter = GenreAdapter(movies)*/
             }
         }
-        val genreErrorCallback= ErrorCallback {
-
-            Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-        }
-        MovieNetworking.getGenreData(genreCallback,genreErrorCallback)
-        genreRecycler.clipToPadding = false
-        genreRecycler.clipChildren = false
-        genreRecycler.offscreenPageLimit = 5
-        genreRecycler.setPageTransformer(cpt)
-        genreRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        genreRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                /*Log.d("myApp", "genre ${movies[position].name} selected")*/
-            }
-        })
-//        val moviesGenreRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
-//        val moviesGenreCallback= MovieCallback { movies ->
-//
-//            if (!movies.isNullOrEmpty()) {
-//                moviesGenreRecycler.adapter = RMovieAdapter(movies, this)
-//
-//            }
-//        }
-//        val moviesGenreserrorCallback= ErrorCallback {
-//
-//            Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-//        }
-//        MovieNetworking.getMoviesGenreData(moviesGenreCallback,moviesGenreserrorCallback)
-//        MovieNetworking.getAdventureGenreList(moviesGenreCallback,moviesGenreserrorCallback)
-
-
-        ////////////// Genres //////////////
-        //setting genres list
-        /*val genres = mutableListOf<Genre>()*/
-//        genres.add(GenreItem("Action", 21))
-//        genres.add(GenreItem("Thriller", 22))
-//        genres.add(GenreItem("Drama", 23))
-//        genres.add(GenreItem("Horror", 24))
-//        genres.add(GenreItem("Comedy", 25))
-//        genres.add(GenreItem("Sci-Fi", 26))
-
         //configuring genres slider settings
-
-        /*val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)*/
-/*      genreRecycler.adapter = GenreAdapter(genres)
+        Networking.getGenreData(genreSuccess) {}
         genreRecycler.clipToPadding = false
         genreRecycler.clipChildren = false
         genreRecycler.offscreenPageLimit = 5
         genreRecycler.setPageTransformer(cpt)
         genreRecycler.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        genreRecycler.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-               Log.d("myApp", "genre ${genres[position].name} selected")
-            }
-        })*/
-/*
-
-/////////////////sha8ala?
-val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
-        val genreMoviesCallback= MovieCallback { movies ->
-
-            if (!movies.isNullOrEmpty()) {
-                genreMovieRecycler.adapter = RMovieAdapter(movies, this)
-
-            }
-        }
-        val genreMovieserrorCallback= ErrorCallback {
-
-            Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-        }
-        MovieNetworking.getMovieData(genreMoviesCallback,genreMovieserrorCallback)*/
-
-
         ////////////// Genres //////////////
-
-        ////////////// Genre Movies //////////////
-//        val genreMovies = mutableListOf<Moviee>()
-//        genreMovies.add(Moviee(1, R.drawable.test2))
-//        genreMovies.add(Moviee(2, R.drawable.test2))
-//        genreMovies.add(Moviee(3, R.drawable.test2))
-//        genreMovies.add(Moviee(4, R.drawable.test2))
-//        genreMovies.add(Moviee(5, R.drawable.test2))
-//        genreMovies.add(Moviee(6, R.drawable.test2))
-
-//        val genreMovieRecycler = view.findViewById<RecyclerView>(R.id.genreMoviesRecycler)
-//        genreMovieRecycler.adapter = RMovieAdapter(genreMovies, listener)
-        ////////////// Genre Movies //////////////
         return view
     }
 
-    override fun onRMovieItemClick(view: View, movieItem: Moviee) {
+    override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
-        movieItem.id?.let { x.putInt("movieID", it) }
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
-//        view.findNavController().navigate(R.id.nowTrendingMoviesSlider,x)
-
+        x.putInt("movieID", movieItem.movieID)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.homeToDetail, x)
-        Log.d("myApp", "omg item clicked fr fr ${movieItem.id}")
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 
-    override fun onSMovieItemClick(view: View, movieItem: Moviee) {
-        val x = Bundle()
-        movieItem.id?.let { x.putInt("movieID", it) }
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
-        findNavController().navigate(R.id.homeToDetail, x)
-        Log.d("myApp", "omg item clicked fr fr ${movieItem.id}")
+    private fun genresWithArrows(x: List<Genre>): List<Genre> {
+        x[0].genreName = "${x[0].genreName}   \u2192"
+        for (i in 1 until x.size - 1) {
+            x[i].genreName = "\u2190  ${x[i].genreName}   \u2192"
+        }
+        x[x.size - 1].genreName = "\u2190   ${x[x.size - 1].genreName}"
+        return x
     }
 
-
-/*    override fun onGMovieItemClick(view: View, movieItem: MoviesGenre) {
-        val x = Bundle()
-        x.putString("movieID", movieItem.id)
-        *//*x.putString("genreID", movieItem.genre_ids)*//*
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
-        findNavController().navigate(R.id.homeToDetail, x)
-        *//*Log.d("myApp", "omg item clicked fr fr ${movieItem.id}"*//*
-    }*/
-
-
+    private fun fetchNextGenreMoviePage(genreMovieAdapter: RMovieAdapter, genreId: Int, page: Int) {
+        val genreMovieSuccess = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                Log.d("Page", "End of page,new page= $page")
+                genreMovieAdapter.appendList(movies)
+                genreMovieAdapter.notifyItemRangeChanged(page * 20, 20)
+            }
+        }
+        Networking.getGenreMovieData(genreMovieSuccess, {}, genreId, page)
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.moviesnight.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,117 +9,86 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.example.moviesnight.ErrorCallback
-import com.example.moviesnight.MovieCallback
-import com.example.moviesnight.MovieNetworking
 import com.example.moviesnight.R
-import com.example.moviesnight.`interface`.RItemClickListener
-import com.example.moviesnight.models.DetailedCallback
-import com.example.moviesnight.models.Moviee
-import com.example.moviesnight.recycler.RMovieAdapter
-import com.example.moviesnight.recycler.Movie
-import com.example.moviesnight.slider.GenreAdapter
-import com.example.moviesnight.slider.SMovieAdapter
+import com.example.moviesnight.`interface`.DetailedMovieCallback
+import com.example.moviesnight.`interface`.MovieCallback
+import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.adapter.RMovieAdapter
+import com.example.moviesnight.bookmarkedMovies
+import com.example.moviesnight.containsMovie
+import com.example.moviesnight.model.Genre
+import com.example.moviesnight.model.Movie
+import com.example.moviesnight.network.Networking
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import io.paperdb.Paper
 
-class DetailFragment : Fragment(), RItemClickListener {
+class DetailFragment : Fragment(), MovieClickListener {
     private val imageBase = "https://image.tmdb.org/t/p/w500/"
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-        //adding dummy data to similar movies recycler
-//        val similarMoviesRecycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
-        val bookmarkStatus = view.findViewById<ImageView>(R.id.movieDetailsBookmarkStatus)
 
-        var isBookmarked = requireArguments().getBoolean("isBookmarked")
-        setBookmarkIcon(isBookmarked, bookmarkStatus)
+        //Views
+        val bookmarkStatus: ImageView = view.findViewById(R.id.movieDetailsBookmarkStatus)
+        val backDrop: ImageView = view.findViewById(R.id.movieDetailBackdrop)
+        val poster: ImageView = view.findViewById(R.id.movieDetailPoster)
+        val title: TextView = view.findViewById(R.id.movieDetailTitle)
+        val rating: RatingBar = view.findViewById(R.id.ratingValue)
+        val yearGenre: TextView = view.findViewById(R.id.movieDetailReleaseDatePlusGenre)
+        val duration: TextView = view.findViewById(R.id.durationValue)
+        val overView: TextView = view.findViewById(R.id.overView)
+        val similarMovies: RecyclerView = view.findViewById(R.id.similarMoviesRecycler)
+
+
+        //Arguments
+        val movieID = requireArguments().getInt("movieID")
+        val moviePosterPath = requireArguments().getString("posterPath")
+        var movieIsBookmarked = Paper.book().read<Boolean>("$movieID") == true
+
+
+        val movieSuccess = DetailedMovieCallback { movie ->
+            Picasso.get().load(imageBase + movie.backdropPath).into(backDrop)
+            Picasso.get().load(imageBase + movie.posterPath).into(poster)
+            title.text = movie.movieTitle
+            rating.rating = movie.voteAverage / 2
+            yearGenre.text =
+                "${movie.year.substringBefore("-")}${getGenreNames(movie.genres)}"
+            duration.text = "${movie.runTime} minutes"
+            overView.text = movie.overview
+        }
+
+        //Configuring viewpager settings
+        Networking.getMovieDetails(movieSuccess, {}, movieID)
+
+        val similarMovieSuccess = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                similarMovies.adapter = RMovieAdapter(movies, this, null)
+            }
+        }
+        Networking.getSimilarMovieData(similarMovieSuccess, {}, movieID)
+
+        setBookmarkIcon(movieIsBookmarked, bookmarkStatus)
         bookmarkStatus.setOnClickListener {
-            if(isBookmarked) {
-                isBookmarked = false
+            if (movieIsBookmarked) {
+                movieIsBookmarked = false
                 bookmarkStatus.setImageResource(R.drawable.ic_un_bookmarked)
-                //handle un bookmarking here
+                bookmarkedMovies.remove(containsMovie(bookmarkedMovies, movieID).second)
+                Paper.book().delete("$movieID")
                 return@setOnClickListener
             }
-            isBookmarked = true
+            movieIsBookmarked = true
             bookmarkStatus.setImageResource(R.drawable.ic_bookmarked)
+            bookmarkedMovies.add(Movie(movieID, moviePosterPath))
+            Paper.book().write("$movieID", true)
         }
-//        val overviewMovies = view.findViewById<ViewPager2>(R.id.overviewText)
-//        val detailImageMovies = view.findViewById<ViewPager2>(R.id.movieDetailRImageView)
-
-        val movieID = requireArguments().getInt("movieID")
-//        val tv = view.findViewById<TextView>(R.id.ratingValue)
-//        tv.text = arguments?.getString("movieID")
-       /* val genreRecycler = view.findViewById<ViewPager2>(R.id.genreSlider)*/
-//        val view = inflater.inflate(R.layout.fragment_detail, container, false)
-//        val bookmarkStatus: ImageView = view.findViewById(R.id.movieDetailsBookmarkStatus)
-//        val backDrop: ImageView = view.findViewById(R.id.movieDetailBackdrop)
-        val poster: RoundedImageView = view.findViewById(R.id.movieDetailRImageView)
-//        val title: TextView = view.findViewById(R.id.movieDetailTitle)
-        val rating: TextView = view.findViewById(R.id.ratingValue)
-//        val Genre: TextView = view.findViewById(R.id.movieDetailReleaseDatePlusGenre)
-        val year: TextView = view.findViewById(R.id.yearValue)
-        val duration: TextView = view.findViewById(R.id.durationValue)
-        val overView: TextView = view.findViewById(R.id.overviewText)
-
-
-        val detailCallback= DetailedCallback { movie ->
-
-            if (movie != null) {
-//                Picasso.get().load(imageBase + movie.backdropPath).into(backDrop)
-                Picasso.get().load(imageBase + movie.posterPath).into(poster)
-//                title.text = movie.movieTitle
-                rating.text = (movie.voteAverage / 2).toString()
-                year.text = movie.year
-                duration.text = "${movie.runTime} minutes"
-                overView.text = movie.overview
-
-
- //               similarMoviesRecycler.adapter = RMovieAdapter(movies,this)
-//                tv.text = arguments?.getString("movieID")
-//                overviewMovies.adapter = RMovieAdapter(movies,this)
-//                detailImageMovies.adapter = RMovieAdapter(movies,this)
-            }
-        }
-        val detailErrorCallback= ErrorCallback {
-
-            Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-        }
-        MovieNetworking.getDetailList(detailCallback,detailErrorCallback,movieID)
-//        MovieNetworking.getSimilarList(detailCallback,detailErrorCallback,movieID)
-
-        val similarMoviesRecycler = view.findViewById<RecyclerView>(R.id.similarMoviesRecycler)
-        val moviesCallback= MovieCallback { movies ->
-
-            if (!movies.isNullOrEmpty()) {
-                similarMoviesRecycler.adapter = RMovieAdapter(movies, this)
-
-            }
-        }
-        val errorCallback= ErrorCallback {
-
-            Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-        }
-        MovieNetworking.getSimilarList(moviesCallback,errorCallback, movieID )
-
-//        val similarMovies = mutableListOf<Movie>()
-//        similarMovies.add(Movie(1, R.drawable.test2))
-//        similarMovies.add(Movie(2, R.drawable.test2))
-//        similarMovies.add(Movie(3, R.drawable.test2))
-//        similarMovies.add(Movie(4, R.drawable.test2))
-//        similarMovies.add(Movie(5, R.drawable.test2))
-//        similarMovies.add(Movie(6, R.drawable.test2))
-//        similarMoviesRecycler.adapter = RMovieAdapter(similarMovies, this)
-
         val backBTN = view.findViewById<FloatingActionButton>(R.id.back_btn)
         backBTN.setOnClickListener {
             requireActivity().onBackPressed()
@@ -126,20 +96,32 @@ class DetailFragment : Fragment(), RItemClickListener {
         return view
     }
 
-    override fun onRMovieItemClick(view: View, movieItem: Moviee) {
+    override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
-        movieItem.id?.let { x.putInt("movieID", it) }
-//        x.putString("movieID", movieItem.id)
-//        x.putString("overview", movieItem.overview)
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putInt("movieID", movieItem.movieID)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.detailsToDetails, x)
-        Log.d("myApp", "omg item clicked fr fr ${movieItem.id}")
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 
-    private fun setBookmarkIcon(x: Boolean, y:ImageView) {
-        if(x)
+    private fun setBookmarkIcon(x: Boolean, y: ImageView) {
+        if (x)
             y.setImageResource(R.drawable.ic_bookmarked)
         else
             y.setImageResource(R.drawable.ic_un_bookmarked)
+    }
+
+    private fun getGenreNames(x: List<Genre>): String {
+        val dot = " \u2022 "
+        if (x.isEmpty())
+            return ""
+        if (x.size > 1) {
+            var y = x[0].genreName
+            for (i in 1 until x.size) {
+                y = "$y$dot${x[i].genreName}"
+            }
+            return " $dot$y"
+        }
+        return "$dot${x[0].genreName}"
     }
 }

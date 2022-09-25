@@ -4,24 +4,31 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.View.OnTouchListener
+import android.view.View.*
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.ProgressBar
+import android.widget.ScrollView
+import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviesnight.ErrorCallback
-import com.example.moviesnight.MovieCallback
-import com.example.moviesnight.MovieNetworking
 import com.example.moviesnight.R
-import com.example.moviesnight.`interface`.RItemClickListener
-import com.example.moviesnight.models.Moviee
-import com.example.moviesnight.recycler.RMovieAdapter
-import com.example.moviesnight.recycler.Movie
+import com.example.moviesnight.`interface`.ErrorCallback
+import com.example.moviesnight.`interface`.MovieCallback
+import com.example.moviesnight.`interface`.MovieClickListener
+import com.example.moviesnight.adapter.RMovieAdapter
+import com.example.moviesnight.model.Movie
+import com.example.moviesnight.network.Networking
 
 
-class SearchFragment : Fragment(), RItemClickListener {
-    private lateinit var listener: RItemClickListener
+class SearchFragment : Fragment(), MovieClickListener {
+    private lateinit var listener: MovieClickListener
+    private lateinit var resultsRecyclerProgressBar: ProgressBar
+    private lateinit var searchResultsRecycler: RecyclerView
+    private lateinit var errorText: TextView
+    private lateinit var adapter: RMovieAdapter
+    private lateinit var scrollView: NestedScrollView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -33,98 +40,105 @@ class SearchFragment : Fragment(), RItemClickListener {
 
         //configuring search bar settings
         val searchTab = view.findViewById<EditText>(R.id.searchTab)
-//        val searchText = searchTab.text.toString()
-        val searchResultRecycler = view.findViewById<RecyclerView>(R.id.searchResultsRecycler)
-
+        searchResultsRecycler = view.findViewById(R.id.searchResultsRecycler)
+        resultsRecyclerProgressBar = view.findViewById(R.id.searchRecyclerProgress)
+        scrollView=view.findViewById(R.id.searchNestedScroll)
+        errorText = view.findViewById(R.id.searchErrorText)
+        var page=1
         searchTab.setOnTouchListener(OnTouchListener { _, event ->
             val rightDrawable = 2
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= searchTab.right - searchTab.compoundDrawables[rightDrawable].bounds.width()
                 ) {
                     //handle the search icon click
-                    Log.d("myApp", "search icon clicked")
-//                    searchBar(searchResultRecycler, searchText)
-                    val moviesCallback= MovieCallback { movies ->
-
-                        if (!movies.isNullOrEmpty()) {
-                            searchResultRecycler.adapter = RMovieAdapter(movies, this)
-
-
-                        }
-                    }
-                    val errorCallback= ErrorCallback {
-
-                        Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-                    }
-                    MovieNetworking.getSearchData(moviesCallback,errorCallback, searchTab.text.toString())
-
-
+                    page=1
+                    searchFirstPage(searchTab.text.toString())
                     return@OnTouchListener true
                 }
             }
             false
         })
-
-
-        searchTab.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+        searchTab.setOnKeyListener(OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //handle the enter key click
-                Log.d("myApp", "enter button clicked")
-//                searchBar(searchResultRecycler, searchText)
-                val moviesCallback= MovieCallback { movies ->
-
-                    if (!movies.isNullOrEmpty()) {
-                        searchResultRecycler.adapter = RMovieAdapter(movies, this)
-
-                    }
-                }
-                val errorCallback= ErrorCallback {
-
-                    Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-                }
-                MovieNetworking.getSearchData(moviesCallback,errorCallback, searchTab.text.toString())
-
-
+                page=1
+                searchFirstPage(searchTab.text.toString())
                 return@OnKeyListener true
             }
             false
         })
 
-        ////////////// Search Results recycler //////////////
-//        val searchMovies = mutableListOf<RMovieItem>()
-//        searchMovies.add(RMovieItem(1, R.drawable.test2))
-//        searchMovies.add(RMovieItem(2, R.drawable.test2))
-//        searchMovies.add(RMovieItem(3, R.drawable.test2))
-//        searchMovies.add(RMovieItem(4, R.drawable.test2))
-//        searchMovies.add(RMovieItem(5, R.drawable.test2))
-//        searchMovies.add(RMovieItem(6, R.drawable.test2))
+        //Pagnation
+        scrollView.setOnScrollChangeListener(object :NestedScrollView.OnScrollChangeListener{
+            override fun onScrollChange(v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                if(scrollY==v.getChildAt(0).measuredHeight-v.measuredHeight){
+                    Log.d("Page","Cann't scroll down")
+                    page++
+                    searchNextPage(searchTab.text.toString(),page)
+                }
+            }
+        })
 
-//        searchResultRecycler.adapter = RMovieAdapter(searchMovies, listener)
         ////////////// Search Results recycler //////////////
 
         return view
     }
 
-    override fun onRMovieItemClick(view: View, movieItem: Moviee) {
+    override fun onMovieItemClick(view: View, movieItem: Movie) {
         val x = Bundle()
-        x.putString("movieID", movieItem.id.toString())//
-        x.putBoolean("isBookmarked", movieItem.isBookmarked)
+        x.putInt("movieID", movieItem.movieID)
+        x.putString("posterPath", movieItem.posterPath)
         findNavController().navigate(R.id.searchToDetails, x)
-        Log.d("myApp", "omg item clicked fr fr ${movieItem.id}")
+        Log.d("myApp", "omg item clicked fr fr ${movieItem.movieID}")
     }
 
-//   private fun searchBar( x :RecyclerView,y : String ){
-//       val moviesCallback= MovieCallback { movies ->
-//
-//           if (!movies.isNullOrEmpty()) {
-//               x.adapter = RMovieAdapter(movies, this)
-//
-//           }
-//       }
-//       val errorCallback= ErrorCallback {
-//
-//           Toast.makeText(requireContext(), "Error loading movies", Toast.LENGTH_SHORT).show()
-//       }
-//       MovieNetworking.getSearchData(moviesCallback,errorCallback, y)
-//   }
+    private fun searchFirstPage(z: String) {
+        resultsRecyclerProgressBar.visibility = VISIBLE
+        val moviesCallback = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                resultsRecyclerProgressBar.visibility = INVISIBLE
+                searchResultsRecycler.visibility = VISIBLE
+                errorText.visibility = INVISIBLE
+                //To do try to improve performance by reusing same object
+                adapter = RMovieAdapter(movies, this, null)
+                searchResultsRecycler.adapter = adapter
+                scrollView.scrollTo(0,0)
+                return@MovieCallback
+            }
+            resultsRecyclerProgressBar.visibility = INVISIBLE
+            searchResultsRecycler.visibility = INVISIBLE
+            errorText.visibility = VISIBLE
+        }
+        val errorCallback = ErrorCallback {
+            resultsRecyclerProgressBar.visibility = INVISIBLE
+            searchResultsRecycler.visibility = INVISIBLE
+            errorText.visibility = VISIBLE
+        }
+        Networking.getSearchData(moviesCallback, errorCallback, z,1)
+    }
+    private fun searchNextPage(z: String,page:Int) {
+        Log.d("Search Page", page.toString())
+        resultsRecyclerProgressBar.visibility = VISIBLE
+        val moviesCallback = MovieCallback { movies ->
+            if (!movies.isNullOrEmpty()) {
+                resultsRecyclerProgressBar.visibility = INVISIBLE
+                searchResultsRecycler.visibility = VISIBLE
+                errorText.visibility = INVISIBLE
+
+                adapter.appendList(movies)
+                adapter.notifyItemRangeChanged(page * 20, 20)
+
+                return@MovieCallback
+            }
+            resultsRecyclerProgressBar.visibility = INVISIBLE
+            searchResultsRecycler.visibility = INVISIBLE
+            errorText.visibility = VISIBLE
+        }
+        val errorCallback = ErrorCallback {
+            resultsRecyclerProgressBar.visibility = INVISIBLE
+            searchResultsRecycler.visibility = INVISIBLE
+            errorText.visibility = VISIBLE
+        }
+        Networking.getSearchData(moviesCallback, errorCallback, z, page)
+    }
 }

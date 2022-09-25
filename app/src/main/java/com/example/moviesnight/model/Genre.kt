@@ -1,4 +1,4 @@
-package com.example.moviesnight.models
+package com.example.moviesnight.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -7,8 +7,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Genre(
     @SerializedName("id")
-    val id : Int ,
-    @SerializedName("name")
-    val name : String ,
+    val genreID: Int,
 
-    ) : Parcelable /*{ constructor() : this("" ,"")*/
+    @SerializedName("name")
+    var genreName: String
+
+) : Parcelable

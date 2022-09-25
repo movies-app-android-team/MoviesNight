@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -65,6 +66,34 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/main_text_view" />
 
+                    <TextView
+                        android:id="@+id/sliderMovieError"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:fontFamily="@font/red_hat_display"
+                        android:gravity="center"
+                        android:text="@string/movies_error"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="38sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintEnd_toEndOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintStart_toStartOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintTop_toTopOf="@+id/nowTrendingMoviesSlider" />
+
+
+                    <ProgressBar
+                        android:id="@+id/nowTrendingMoviesProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminateTint="@color/white"
+                        app:layout_constraintBottom_toBottomOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintEnd_toEndOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintStart_toStartOf="@id/nowTrendingMoviesSlider"
+                        app:layout_constraintTop_toTopOf="@id/nowTrendingMoviesSlider" />
+
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/genreSlider"
                         android:layout_width="match_parent"
@@ -74,6 +103,16 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/nowTrendingMoviesSlider" />
+
+                    <ProgressBar
+                        android:id="@+id/genreProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminateTint="@color/white"
+                        app:layout_constraintBottom_toBottomOf="@id/genreSlider"
+                        app:layout_constraintEnd_toEndOf="@id/genreSlider"
+                        app:layout_constraintStart_toStartOf="@id/genreSlider"
+                        app:layout_constraintTop_toTopOf="@id/genreSlider" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -84,7 +123,9 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -98,7 +139,6 @@
                 app:spanCount="2"
                 tools:itemCount="14"
                 tools:listitem="@layout/slider_movie_item_layout" />
-
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,8 @@
-package com.example.moviesnight.models
+package com.example.moviesnight.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class DetailedMovie(
@@ -33,5 +33,5 @@ data class DetailedMovie(
     @SerializedName("overview")
     val overview: String?,
 
-//    var isBookmarked: Boolean=(Paper.book().read<Boolean>(movieID.toString())==true)
+    var isBookmarked: Boolean
 ) : Parcelable

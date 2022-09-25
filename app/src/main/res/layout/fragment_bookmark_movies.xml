@@ -15,12 +15,13 @@
         android:layout_height="0dp"
         android:layout_margin="30dp"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:spanCount="3"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myBookmarksTitle"
-        tools:listitem="@layout/bookmark_movie_item_layout" />
+        tools:listitem="@layout/recycler_movie_item_layout" />
 
     <TextView
         android:id="@+id/myBookmarksTitle"

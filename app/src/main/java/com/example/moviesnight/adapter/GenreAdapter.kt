@@ -1,4 +1,4 @@
-package com.example.moviesnight.slider
+package com.example.moviesnight.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesnight.R
-import com.example.moviesnight.models.Genre
+import com.example.moviesnight.model.Genre
 
 class GenreAdapter(private val genres: List<Genre>) :
     RecyclerView.Adapter<GenreAdapter.GenreItemViewHolder>() {
@@ -34,15 +34,17 @@ class GenreAdapter(private val genres: List<Genre>) :
             genreItemView = itemView.findViewById(R.id.slidedGenre)
             itemView.setOnClickListener {
                 // code goes here
-                Log.d("myApp", "item ${genres[layoutPosition].name} clicked")
+                Log.d("myApp", "item ${genres[layoutPosition].genreName} clicked")
             }
         }
 
         fun bindItem(anItem: Genre) {
-            genreItemView.text = anItem.name
+            genreItemView.text = anItem.genreName
         }
     }
+
     fun getCurrentItemID(position: Int): Int {
-        return genres[position].id
+        return genres[position].genreID
     }
+
 }
